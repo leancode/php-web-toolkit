@@ -1,0 +1,558 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		AC08B81312EE13FC00EC8CC1 /* PhpTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */; };
+		AC08F3D513133DCA0040EB0F /* csstidy.php in Resources */ = {isa = PBXBuildFile; fileRef = AC08F3D413133DCA0040EB0F /* csstidy.php */; };
+		AC08F434131341D80040EB0F /* jshint-min.js in Resources */ = {isa = PBXBuildFile; fileRef = AC08F430131341C20040EB0F /* jshint-min.js */; };
+		AC09ABE01151A8B400E7E40F /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = AC09ABDF1151A8B400E7E40F /* js-call.sh */; };
+		AC0AF9B111A1D3000002B0EA /* jsminify.php in Resources */ = {isa = PBXBuildFile; fileRef = AC0AF9B011A1D3000002B0EA /* jsminify.php */; };
+		AC102CDF1326C4BA00F69278 /* InfoPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC102CDE1326C4BA00F69278 /* InfoPanel.xib */; };
+		AC102CF51326C9D600F69278 /* MessagingController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC102CF41326C9D600F69278 /* MessagingController.m */; };
+		AC102E3C1326ECEF00F69278 /* ValidationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = AC102E3B1326ECEF00F69278 /* ValidationResult.m */; };
+		AC102F171327047900F69278 /* growlnotify in Resources */ = {isa = PBXBuildFile; fileRef = AC102F161327047900F69278 /* growlnotify */; };
+		AC12616E10A3B7B400A9D9E8 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC12616D10A3B7B400A9D9E8 /* PreferenceController.m */; };
+		AC13AE17126F5BDF00B5B8FF /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE0E126F5BDF00B5B8FF /* NSObject+SBJSON.m */; };
+		AC13AE18126F5BDF00B5B8FF /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE10126F5BDF00B5B8FF /* NSString+SBJSON.m */; };
+		AC13AE19126F5BDF00B5B8FF /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE12126F5BDF00B5B8FF /* SBJsonBase.m */; };
+		AC13AE1A126F5BDF00B5B8FF /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE14126F5BDF00B5B8FF /* SBJsonParser.m */; };
+		AC13AE1B126F5BDF00B5B8FF /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */; };
+		AC24F8BC0FFFCFC70077A062 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */; };
+		AC260C211321684D002AAAA4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC260C201321684D002AAAA4 /* Cocoa.framework */; };
+		AC260C4B13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict in Resources */ = {isa = PBXBuildFile; fileRef = AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */; };
+		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
+		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
+		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
+		AC6209D812B6D4440080B995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC6209D712B6D4440080B995 /* Localizable.strings */; };
+		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
+		AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209EF12B6D5E50080B995 /* Preferences.xib */; };
+		AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7B768810F8F70F00089B11 /* CssTidyConfig.m */; };
+		AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */; };
+		AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */; };
+		AC8C51BA110A63CA00EB784D /* tidy_config_format_indented.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B9110A63CA00EB784D /* tidy_config_format_indented.txt */; };
+		AC8C51BC110A63D900EB784D /* tidy_config_format_compressed.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51BB110A63D900EB784D /* tidy_config_format_compressed.txt */; };
+		AC8C51BE110A63EF00EB784D /* tidy_config_format_default.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51BD110A63EF00EB784D /* tidy_config_format_default.txt */; };
+		AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC9E07C51118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt */; };
+		ACA91D8D1264E4C10032639D /* tidy in Resources */ = {isa = PBXBuildFile; fileRef = ACA91D8C1264E4C10032639D /* tidy */; };
+		ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC89E2510A4092F0075B1A0 /* Encoding.m */; };
+		ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */ = {isa = PBXBuildFile; fileRef = ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */; };
+		ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */; };
+		ACEF739F132727E00025427D /* ResultPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF739E132727E00025427D /* ResultPanel.xib */; };
+		ACEF7403132738D40025427D /* HtmlValidationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF7402132738D40025427D /* HtmlValidationConfig.m */; };
+		ACF14D111328229E00749312 /* UpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF14D101328229E00749312 /* UpdateController.m */; };
+		ACF177B20F01638700CA7641 /* phptidy-coda.php in Resources */ = {isa = PBXBuildFile; fileRef = ACF177B10F01638700CA7641 /* phptidy-coda.php */; };
+		ACF56A2512D9175700F2D04D /* CssLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF56A2412D9175700F2D04D /* CssLevel.m */; };
+		BEAA0D340EB0F00F002630D0 /* PhpPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AC8353AE0FFFC8110063890D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "~/Library/Application Support/Coda/Plug-Ins/";
+			dstSubfolderSpec = 0;
+			files = (
+				AC24F8BC0FFFCFC70077A062 /* PhpPlugin.codaplugin in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin_Prefix.pch; sourceTree = "<group>"; };
+		8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhpPlugin.codaplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC08B81112EE13FC00EC8CC1 /* PhpTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpTidyConfig.h; sourceTree = "<group>"; };
+		AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpTidyConfig.m; sourceTree = "<group>"; };
+		AC08F3D413133DCA0040EB0F /* csstidy.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; path = csstidy.php; sourceTree = "<group>"; };
+		AC08F3E8131340280040EB0F /* jshint.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jshint.js; sourceTree = "<group>"; };
+		AC08F430131341C20040EB0F /* jshint-min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jshint-min.js"; sourceTree = "<group>"; };
+		AC09ABDF1151A8B400E7E40F /* js-call.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "js-call.sh"; sourceTree = "<group>"; };
+		AC0AF9B011A1D3000002B0EA /* jsminify.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; path = jsminify.php; sourceTree = "<group>"; };
+		AC102CF31326C9D600F69278 /* MessagingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingController.h; sourceTree = "<group>"; };
+		AC102CF41326C9D600F69278 /* MessagingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingController.m; sourceTree = "<group>"; };
+		AC102E3A1326ECEF00F69278 /* ValidationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValidationResult.h; sourceTree = "<group>"; };
+		AC102E3B1326ECEF00F69278 /* ValidationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValidationResult.m; sourceTree = "<group>"; };
+		AC102F161327047900F69278 /* growlnotify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = growlnotify; sourceTree = "<group>"; };
+		AC12616C10A3B7B400A9D9E8 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
+		AC12616D10A3B7B400A9D9E8 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; };
+		AC1261A310A3BBF000A9D9E8 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
+		AC13AE0C126F5BDF00B5B8FF /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		AC13AE0D126F5BDF00B5B8FF /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		AC13AE0E126F5BDF00B5B8FF /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		AC13AE0F126F5BDF00B5B8FF /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		AC13AE10126F5BDF00B5B8FF /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		AC13AE11126F5BDF00B5B8FF /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		AC13AE12126F5BDF00B5B8FF /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		AC13AE13126F5BDF00B5B8FF /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		AC13AE14126F5BDF00B5B8FF /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		AC13AE15126F5BDF00B5B8FF /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		AC1E93D81316D4290087D5C3 /* JSHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSHelper.h; sourceTree = "<group>"; };
+		AC1E93D91316D4290087D5C3 /* JSHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; path = JSHelper.m; sourceTree = "<group>"; };
+		AC260C201321684D002AAAA4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "My Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
+		AC394B4C1323FEE100A9FC27 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InfoPanel.xib; sourceTree = "<group>"; };
+		AC3E522713298B9D00EFD884 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
+		AC3E522813298B9E00EFD884 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
+		AC5C56E1126A557700359B53 /* CssProcssor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssProcssor.h; sourceTree = "<group>"; };
+		AC5C56E2126A557700359B53 /* CssProcssor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssProcssor.m; sourceTree = "<group>"; };
+		AC6209CC12B6D3340080B995 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AC7B768710F8F70F00089B11 /* CssTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssTidyConfig.h; sourceTree = "<group>"; };
+		AC7B768810F8F70F00089B11 /* CssTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssTidyConfig.m; sourceTree = "<group>"; };
+		AC7BC118127B512400C58EB4 /* jstidy.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = jstidy.js; sourceTree = "<group>"; };
+		AC8C518A110A5FA600EB784D /* HtmlTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlTidyConfig.h; sourceTree = "<group>"; };
+		AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlTidyConfig.m; sourceTree = "<group>"; };
+		AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_wrapped.txt; sourceTree = "<group>"; };
+		AC8C51B9110A63CA00EB784D /* tidy_config_format_indented.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_indented.txt; sourceTree = "<group>"; };
+		AC8C51BB110A63D900EB784D /* tidy_config_format_compressed.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_compressed.txt; sourceTree = "<group>"; };
+		AC8C51BD110A63EF00EB784D /* tidy_config_format_default.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_default.txt; sourceTree = "<group>"; };
+		AC9E07C51118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_bodyonly.txt; sourceTree = "<group>"; };
+		ACA91D8C1264E4C10032639D /* tidy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = tidy; sourceTree = "<group>"; };
+		ACB3ADD20EFDC150007830D2 /* CodaPlugInsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodaPlugInsController.h; sourceTree = "<group>"; };
+		ACC4EE40127CD012004DD845 /* jstidy-min.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = "jstidy-min.js"; sourceTree = "<group>"; };
+		ACC89E2410A4092F0075B1A0 /* Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encoding.h; sourceTree = "<group>"; };
+		ACC89E2510A4092F0075B1A0 /* Encoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Encoding.m; sourceTree = "<group>"; };
+		ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_check.txt; sourceTree = "<group>"; };
+		ACD6CCDC100012FC007E94B1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SheetPHPError.xib; sourceTree = "<group>"; };
+		ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "codaphp-plugin-icon.png"; sourceTree = "<group>"; };
+		ACEF736E1327233D0025427D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ResultPanel.xib; sourceTree = "<group>"; };
+		ACEF7401132738D40025427D /* HtmlValidationConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlValidationConfig.h; sourceTree = "<group>"; };
+		ACEF7402132738D40025427D /* HtmlValidationConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlValidationConfig.m; sourceTree = "<group>"; };
+		ACF14D0F1328229E00749312 /* UpdateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateController.h; sourceTree = "<group>"; };
+		ACF14D101328229E00749312 /* UpdateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateController.m; sourceTree = "<group>"; };
+		ACF177B10F01638700CA7641 /* phptidy-coda.php */ = {isa = PBXFileReference; explicitFileType = text.script.php; fileEncoding = 4; path = "phptidy-coda.php"; sourceTree = "<group>"; };
+		ACF56A2312D9175700F2D04D /* CssLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssLevel.h; sourceTree = "<group>"; };
+		ACF56A2412D9175700F2D04D /* CssLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssLevel.m; sourceTree = "<group>"; };
+		BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpPlugin.m; sourceTree = "<group>"; };
+		BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin.h; sourceTree = "<group>"; };
+		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5B49B3048680CD000E48DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC260C211321684D002AAAA4 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* Zap Gremlins */ = {
+			isa = PBXGroup;
+			children = (
+				AC3E522A13298CE300EFD884 /* Controller */,
+				08FB77AFFE84173DC02AAC07 /* Classes */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				AC13AE26126F5BE400B5B8FF /* JSON */,
+				32C88E010371C26100C91783 /* Other Sources */,
+				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = "Zap Gremlins";
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = "Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AC102CDE1326C4BA00F69278 /* InfoPanel.xib */,
+				ACEF739E132727E00025427D /* ResultPanel.xib */,
+				AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */,
+				AC6209EF12B6D5E50080B995 /* Preferences.xib */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+				AC6209D712B6D4440080B995 /* Localizable.strings */,
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				AC102F161327047900F69278 /* growlnotify */,
+				ACA91D8C1264E4C10032639D /* tidy */,
+				AC09ABDF1151A8B400E7E40F /* js-call.sh */,
+				AC08F430131341C20040EB0F /* jshint-min.js */,
+				ACC4EE40127CD012004DD845 /* jstidy-min.js */,
+				AC0AF9B011A1D3000002B0EA /* jsminify.php */,
+				ACF177B10F01638700CA7641 /* phptidy-coda.php */,
+				AC08F3D413133DCA0040EB0F /* csstidy.php */,
+				AC8C51BD110A63EF00EB784D /* tidy_config_format_default.txt */,
+				AC9E07C51118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt */,
+				AC8C51BB110A63D900EB784D /* tidy_config_format_compressed.txt */,
+				AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */,
+				AC8C51B9110A63CA00EB784D /* tidy_config_format_indented.txt */,
+				ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */,
+				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
+				AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AFFE84173DC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ACC89E2410A4092F0075B1A0 /* Encoding.h */,
+				ACC89E2510A4092F0075B1A0 /* Encoding.m */,
+				AC7B768710F8F70F00089B11 /* CssTidyConfig.h */,
+				AC7B768810F8F70F00089B11 /* CssTidyConfig.m */,
+				AC8C518A110A5FA600EB784D /* HtmlTidyConfig.h */,
+				AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */,
+				AC5C56E1126A557700359B53 /* CssProcssor.h */,
+				AC5C56E2126A557700359B53 /* CssProcssor.m */,
+				ACF56A2312D9175700F2D04D /* CssLevel.h */,
+				ACF56A2412D9175700F2D04D /* CssLevel.m */,
+				AC08B81112EE13FC00EC8CC1 /* PhpTidyConfig.h */,
+				AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */,
+				ACEF7401132738D40025427D /* HtmlValidationConfig.h */,
+				ACEF7402132738D40025427D /* HtmlValidationConfig.m */,
+				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
+				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
+				AC3E522713298B9D00EFD884 /* InfoView.h */,
+				AC3E522813298B9E00EFD884 /* InfoView.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AC260C201321684D002AAAA4 /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+				D2F7E65807B2D6F200F64583 /* CoreData.framework */,
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		32C88E010371C26100C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */,
+				AC1E93D81316D4290087D5C3 /* JSHelper.h */,
+				AC1E93D91316D4290087D5C3 /* JSHelper.m */,
+				AC7BC118127B512400C58EB4 /* jstidy.js */,
+				AC08F3E8131340280040EB0F /* jshint.js */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		AC13AE26126F5BE400B5B8FF /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				AC13AE0C126F5BDF00B5B8FF /* JSON.h */,
+				AC13AE0D126F5BDF00B5B8FF /* NSObject+SBJSON.h */,
+				AC13AE0E126F5BDF00B5B8FF /* NSObject+SBJSON.m */,
+				AC13AE0F126F5BDF00B5B8FF /* NSString+SBJSON.h */,
+				AC13AE10126F5BDF00B5B8FF /* NSString+SBJSON.m */,
+				AC13AE11126F5BDF00B5B8FF /* SBJsonBase.h */,
+				AC13AE12126F5BDF00B5B8FF /* SBJsonBase.m */,
+				AC13AE13126F5BDF00B5B8FF /* SBJsonParser.h */,
+				AC13AE14126F5BDF00B5B8FF /* SBJsonParser.m */,
+				AC13AE15126F5BDF00B5B8FF /* SBJsonWriter.h */,
+				AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
+		AC3E522A13298CE300EFD884 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3ADD20EFDC150007830D2 /* CodaPlugInsController.h */,
+				BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */,
+				BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */,
+				AC12616C10A3B7B400A9D9E8 /* PreferenceController.h */,
+				AC12616D10A3B7B400A9D9E8 /* PreferenceController.m */,
+				AC102CF31326C9D600F69278 /* MessagingController.h */,
+				AC102CF41326C9D600F69278 /* MessagingController.m */,
+				ACF14D0F1328229E00749312 /* UpdateController.h */,
+				ACF14D101328229E00749312 /* UpdateController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D5B49AC048680CD000E48DA /* PhpPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "PhpPlugin" */;
+			buildPhases = (
+				8D5B49AF048680CD000E48DA /* Resources */,
+				8D5B49B1048680CD000E48DA /* Sources */,
+				8D5B49B3048680CD000E48DA /* Frameworks */,
+				AC8353AE0FFFC8110063890D /* CopyFiles */,
+				AC24F90D0FFFD36F0077A062 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhpPlugin;
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = "Zap Gremlins";
+			productReference = 8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "PhpPlugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* Zap Gremlins */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D5B49AC048680CD000E48DA /* PhpPlugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5B49AF048680CD000E48DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				AC08F434131341D80040EB0F /* jshint-min.js in Resources */,
+				AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */,
+				ACF177B20F01638700CA7641 /* phptidy-coda.php in Resources */,
+				AC08F3D513133DCA0040EB0F /* csstidy.php in Resources */,
+				AC0AF9B111A1D3000002B0EA /* jsminify.php in Resources */,
+				AC09ABE01151A8B400E7E40F /* js-call.sh in Resources */,
+				AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */,
+				AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */,
+				ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */,
+				ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */,
+				AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */,
+				AC8C51BA110A63CA00EB784D /* tidy_config_format_indented.txt in Resources */,
+				AC8C51BC110A63D900EB784D /* tidy_config_format_compressed.txt in Resources */,
+				AC8C51BE110A63EF00EB784D /* tidy_config_format_default.txt in Resources */,
+				AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */,
+				ACA91D8D1264E4C10032639D /* tidy in Resources */,
+				AC6209D812B6D4440080B995 /* Localizable.strings in Resources */,
+				AC260C4B13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict in Resources */,
+				AC102CDF1326C4BA00F69278 /* InfoPanel.xib in Resources */,
+				AC102F171327047900F69278 /* growlnotify in Resources */,
+				ACEF739F132727E00025427D /* ResultPanel.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AC24F90D0FFFD36F0077A062 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "killall Coda\nopen -a Coda\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5B49B1048680CD000E48DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEAA0D340EB0F00F002630D0 /* PhpPlugin.m in Sources */,
+				AC12616E10A3B7B400A9D9E8 /* PreferenceController.m in Sources */,
+				ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */,
+				AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */,
+				AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */,
+				AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */,
+				AC13AE17126F5BDF00B5B8FF /* NSObject+SBJSON.m in Sources */,
+				AC13AE18126F5BDF00B5B8FF /* NSString+SBJSON.m in Sources */,
+				AC13AE19126F5BDF00B5B8FF /* SBJsonBase.m in Sources */,
+				AC13AE1A126F5BDF00B5B8FF /* SBJsonParser.m in Sources */,
+				AC13AE1B126F5BDF00B5B8FF /* SBJsonWriter.m in Sources */,
+				ACF56A2512D9175700F2D04D /* CssLevel.m in Sources */,
+				AC08B81312EE13FC00EC8CC1 /* PhpTidyConfig.m in Sources */,
+				AC102CF51326C9D600F69278 /* MessagingController.m in Sources */,
+				AC102E3C1326ECEF00F69278 /* ValidationResult.m in Sources */,
+				ACEF7403132738D40025427D /* HtmlValidationConfig.m in Sources */,
+				ACF14D111328229E00749312 /* UpdateController.m in Sources */,
+				AC3E522913298B9E00EFD884 /* InfoView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C167EFE841241C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AC102CDE1326C4BA00F69278 /* InfoPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AC394B4C1323FEE100A9FC27 /* English */,
+			);
+			name = InfoPanel.xib;
+			sourceTree = "<group>";
+		};
+		AC6209D712B6D4440080B995 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AC6209CC12B6D3340080B995 /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACD6CCDC100012FC007E94B1 /* English */,
+			);
+			name = SheetPHPError.xib;
+			sourceTree = "<group>";
+		};
+		AC6209EF12B6D5E50080B995 /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AC1261A310A3BBF000A9D9E8 /* English */,
+			);
+			name = Preferences.xib;
+			sourceTree = "<group>";
+		};
+		ACEF739E132727E00025427D /* ResultPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACEF736E1327233D0025427D /* English */,
+			);
+			name = ResultPanel.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB913C08733D840010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_NAME = PhpPlugin;
+				WRAPPER_EXTENSION = codaplugin;
+			};
+			name = Release;
+		};
+		1DEB914008733D840010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CURRENT_PROJECT_VERSION = 3.0beta;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "PhpPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB913C08733D840010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "PhpPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB914008733D840010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

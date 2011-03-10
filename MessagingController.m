@@ -1,0 +1,223 @@
+//
+//  MessagingController.m
+//  PhpPlugin
+//
+//  Created by Mario Fischer on 08.03.11.
+//  Copyright 2011 chipwreck.de. All rights reserved.
+//
+
+#import "MessagingController.h"
+#import "PreferenceController.h"
+#import "PhpPlugin.h"
+
+@implementation MessagingController
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		[NSBundle loadNibNamed:@"InfoPanel" owner:self];
+		[NSBundle loadNibNamed:@"ResultPanel" owner:self];
+		[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
+		durationInfoPanel = 4.0;
+	}
+
+	return self;
+}
+
+- (void)setMyPlugin:(PhpPlugin *)myPluginInstance
+{
+	myPlugin = myPluginInstance;
+}
+
+- (void)setBundlePath: (NSString *)thePath
+{
+	bundlePath = [[NSString alloc] initWithString:thePath];
+}
+
+#pragma mark Alerting
+
+- (int)showAlert:(NSAlertStyle)alertStyle message:(NSString*)msg additional:(NSString*)addMsg secondButton:(NSString*)secondButton
+{
+	int ret = 0;
+	
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert setAlertStyle: alertStyle];
+	[alert addButtonWithTitle: @"Ok"];
+	[alert setIcon: [[NSImage alloc] initWithContentsOfFile:[bundlePath stringByAppendingString:@"/codaphp-plugin-icon.png"]]];
+	[alert setMessageText: msg];
+	if (addMsg != nil) {
+		[alert setInformativeText: addMsg];		
+	}
+	if (secondButton != nil) {
+		[alert addButtonWithTitle: secondButton];		
+	}
+	
+	if ([alert runModal] == NSAlertFirstButtonReturn) {
+		ret = 1;
+	}
+	[alert release];
+	return ret;
+}
+
+- (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg cancelButton:(BOOL)yesorno
+{
+	if (yesorno) {
+		return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:@"Cancel"];
+	}
+	else {
+		return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:nil];
+	}
+}
+
+- (void)alertCriticalError:(NSString*)errMsg additional:(NSString*)addMsg
+{
+	int ret = [self showAlert: NSCriticalAlertStyle message:errMsg additional:addMsg secondButton:@"Help"];
+
+	if (ret != 1) {
+		[myPlugin goToHelpWebsite];
+	}
+}
+
+- (void)alertCriticalException:(NSException*)e
+{
+	[self alertCriticalError: @"Oops, we have an exception." additional:
+		[
+		 [ [e name] stringByAppendingString:@"\n\nReason:\n" ]
+		 stringByAppendingString:[e reason]
+		]
+	];
+}
+
+- (void)showInfoMessage:(NSString*)msg
+{
+	[self showInfoMessage:msg additional:@"" sticky:NO];
+}
+- (void)showInfoMessage:(NSString*)msg additional:(NSString*)additionalText
+{
+	[self showInfoMessage:msg additional:additionalText sticky:NO];
+}
+
+- (void)showInfoMessage:(NSString*)msg additional:(NSString*)additionalText sticky:(BOOL)isSticky
+{
+	if ([myPlugin useGrowl]) {
+		[self growlNotify:msg description:additionalText sticky:isSticky];
+	}
+	else {
+		[self hideInfoMessage:NO];
+		[infoText setStringValue:msg];
+		[infoTextAdditional setStringValue:additionalText];
+		[infoPanel setAlphaValue:1.0];
+		[infoPanel orderFront:self];
+		if (isSticky) {
+			NSButton *closeButton = [infoPanel standardWindowButton:NSWindowCloseButton];
+			[closeButton setHidden:NO];
+		}
+		else {
+			NSButton *closeButton = [infoPanel standardWindowButton:NSWindowCloseButton];
+			[closeButton setHidden:YES];
+			panelTimer = [NSTimer scheduledTimerWithTimeInterval:durationInfoPanel target:self selector:@selector(hideInfoMessage:) userInfo:nil repeats:NO];
+		}
+	}
+}
+
+- (void)hideInfoMessage: (BOOL)fadeout
+{
+	if (panelTimer != nil) {
+		[panelTimer invalidate];
+		panelTimer = nil;
+	}
+	if (infoPanel == nil || ![infoPanel isVisible]) {
+		return;
+	}
+	if (fadeout) {
+		NSDictionary *myFadeOut = [NSDictionary dictionaryWithObjectsAndKeys:
+									   infoPanel, NSViewAnimationTargetKey,
+									   NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey, 
+								   nil];
+
+		NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: [NSArray arrayWithObjects:myFadeOut, nil]];
+		[animation setAnimationBlockingMode: NSAnimationBlocking];
+		[animation setDuration: 0.6];
+		[animation startAnimation];
+		[animation release];
+	}
+	
+	[infoPanel close];
+}
+
+
+#pragma mark PHP-Errors
+
+- (void)openSheetPhpError:(NSString*)error atLine:(int)lineOfError forWindow:(NSWindow*)window
+{
+	if ( window && ![window attachedSheet] ) {
+		[phpErrorText setStringValue:error];
+		lineOfErrorSaved = lineOfError;
+		[NSApp beginSheet:sheetPhpError modalForWindow:window modalDelegate:self didEndSelector:@selector(sheetDidEndPhpError:returnCode:contextInfo:) contextInfo:nil];	
+	}
+	else {
+		NSBeep();
+	}
+}
+
+- (IBAction)goToPhpErrorLine:(id)sender
+{
+	[NSApp endSheet:sheetPhpError returnCode:NSOKButton];
+}
+
+- (IBAction)dismissPhpError:(id)sender
+{
+	[NSApp endSheet:sheetPhpError returnCode:NSCancelButton];	
+}
+
+- (void)sheetDidEndPhpError:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+	if ( returnCode == NSOKButton ) {
+		[myPlugin goToLine:lineOfErrorSaved];
+	}
+	[sheet close];
+}
+
+#pragma mark Result Panel
+
+- (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title
+{
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
+		[resultLabel setStringValue:title];
+		[[resultView mainFrame] loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
+
+
+		[resultPanel makeKeyAndOrderFront:self];
+	}
+	else {
+		[myPlugin displayHtmlString:data];		
+	}
+}
+
+- (IBAction)closeResult:(id)sender
+{
+	[resultPanel close];
+}
+
+#pragma mark Growl
+
+- (void)growlNotify:(NSString *)title description:(NSString *)desc sticky:(BOOL)isSticky
+{
+	NSMutableArray *args = [NSMutableArray array];
+	
+	[args addObject:title];
+	if (isSticky) {
+		[args addObject:@"-s"];		
+	}
+	[args addObject:@"-m"];
+	[args addObject:desc];
+	[args addObject:@"-n"];
+	[args addObject:@"Coda PHP & Web Toolkit"];
+	[args addObject:@"--image"];
+	[args addObject:[myPlugin pluginIconPath]];
+	
+	[myPlugin filterTextInput:@"" with:[myPlugin growlNotify] options:args encoding:NSUTF8StringEncoding useStdout:NO];
+}
+
+@end
