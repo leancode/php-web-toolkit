@@ -154,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				AC3E522A13298CE300EFD884 /* Controller */,
+				AC7908601329904D00CADF8C /* Views */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				AC13AE26126F5BE400B5B8FF /* JSON */,
@@ -222,8 +223,6 @@
 				ACEF7402132738D40025427D /* HtmlValidationConfig.m */,
 				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
 				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
-				AC3E522713298B9D00EFD884 /* InfoView.h */,
-				AC3E522813298B9E00EFD884 /* InfoView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -298,6 +297,15 @@
 				ACF14D101328229E00749312 /* UpdateController.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		AC7908601329904D00CADF8C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AC3E522713298B9D00EFD884 /* InfoView.h */,
+				AC3E522813298B9E00EFD884 /* InfoView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
