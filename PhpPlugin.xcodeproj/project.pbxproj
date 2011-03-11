@@ -155,7 +155,7 @@
 			children = (
 				AC3E522A13298CE300EFD884 /* Controller */,
 				AC7908601329904D00CADF8C /* Views */,
-				08FB77AFFE84173DC02AAC07 /* Classes */,
+				08FB77AFFE84173DC02AAC07 /* Validation */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				AC13AE26126F5BE400B5B8FF /* JSON */,
 				32C88E010371C26100C91783 /* Other Sources */,
@@ -204,7 +204,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		08FB77AFFE84173DC02AAC07 /* Classes */ = {
+		08FB77AFFE84173DC02AAC07 /* Validation */ = {
 			isa = PBXGroup;
 			children = (
 				ACC89E2410A4092F0075B1A0 /* Encoding.h */,
@@ -224,7 +224,7 @@
 				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
 				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
 			);
-			name = Classes;
+			name = Validation;
 			sourceTree = "<group>";
 		};
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
@@ -538,6 +538,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
 		};
