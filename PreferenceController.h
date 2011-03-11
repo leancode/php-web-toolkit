@@ -137,7 +137,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 - (void)enableTextView:(NSTextView*)textView As:(BOOL)enableIt;
 - (IBAction)selectHTMLValidator:(id)sender;
 
-- (IBAction)revealConfigPressed: (id)sender;
 - (IBAction)goToHelpWebsite:(id)sender;
 - (IBAction)goToTidyDocumentationWebsite:(id)sender;
 - (IBAction)goToProcssor:(id)sender;

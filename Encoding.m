@@ -49,11 +49,9 @@
 	{
 		if (theValue == [anencoding intvalue])
 		{
-			// NSLog(@"Coda PHP Toolkit: Encoding found: %u (%@)", theValue, [anencoding title]);
 			return anencoding;			
 		}
 	}
-	NSLog(@"Coda PHP Toolkit: Encoding %u not found!", theValue);
 	
 	return nil;
 }
@@ -84,14 +82,6 @@
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
 	return [[Encoding encodingForIntvalue:theencoding] retain];
-}
-
-- (void)setTitle:(NSString *) theString
-{
-	if (title != nil) {
-		[title release];
-	}
-	title = [theString copy];
 }
 
 @end

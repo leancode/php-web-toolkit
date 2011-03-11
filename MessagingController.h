@@ -50,6 +50,9 @@
 
 - (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title;
 - (IBAction)closeResult:(id)sender;
+- (IBAction)clearResult:(id)sender;
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame;
+- (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame;
 
 - (void)openSheetPhpError:(NSString*)error atLine:(int)lineOfError forWindow:(NSWindow*)window;
 - (IBAction)goToPhpErrorLine:(id)sender;

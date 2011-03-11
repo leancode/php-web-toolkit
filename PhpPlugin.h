@@ -88,9 +88,7 @@
 - (NSString*)tidyVersion;
 
 // growl
-
 - (NSString *)growlNotify;
-- (BOOL)useGrowl;
 
 // filter
 - (void)reformatWith:(NSString*)command arguments:(NSMutableArray*)args called:(NSString*)name;

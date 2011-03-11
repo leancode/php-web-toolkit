@@ -10,7 +10,7 @@
 		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  $replace_phptags = true; 
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;		
  
- @TODO: NSLog(@"RES: %@", [JSHelper executeScript:@"function myfunc(i){return i;}; myfunc('hallo');"]);
+ @TODO: NS_Log(@"RES: %@", [JSHelper executeScript:@"function myfunc(i){return i;}; myfunc('hallo');"]);
  
  @TODO: 
  */
@@ -149,7 +149,7 @@
 		
 		// Check startup msg
 		NSString * last_version_run = [[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun];
-		if ([last_version_run isEqualToString: [self pluginVersionNumber]]) {
+		if (![last_version_run isEqualToString: [self pluginVersionNumber]]) {
 			[messageController showInfoMessage:[@"PHP & Web Toolkit updated to " stringByAppendingString: [self pluginVersionNumber]] 
 									additional:@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)"
 										sticky:YES
@@ -185,6 +185,8 @@
 
 - (void)doValidateHtml
 {
+	[messageController clearResult:self];
+	
 	CodaTextView	*textView = [controller focusedTextView:self];
 	NSMutableArray	*args = [NSMutableArray array];
 	
@@ -240,6 +242,8 @@
 
 - (void)doJsLint
 {
+	[messageController clearResult:self];
+	
 	NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"] ];
 	ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
 	
@@ -259,6 +263,7 @@
 		NSBeep();
 		return;
 	}
+	[messageController clearResult:self];
 
 	NSMutableArray	*args = [NSMutableArray array];
 	
@@ -291,6 +296,7 @@
 		[messageController alertCriticalError:@"No output from HTML online service received." additional:@"Make sure you're online and check the Preferences."];
 	}
 	else {
+		
 		[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
 							   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
 							withTitle:[@"HTML validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
@@ -304,6 +310,8 @@
 		NSBeep();
 		return;
 	}
+	
+	[messageController clearResult:self];
 
 	NSMutableArray *args = [NSMutableArray array];
 	
@@ -826,16 +834,12 @@
 	return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify"];
 }
 
-- (BOOL)useGrowl
-{
-	return [[NSUserDefaults standardUserDefaults] boolForKey:PrefUseGrowl];
-}
-
 #pragma mark Filter
 
 - (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show
 {
 	ValidationResult* myResult = [[ValidationResult alloc] init];
+	
 	if (![self editorTextPresent]) {
 		NSBeep();
 		[myResult release];

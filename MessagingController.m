@@ -100,7 +100,7 @@
 
 - (void)showInfoMessage:(NSString*)msg additional:(NSString*)additionalText sticky:(BOOL)isSticky
 {
-	if ([myPlugin useGrowl]) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseGrowl]) {
 		[self growlNotify:msg description:additionalText sticky:isSticky];
 	}
 	else {
@@ -186,8 +186,6 @@
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
 		[resultLabel setStringValue:title];
 		[[resultView mainFrame] loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
-
-
 		[resultPanel makeKeyAndOrderFront:self];
 	}
 	else {
@@ -195,9 +193,26 @@
 	}
 }
 
+- (IBAction)clearResult:(id)sender
+{
+	[resultLabel setStringValue:@""];
+	[[resultView mainFrame] loadHTMLString:@"<html><body>&nbsp;</body></html>" baseURL:[NSURL URLWithString:@"http://www.chipwreck.de"]];
+	[[resultView superview] setNeedsDisplay:YES];
+	[resultPanel update];
+}
+
 - (IBAction)closeResult:(id)sender
 {
 	[resultPanel close];
+}
+
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
+{
+
+}
+- (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame
+{
+
 }
 
 #pragma mark Growl

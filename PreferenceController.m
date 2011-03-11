@@ -278,13 +278,13 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 - (IBAction)procIndentModified: (id)sender
 {
 	if ([procIndentBtn state] == 1) {
-			//		[procIndentLevelBtn setEnabled:true];
-//		[procAlignmentBtn setEnabled:false];
+		//		[procIndentLevelBtn setEnabled:true];
+		//		[procAlignmentBtn setEnabled:false];
 		[procColumnizeBtn setEnabled:false];
 	}
 	else {
-			//		[procIndentLevelBtn setEnabled:false];
-//		[procAlignmentBtn setEnabled:true];
+		//		[procIndentLevelBtn setEnabled:false];
+		//		[procAlignmentBtn setEnabled:true];
 		[procColumnizeBtn setEnabled:true];
 	}
 }
@@ -293,12 +293,12 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 {
 	if ([procColumnizeBtn state] == 1 && [procIndentBtn state] != 1) {
 		[procAlignmentBtn setEnabled:true];
-//		[procIndentLevelBtn setEnabled:false];
+		//		[procIndentLevelBtn setEnabled:false];
 		[procIndentBtn setEnabled:false];
 	}
 	else {
 		[procAlignmentBtn setEnabled:false];		
-//		[procIndentLevelBtn setEnabled:true];
+		//		[procIndentLevelBtn setEnabled:true];
 		[procIndentBtn setEnabled:true];
 	}
 }
@@ -343,13 +343,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 # pragma mark -
 # pragma mark Actions
 
-- (IBAction)revealConfigPressed: (id)sender
-{
-	if (bundlePath != nil) {
-		[[NSWorkspace sharedWorkspace] selectFile:[bundlePath stringByAppendingString:@"/tidy_config_format_default.txt"] inFileViewerRootedAtPath:bundlePath];
-	}
-}
-
 - (IBAction)goToTidyDocumentationWebsite:(id)sender
 {
 	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://tidy.sourceforge.net/docs/quickref.html" ]];	
@@ -357,7 +350,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 
 - (IBAction)goToHelpWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://www.chipwreck.de/blog/software/coda-php/help/?utm_source=prefs&utm_medium=plugin&utm_campaign=helplink" ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink"]];
 }
 
 - (IBAction)goToProcssor:(id)sender
@@ -395,20 +388,16 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 - (void)loadHtmlTidyCustomConfig
 {
 	if (bundlePath != nil) {
-
 		NSString *path = [bundlePath stringByAppendingString:@"/tidy_config_format_default.txt"];
 		NSError *error;
-		NSLog(@"loading..");
 
 		if ( [self fileExists:path ] ) {
-			NSLog(@"found..");
 			NSString *fileContents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
 	
 			if (fileContents == nil) {
-				NSLog(@"Coda PHP Toolkit: Error reading tidy configuration from %@\n%@", path, [error localizedFailureReason]);
+				[myPlugin doLog:[NSString stringWithFormat:@"Error reading tidy configuration from %@\n%@", path, [error localizedFailureReason]]];
 			}
 			else {
-				NSLog(@"contents..");
 				[customTidyConfig setString:fileContents];
 			}
 		}
@@ -424,7 +413,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 		
 		BOOL isok = [contents writeToFile:path atomically:YES encoding: NSUTF8StringEncoding error:&error];
 		if (!isok) {
-			NSLog(@"Coda PHP Toolkit: Error writing tidy configuration at %@\n%@", path, [error localizedFailureReason]);
+			[myPlugin doLog:[NSString stringWithFormat:@"Error writing tidy configuration from %@\n%@", path, [error localizedFailureReason]]];
 		}
 	}
 }
