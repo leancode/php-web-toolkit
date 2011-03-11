@@ -71,7 +71,7 @@
     newEncoding.intvalue = aValue;
 	newEncoding.cmdLineParam = aCmdLine;
     
-    return newEncoding;
+    return [newEncoding autorelease];
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -83,7 +83,7 @@
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [Encoding encodingForIntvalue:theencoding];
+	return [[Encoding encodingForIntvalue:theencoding] retain];
 }
 
 - (void)setTitle:(NSString *) theString

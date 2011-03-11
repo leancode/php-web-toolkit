@@ -28,7 +28,6 @@
     return configs;
 }
 
-
 + (HtmlValidationConfig *)configForIntvalue:(int)theValue
 {
 	NSEnumerator *configEnumerator = [[HtmlValidationConfig configArray] objectEnumerator];
@@ -57,8 +56,6 @@
 	return nil;
 }
 
-
-
 + (HtmlValidationConfig *)configForIndex:(int)theIdx
 {
 	return [[HtmlValidationConfig configArray] objectAtIndex:theIdx];
@@ -73,7 +70,7 @@
 	newConfig.validationUrl = anUrl;
 	newConfig.validationFieldname = aFieldname;
     
-    return newConfig;
+    return [newConfig autorelease];
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -85,7 +82,7 @@
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [HtmlValidationConfig configForIntvalue:theencoding];
+	return [[HtmlValidationConfig configForIntvalue:theencoding] retain];
 }
 
 @end

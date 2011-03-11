@@ -75,12 +75,15 @@
 		
 		if (displayString != nil) {
 			if ([ [displayString substringToIndex:7] isEqualToString:@"current"]) {
+				[displayString release];
 				return 0;
 			}
 			else if ([ [displayString substringToIndex:6] isEqualToString:@"update"] ) {
+				[displayString release];
 				return 1;
 			}
 			else if ([[displayString substringToIndex:4] isEqualToString:@"beta"]) {
+				[displayString release];
 				return 0;
 			}
 			else {
@@ -88,8 +91,10 @@
 			}
 		}
 		else {
+			[displayString release];
 			return 3;
 		}
+		[displayString release];
 	}
 	return 2;
 }
@@ -100,12 +105,13 @@
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
 							 timeoutInterval:10];
-	NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest: request delegate:self];
+	NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {
 		receivedData = [[NSMutableData data] retain];
 	} else {
 		[myPlugin doLog:@"Could not check for updates, maybe not connected to the internet?"];
+		[theConnection release];
 	}
 }
 
@@ -137,6 +143,7 @@
 			}
 			else if ([ [displayString substringToIndex:6] isEqualToString:@"update"] ) {
 				[myPlugin showUpdateAvailable];
+				[displayString release];
 				return;
 			}
 			else {
@@ -146,6 +153,7 @@
 		else {
 			[myPlugin doLog:@"Could not check for updates - please make sure you're connected to the internet or try again later."];
 		}
+		[displayString release];
 	}
  
 	[connection release];

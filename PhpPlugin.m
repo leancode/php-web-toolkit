@@ -496,21 +496,25 @@
 		SBJsonParser *json = [SBJsonParser alloc];
 		
 		if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
+			[json release];
 			[messageController alertCriticalError:@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." additional:@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de"];
 		}
 		else {
 			NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
 			if (jsonResult == nil) {
+				[json release];
 				[messageController alertCriticalError:@"Invalid response from proCSSor received." additional:[error localizedDescription]];
 				return;
 			}
 			NSString *cssResult = [jsonResult objectForKey:@"css"];
 			if (cssResult == nil || [cssResult length] == 0) {
+				[json release];
 				[messageController alertCriticalError:@"No CSS received, make sure the CSS file is valid" additional:@"(No JSON object called 'css' from proCSSor received.)"];
 				return;
 			}		
 			
 			[self replaceEditorTextWith:cssResult];	
+			[json release];
 			[messageController showInfoMessage:@"proCSSor done"];
 		}
 	}
@@ -834,7 +838,8 @@
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 	if (![self editorTextPresent]) {
 		NSBeep();
-		return myResult;
+		[myResult release];
+		return nil;
 	}
 
 	BOOL usesstdout = ![name isEqualToString:@"Tidy"];
@@ -854,7 +859,7 @@
 		[messageController showInfoMessage:[name stringByAppendingString:@": No errors"] additional:resultText];
 	}
 	
-	return myResult;
+	return [myResult autorelease];
 }
 
 - (void)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
@@ -931,34 +936,6 @@
 		[writing closeFile];
 		
 		NSMutableString *resultData = [[NSMutableString alloc] initWithData: [reading readDataToEndOfFile] encoding: anEncoding];
-		/*
-		 NSData *dataOut = nil;
-		 NSDate *terminateDate = [[NSDate date] addTimeInterval:timeoutValue];
-		 NSMutableString *resultData = [[NSMutableString alloc] initWithString:@""];		 
-		 while ((dataOut = [reading availableData]) && [dataOut length]) {
-			if ([[NSString alloc] initWithData:dataOut encoding:anEncoding] != nil) {
-				[resultData appendString:[[NSString alloc] initWithData:dataOut encoding:anEncoding]];
-			}
-			else if ([[NSString alloc] initWithData:dataOut encoding:NSUTF8StringEncoding] != nil) {
-				NSLog(@"Fallback utf8, received nil at initwithdata: %@", dataOut);
-				[resultData appendString:[[NSString alloc] initWithData:dataOut encoding:NSUTF8StringEncoding]];
-			}
-			else if ([[NSString alloc] initWithData:dataOut encoding:NSASCIIStringEncoding] != nil) {
-				NSLog(@"Fallback ASCII, received nil at initwithdata: %@", dataOut);
-				[resultData appendString:[[NSString alloc] initWithData:dataOut encoding:NSASCIIStringEncoding]];
-			}
-			else {
-				NSLog(@"Not good, received nil at initwithdata: %@", dataOut);
-			}
-			
-			if ([[NSDate date] compare:(id)terminateDate] == NSOrderedDescending) {
-				[aTask terminate];
-				[aTask release];
-				[messageController showInfoMessage:@"The process timed out" additional:@"Please report as bug if this happens too often."];
-				return nil;	
-			}
-		 }
-		 */
 		
 		[aTask terminate];
 		[aTask release];
@@ -971,6 +948,14 @@
 	@finally {}
 	
     return nil;
+}
+
+-(void)dealloc
+{
+	[preferenceController release];
+	[messageController release];
+	[updateController release];
+	[super dealloc];
 }
 
 @end

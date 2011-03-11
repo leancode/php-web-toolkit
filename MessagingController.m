@@ -44,7 +44,7 @@
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert setAlertStyle: alertStyle];
 	[alert addButtonWithTitle: @"Ok"];
-	[alert setIcon: [[NSImage alloc] initWithContentsOfFile:[bundlePath stringByAppendingString:@"/codaphp-plugin-icon.png"]]];
+	[alert setIcon: [NSImage imageNamed:@"/codaphp-plugin-icon.png"]];
 	[alert setMessageText: msg];
 	if (addMsg != nil) {
 		[alert setInformativeText: addMsg];		

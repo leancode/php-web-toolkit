@@ -22,11 +22,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
-
 - (void)mouseUp:(NSEvent *)theEvent
 {
 	[[self window] performClose:self];

@@ -57,7 +57,7 @@
     newConfig.intvalue = aValue;
 	newConfig.cmdLineParam = aCmdLine;
     
-    return newConfig;
+    return [newConfig autorelease];
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -69,7 +69,7 @@
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [CssTidyConfig configForIntvalue:theencoding];
+	return [[CssTidyConfig configForIntvalue:theencoding] retain];
 }
 
 @end

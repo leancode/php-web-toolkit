@@ -222,7 +222,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     newConfig.intvalue = aValue;
 	newConfig.cmdLineParam = aCmdLine;
     
-    return newConfig;
+    return [newConfig autorelease];
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -234,7 +234,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [CssProcssor configForIntvalueFormatting:theencoding];
+	return [[CssProcssor configForIntvalueFormatting:theencoding] retain];
 }
 
 @end

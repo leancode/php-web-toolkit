@@ -435,4 +435,10 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
     return ([fileManager fileExistsAtPath:filePath]);	
 }
 
+- (void)dealloc
+{
+	[bundlePath dealloc];
+	[super dealloc];
+}
+
 @end
