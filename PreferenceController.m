@@ -352,32 +352,30 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 
 - (IBAction)goToTidyDocumentationWebsite:(id)sender
 {
-	NSString *baseurl = @"http://tidy.sourceforge.net/docs/quickref.html";
-	[[NSWorkspace sharedWorkspace] openURL:[ [NSURL alloc] initWithString: baseurl ]];	
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://tidy.sourceforge.net/docs/quickref.html" ]];	
 }
 
 - (IBAction)goToHelpWebsite:(id)sender
 {
-	NSString *baseurl = @"http://www.chipwreck.de/blog/software/coda-php/help/?utm_source=prefs&utm_medium=plugin&utm_campaign=helplink";
-	[[NSWorkspace sharedWorkspace] openURL:[ [NSURL alloc] initWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://www.chipwreck.de/blog/software/coda-php/help/?utm_source=prefs&utm_medium=plugin&utm_campaign=helplink" ]];
 }
 
 - (IBAction)goToProcssor:(id)sender
 {
 	NSString *baseurl = @"http://procssor.com";
-	[[NSWorkspace sharedWorkspace] openURL:[ [NSURL alloc] initWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
 }
 
 - (IBAction)goToDonationPage:(id)sender
 {
 	NSString *baseurl = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink";
-	[[NSWorkspace sharedWorkspace] openURL:[ [NSURL alloc] initWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
 }
 
 - (IBAction)goToPluginHomepage:(id)sender
 {
 	NSString *baseurl = @"http://www.chipwreck.de/blog/software/coda-php/?utm_source=prefs&utm_medium=plugin&utm_campaign=homelink";
-	[[NSWorkspace sharedWorkspace] openURL:[ [NSURL alloc] initWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
 }
 
 - (IBAction)selectHTMLValidator:(id)sender
@@ -404,7 +402,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 
 		if ( [self fileExists:path ] ) {
 			NSLog(@"found..");
-			NSString *fileContents = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+			NSString *fileContents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
 	
 			if (fileContents == nil) {
 				NSLog(@"Coda PHP Toolkit: Error reading tidy configuration from %@\n%@", path, [error localizedFailureReason]);

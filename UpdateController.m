@@ -49,9 +49,8 @@
 
 - (IBAction)downloadUpdate:(id)sender
 {
-	NSString *baseurl = [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
-						 [myPlugin pluginVersionNumber]];
-	[[NSWorkspace sharedWorkspace] openURL: [ [NSURL alloc] initWithString: baseurl ] ];
+	[[NSWorkspace sharedWorkspace] openURL: [ NSURL URLWithString: [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
+																			 [myPlugin pluginVersionNumber]] ] ];
 }
 
 - (int)isUpdateAvailable

@@ -14,7 +14,7 @@
 		NSNonLossyASCIIStringEncoding = 7,
 		NSShiftJISStringEncoding = 8,
 		NSISOLatin2StringEncoding = 9,
-		NSWindowsCP1251StringEncoding = 11,    /* Cyrillic; same as AdobeStandardCyrillic 
+		NSWindowsCP1251StringEncoding = 11,    // Cyrillic; same as AdobeStandardCyrillic 
 		NSWindowsCP1253StringEncoding = 13,    // Greek 
 		NSWindowsCP1254StringEncoding = 14,    // Turkish 
 		NSWindowsCP1250StringEncoding = 15,    // WinLatin2 

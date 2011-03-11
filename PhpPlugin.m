@@ -11,6 +11,8 @@
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;		
  
  @TODO: NSLog(@"RES: %@", [JSHelper executeScript:@"function myfunc(i){return i;}; myfunc('hallo');"]);
+ 
+ @TODO: 
  */
 
 #import "PhpPlugin.h"
@@ -217,7 +219,7 @@
 		[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
 	}
 	else if ([myresult valid]) {
-		NSMutableString *addInfo = [[NSMutableString alloc] initWithString:@""];
+		NSMutableString *addInfo = [NSMutableString stringWithString:@""];
 		
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefAutoSave]) {
 			[[controller focusedTextView:self] save];
@@ -557,8 +559,10 @@
 
 - (IBAction)downloadUpdate:(id)sender
 {
-	NSString *baseurl = [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString: versionNumber];
-	[[NSWorkspace sharedWorkspace] openURL: [ [NSURL alloc] initWithString: baseurl ] ];
+	[[NSWorkspace sharedWorkspace] openURL: [ 
+											 NSURL URLWithString: [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString: versionNumber] 
+											 ] 
+	 ];
 }
 
 #pragma mark Helper methods
