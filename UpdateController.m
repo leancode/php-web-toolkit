@@ -34,17 +34,15 @@
 			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate not set, is now %u and did check", now]];
 		}
 		else {
-			long timediff = now - lastupdate;
+			long timediff = (now - lastupdate);
 			if (timediff > 86400) {
 				[self isUpdateAvailableAsync];
 				[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
 				[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Did check and set last update to %u", now]];
 			}
-			else {
-				[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Last update only %u secs away, doing nothing", timediff]];					
-			}
 		}
 	}
+	[self isUpdateAvailableAsync];
 }
 
 - (IBAction)downloadUpdate:(id)sender
@@ -55,8 +53,7 @@
 
 - (int)isUpdateAvailable
 {
-	[myPlugin doLog:[@"Versioncheck URL: " stringByAppendingString:[self versioncheckUrl]]];
-	
+	int resultvalue = 2;
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
@@ -67,7 +64,7 @@
 	
 	if (!result) {
 		[myPlugin doLog:[error localizedDescription]];
-		return 3;
+		resultvalue = 3;
 	}
 	else {
 		NSString *displayString = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
@@ -75,28 +72,24 @@
 		
 		if (displayString != nil) {
 			if ([ [displayString substringToIndex:7] isEqualToString:@"current"]) {
-				[displayString release];
-				return 0;
+				resultvalue = 0;
 			}
 			else if ([ [displayString substringToIndex:6] isEqualToString:@"update"] ) {
-				[displayString release];
-				return 1;
+				resultvalue = 1;
 			}
 			else if ([[displayString substringToIndex:4] isEqualToString:@"beta"]) {
-				[displayString release];
-				return 0;
+				resultvalue = 0;
 			}
 			else {
 				[myPlugin doLog:[@"Undefined response received while checking for updates: " stringByAppendingString:displayString]];
 			}
 		}
 		else {
-			[displayString release];
-			return 3;
+			resultvalue = 3;
 		}
 		[displayString release];
 	}
-	return 2;
+	return resultvalue;
 }
 
 - (void)isUpdateAvailableAsync
@@ -111,7 +104,6 @@
 		receivedData = [[NSMutableData data] retain];
 	} else {
 		[myPlugin doLog:@"Could not check for updates, maybe not connected to the internet?"];
-		[theConnection release];
 	}
 }
 
@@ -127,7 +119,7 @@
 {
 	[myPlugin doLog:[error localizedDescription]];
 	
-    [connection release];
+	[connection release];
     [receivedData release];    
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -139,12 +131,10 @@
 		NSString *displayString = [[NSString alloc] initWithData: receivedData encoding:NSUTF8StringEncoding];
 		if (displayString != nil) {
 			if ([ [displayString substringToIndex:7] isEqualToString:@"current"] || [[displayString substringToIndex:4] isEqualToString:@"beta"]) {
-				// [self doLog:@"You use the current version"];
+				[myPlugin doLog:@"You use the current version"];
 			}
 			else if ([ [displayString substringToIndex:6] isEqualToString:@"update"] ) {
 				[myPlugin showUpdateAvailable];
-				[displayString release];
-				return;
 			}
 			else {
 				[myPlugin doLog:[@"Undefined response received while checking for updates: " stringByAppendingString:displayString]];
