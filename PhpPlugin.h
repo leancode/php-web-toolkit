@@ -80,7 +80,6 @@
 - (void)goToLine:(int)lineNumber;
 - (BOOL)editorSelectionPresent;
 - (BOOL)editorTextPresent;
-- (BOOL)editorPathPresent;
 - (NSString*)currentLineEnding:(CodaTextView *)myview;
 - (NSString*)currentEncoding:(CodaTextView *)myview;
 - (NSString*)getEditorText;
