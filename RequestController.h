@@ -1,5 +1,5 @@
 //
-//  RequestController.h
+//  Uploader.h
 //  PhpPlugin
 //
 //  Created by mario on 11.03.11.
@@ -8,20 +8,37 @@
 
 #import <Foundation/Foundation.h>
 
-@class PhpPlugin;
-
-@interface RequestController : NSObject {
-@private
-		PhpPlugin *myPlugin;
-		NSMutableString *myUrl;
-		NSMutableData *receivedData;
+@interface RequestController : NSObject
+{
+	NSURL *serverURL;
+	NSDictionary *fields;
+	
+	NSData *contents;
+	NSString *filename;
+	NSString *mimetype;
+	NSString *uploadfield;
+	
+	BOOL zcompress;
+	id delegate;
+	SEL doneSelector;
+	SEL errorSelector;
+	
+	NSMutableString *serverReply;
+	NSMutableString *errorReply;	
+	BOOL uploadDidSucceed;
 }
-- (void)setMyPlugin:(PhpPlugin*)myPluginInstance;
 
-- (void)startRequest:(NSString*)myurl;
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection;
+- (id)initWithURL: (NSURL *)aServerURL
+         contents: (NSData *)aData
+		   fields: (NSDictionary *)aFields
+	  uploadfield: (NSString *)anUploadfield
+		 filename: (NSString *)aFilename
+		 mimetype: (NSString *)aMimetype
+         delegate: (id)aDelegate
+     doneSelector: (SEL)aDoneSelector
+    errorSelector: (SEL)anErrorSelector;
+
+- (NSString *)serverReply;
+- (NSString *)errorReply;
 
 @end
