@@ -21,6 +21,7 @@
 #import "MessagingController.h"
 #import "UpdateController.h"
 #import "ValidationResult.h"
+#import "RequestController.h"
 
 @implementation PhpPlugin
 
@@ -159,6 +160,7 @@
 		
 		// check for updates (autocheck)
 		[updateController checkForUpdateAuto];
+
 	}
 	
 	return self;
@@ -259,44 +261,33 @@
 
 - (void)doValidateRemoteHtml
 {
-	if (![self editorTextPresent]) {
-		NSBeep();
-		return;
-	}
 	[messageController clearResult:self];
-
-	NSMutableArray	*args = [NSMutableArray array];
+	CodaTextView *textView = [controller focusedTextView:self];
 	
-	[args addObject:@"-s"]; // silent
-	[args addObject:@"-S"]; // show error
+	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
+								 @"1", @"ss",
+								 @"yes", @"showsource",
+								 @"custom", @"ucn_task",
+								 @"markup-validator", @"tests",								 
+								 nil];
 	
-	[args addObject:@"-F"];
-	[args addObject:@"ss=1"]; // ss = 1 => Show source code, for w3c-validator
-	
-	[args addObject:@"-F"];
-	[args addObject:@"showsource=yes"]; // for validator.nu
-	
-	[args addObject:@"-F"];
-	[args addObject:@"ucn_task=custom"]; // for unicode validator	
-	[args addObject:@"-F"];
-	[args addObject:@"tests=markup-validator"]; // or: css-validator	
-	[args addObject:@"-F"];
-	[args addObject:[@"profile=" stringByAppendingString: [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam] ]];
-	
-	NSString *fileUrl =  [ [[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorParamFile] stringByAppendingString:@"=@-" ];
-	NSString *paramUrl = [fileUrl stringByAppendingString:@";type=text/html"];
-	
-	[args addObject:@"-F"];
-	[args addObject: paramUrl];
-	[args addObject: [[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]];
-	
-	NSMutableString *resultText = [self executeFilter:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCurlLocal] arguments:args usestdout:YES];
-	
+	[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
+								  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
+									fields:args
+							   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorParamFile]
+								  filename:[textView path] //@"my.html" 
+								  mimetype:@"text/html"
+								  delegate:self 
+							  doneSelector:@selector(doValidateRemoteHtmlDone:) errorSelector:@selector(doValidateRemoteHtmlDone:)];
+}
+- (void)doValidateRemoteHtmlDone:(id)sender
+{
+	NSString *resultText = [sender serverReply];
 	if (resultText == nil || [resultText length] == 0) {
 		[messageController alertCriticalError:@"No output from HTML online service received." additional:@"Make sure you're online and check the Preferences."];
 	}
 	else {
-		
 		[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
 							   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
 							withTitle:[@"HTML validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
@@ -306,30 +297,23 @@
 
 - (void)doValidateRemoteCss
 {
-	if (![self editorTextPresent]) {
-		NSBeep();
-		return;
-	}
-	
 	[messageController clearResult:self];
-
-	NSMutableArray *args = [NSMutableArray array];
+	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObject:
+								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam]
+																   forKey:@"profile"];
 	
-	[args addObject:@"-s"]; // silent
-	[args addObject:@"-S"]; // show error
-	
-	NSString * fileUrl =  [ [[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorParamFile] stringByAppendingString:@"=@-" ];
-	NSString * paramUrl = [fileUrl stringByAppendingString:@";type=text/css"];
-		
-	[args addObject:@"-F"];
-	[args addObject:[@"profile=" stringByAppendingString: [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam] ]];
-	
-	[args addObject:@"-F"];
-	[args addObject: paramUrl];
-	[args addObject: [[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]];
-	
-	NSMutableString *resultText = [self executeFilter:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCurlLocal] arguments:args usestdout:YES];
-	
+	[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
+								  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
+									fields:args
+							   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorParamFile]
+								  filename:@"my.css" 
+								  mimetype:@"text/css"
+								  delegate:self 
+							  doneSelector:@selector(doValidateRemoteCssDone:) errorSelector:@selector(doValidateRemoteCssDone:)];
+}
+- (void)doValidateRemoteCssDone:(id)sender
+{
+	NSString *resultText = [sender serverReply];
 	if (resultText == nil || [resultText length] == 0) {
 		[messageController alertCriticalError:@"No output from CSS online service received." additional:@"Make sure you're online and check the Preferences."];
 	}
@@ -340,6 +324,7 @@
 		 ];
 	}
 }
+
 
 #pragma mark Tidy HTML/CSS/PHP
 
@@ -414,88 +399,68 @@
 	[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"] arguments:args called:@"PHPTidy"];
 }
 
-#pragma mark proCSSor
-
 - (void)doProcssorRemote
 {
-	if (![self editorTextPresent]) {
-		NSBeep();
-		return;	
-	}
-	
-	NSMutableArray *args = [NSMutableArray array];
-	
-	[args addObject:@"-s"]; // silent
-	[args addObject:@"-S"]; // show error
+	NSMutableDictionary *args = [NSMutableDictionary dictionary];
 
-	[args addObject:@"-F"]; // post as form value:
-	[args addObject:@"source=file"];
-
+	[args setObject:@"file" forKey:@"source"];
 	if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] isEqualToString:@"1"] ) {
-		[args addObject:@"-F"]; // sort
-		[args addObject:[[CssProcssor configForIntvalueSorting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcSort]] cmdLineParam]];
+		[args setObject:[[CssProcssor configForIntvalueSorting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcSort]] cmdLineParam]
+				 forKey:@"sort_declarations"];
 		
 		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcGrouping] != nil) {
-			[args addObject:@"-F"]; // group
-			[args addObject:[NSString stringWithFormat:@"grouping=%@",[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcGrouping]]];
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcGrouping] forKey:@"grouping"];
 		}
 	}
-	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSafe] != nil) {
-		[args addObject:@"-F"]; // safe mode
-		[args addObject:[NSString stringWithFormat:@"safe=%@",[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe]]];
+		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] forKey:@"safe"];
 	}
-	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] != nil) {
-		[args addObject:@"-F"]; // indent rules
-		[args addObject:[NSString stringWithFormat:@"indent_rules=%@",[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules]]];
+		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] forKey:@"indent_rules"];
 	}
 	
 	if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] isEqualToString:@"1"] ) {
-			//	[args addObject:@"-F"]; [args addObject:[[CssProcssor configForIntvalueIndentLevels:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentLevel]] cmdLineParam]];
-		
-		[args addObject:@"-F"]; // indent how
-		[args addObject:@"indent_type=space"];
+		//	[args setObject:[[CssProcssor configForIntvalueIndentLevels:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentLevel]] cmdLineParam] forKey:@"indent_level"];
+		[args setObject:@"space" forKey:@"indent_type"];
 	}
 	else if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
-		
-		[args addObject:@"-F"]; // columnize
-		[args addObject:[NSString stringWithFormat:@"tabbing=%@",[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize]]];
-
-		[args addObject:@"-F"]; // columnize left/right
-		[args addObject:[[CssProcssor configForIntvalueAlignment:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcAlignment]] cmdLineParam]];
+		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] forKey:@"tabbing"];
+		[args setObject:[[CssProcssor configForIntvalueAlignment:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcAlignment]] cmdLineParam]
+				 forKey:@"alignment"];
 	}
 	
-	[args addObject:@"-F"]; // formatting
-	[args addObject:[[CssProcssor configForIntvalueFormatting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcFormatting]] cmdLineParam]];
+	[args setObject:[[CssProcssor configForIntvalueFormatting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcFormatting]] cmdLineParam]
+			 forKey:@"property_formatting"];
+	[args setObject:[[CssProcssor configForIntvalueBraces:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcBraces]] cmdLineParam]
+			 forKey:@"braces"];
+	[args setObject:[[CssProcssor configForIntvalueIndentSize:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentSize]] cmdLineParam]
+			 forKey:@"indent_size"];
 	
-	[args addObject:@"-F"]; // braces
-	[args addObject:[[CssProcssor configForIntvalueBraces:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcBraces]] cmdLineParam]];
-		
-	[args addObject:@"-F"]; // indent properties size
-	[args addObject:[[CssProcssor configForIntvalueIndentSize:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentSize]] cmdLineParam]];
-
 	if ([[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSelectorsSame] != nil) {
-		[args addObject:@"-F"]; // selectors on same line?
-		[args addObject:[NSString stringWithFormat:@"selectors_on_same_line=%@",[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSelectorsSame]]];		
+		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSelectorsSame] forKey:@"selectors_on_same_line"];
 	}
-
+	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] != nil) {
-		[args addObject:@"-F"]; // blank lines
-		[args addObject:[NSString stringWithFormat:@"blank_line_rules=%@",[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcBlankLine]]];
+		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] forKey:@"blank_line_rules"];
 	}
-
+	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] != nil) {
-		[args addObject:@"-F"]; // improve docblock
-		[args addObject:[NSString stringWithFormat:@"docblock=%@",[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcDocblock]]];
+		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] forKey:@"docblock"];
 	}
 	
-	[args addObject:@"-F"]; // post as form value:
-	[args addObject:@"css=@-;type=text/css"];
-	[args addObject: [[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]];
-	
-	NSMutableString *resultText = [self executeFilter:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCurlLocal] arguments:args usestdout:YES];
+	[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]]
+					 contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
+					   fields:args
+				  uploadfield:@"css" 
+					 filename:@"my.css" 
+					 mimetype:@"text/css"
+					 delegate:self 
+				 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)];
+}
 
+- (void)doProcssorRemoteDone:(id)sender
+{
+	NSString *resultText = [sender serverReply];
 	if (resultText == nil || [resultText length] == 0) {
 		[messageController alertCriticalError:@"No output from proCSSor online service received." additional:@"Make sure you're online and check the Preferences."];
 	}
@@ -504,7 +469,6 @@
 		SBJsonParser *json = [SBJsonParser alloc];
 		
 		if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
-			[json release];
 			[messageController alertCriticalError:@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." additional:@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de"];
 		}
 		else {
@@ -521,14 +485,12 @@
 				return;
 			}		
 			
-			[self replaceEditorTextWith:cssResult];	
-			[json release];
+			[self replaceEditorTextWith:cssResult];
 			[messageController showInfoMessage:@"proCSSor done"];
 		}
+		[json release];
 	}
 }
-
-#pragma mark JS Tidy/Minify
 
 - (void)doJsTidy
 {
@@ -779,25 +741,6 @@
 	return resultText;
 }
 
-- (NSString *)curlVersion
-{
-	NSString *resultText = nil;
-	
-	NSMutableArray *args = [NSMutableArray array];
-    [args addObject:@"-V"];
-	
-	NSString *result = [self filterTextInput:@"" with: [[NSUserDefaults standardUserDefaults] stringForKey:PrefCurlLocal] options:args encoding:NSUTF8StringEncoding useStdout:YES];
-	if (result != nil) {
-		resultText = [NSString stringWithString:result];
-	}
-	
-	if (resultText == nil || [resultText isEqualToString:@""]) {
-		return @"ERROR - curl not found";
-	}
-	
-	return resultText;
-}
-
 - (NSString *)tidyExecutable
 {
 	if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefTidyInternal] == 1) {
@@ -838,13 +781,12 @@
 
 - (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show
 {
-	ValidationResult* myResult = [[ValidationResult alloc] init];
-	
 	if (![self editorTextPresent]) {
 		NSBeep();
-		[myResult release];
 		return nil;
 	}
+	
+	ValidationResult* myResult = [[ValidationResult alloc] init];
 
 	BOOL usesstdout = ![name isEqualToString:@"Tidy"];
 	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:usesstdout];

@@ -16,7 +16,6 @@
 #import "HtmlValidationConfig.h"
 
 NSString* const PrefPhpLocal = @"dechipwreckPHPLocal";
-NSString* const PrefCurlLocal = @"dechipwreckCurlLocal";
 NSString* const PrefTidyLocal = @"dechipwreckTidyLocal";
 NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
 NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
@@ -120,7 +119,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
 	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
 	[tidyversionNumberField setStringValue: [myPlugin tidyVersion]];
-	[curlversionNumberField setStringValue: [myPlugin curlVersion]];	
 }
 
 - (NSMutableDictionary *)getDefaults
@@ -132,7 +130,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
 	[defaultValues setObject:@"ucn_file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
-	[defaultValues setObject:@"/usr/bin/curl" forKey: PrefCurlLocal];
 	[defaultValues setObject:@"/usr/bin/tidy" forKey: PrefTidyLocal];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseGrowl];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
@@ -167,13 +164,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 {
 	BOOL canClose = true;
 	
-	if (! [self fileExists:[fieldCurlLocal stringValue]] ) {
-		canClose = false;
-		[labelCurlLocal setTextColor:[NSColor redColor]];
-	}
-	else {
-		[labelCurlLocal setTextColor:[NSColor controlTextColor]];		
-	}
 	if (! [self fileExists:[fieldPhpLocal stringValue]] ) {
 		canClose = false;
 		[labelPhpLocal setTextColor:[NSColor redColor]];
@@ -204,7 +194,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 		// [[NSUserDefaultsController sharedUserDefaultsController] save:sender];
 		
 		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
-		[labelCurlLocal setTextColor:[NSColor controlTextColor]];
 		[labelTidyLocal setTextColor:[NSColor controlTextColor]];
 		
 		[self saveHtmlTidyCustomConfig:[customTidyConfig string]];

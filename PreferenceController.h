@@ -11,7 +11,6 @@
 @class PhpPlugin;
 
 extern NSString* const PrefPhpLocal;
-extern NSString* const PrefCurlLocal;
 extern NSString* const PrefTidyLocal;
 extern NSString* const PrefTidyInternal;
 extern NSString* const PrefUseGrowl;
@@ -93,8 +92,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 	
 	IBOutlet NSTextField *labelPhpLocal;
 	IBOutlet NSTextField *fieldPhpLocal;
-	IBOutlet NSTextField *labelCurlLocal;
-	IBOutlet NSTextField *fieldCurlLocal;
 	IBOutlet NSTextField *labelTidyLocal;
 	IBOutlet NSTextField *fieldTidyLocal;
 	IBOutlet NSTextField *labelProcSorting;
@@ -105,7 +102,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 	IBOutlet NSTextField *versionNumberField;
 	IBOutlet NSTextField *phpversionNumberField;
 	IBOutlet NSTextField *tidyversionNumberField;
-	IBOutlet NSTextField *curlversionNumberField;
 	
 	IBOutlet NSTextView *customTidyConfig;
 

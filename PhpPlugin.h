@@ -42,18 +42,25 @@
 - (NSString*)name;
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem;
 
-// actions
-- (void)validatePhp;
-- (void)doStripPhp;
-- (void)doValidateRemoteCss;
-- (void)doValidateRemoteHtml;
+// actions: local validation
 - (void)doValidateHtml;
+- (void)validatePhp;
+- (void)doJsLint;
+
+// actions: remote validation
+- (void)doValidateRemoteCss;
+- (void)doValidateRemoteCssDone:(id)sender;
+- (void)doValidateRemoteHtml;
+- (void)doValidateRemoteHtmlDone:(id)sender;
+
+// actions: tidy
 - (void)doTidyHtml;
 - (void)doTidyCss;
-- (void)doProcssorRemote;
 - (void)doTidyPhp;
+- (void)doStripPhp;
+- (void)doProcssorRemote;
+- (void)doProcssorRemoteDone:(id)sender;
 - (void)doJsTidy;
-- (void)doJsLint;
 - (void)doJsMinify;
 
 // updates
@@ -83,7 +90,6 @@
 - (NSString*)pluginVersionNumber;
 - (NSString *)pluginIconPath;
 - (NSString*)phpVersion;
-- (NSString*)curlVersion;
 - (NSString*)tidyExecutable;
 - (NSString*)tidyVersion;
 

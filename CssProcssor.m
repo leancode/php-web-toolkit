@@ -42,9 +42,9 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     if (!configsFormatting)
     {
 		configsFormatting = [[NSArray alloc] initWithObjects:
-			[CssProcssor configWithTitle:@"New line (for > 1)" intvalue:0 cmdLine:@"property_formatting=newline>1"],
-            [CssProcssor configWithTitle:@"New line (always)" intvalue:1 cmdLine:@"property_formatting=newline"],
-			[CssProcssor configWithTitle:@"Same line" intvalue:2 cmdLine:@"property_formatting=same_line"],
+			[CssProcssor configWithTitle:@"New line (for > 1)" intvalue:0 cmdLine:@"newline>1"],
+            [CssProcssor configWithTitle:@"New line (always)" intvalue:1 cmdLine:@"newline"],
+			[CssProcssor configWithTitle:@"Same line" intvalue:2 cmdLine:@"same_line"],
 		nil];
     }
     return configsFormatting;
@@ -56,14 +56,14 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     if (!configsBraces)
     {
 		configsBraces = [[NSArray alloc] initWithObjects:
-			[CssProcssor configWithTitle:@"Default" intvalue:0 cmdLine:@"braces=default"],
-            [CssProcssor configWithTitle:@"Aligned Braces" intvalue:1 cmdLine:@"braces=aligned_braces"],
-			[CssProcssor configWithTitle:@"Pico" intvalue:2 cmdLine:@"braces=pico"],
-			[CssProcssor configWithTitle:@"Pico Extra" intvalue:3 cmdLine:@"braces=pico_extra"],
-			[CssProcssor configWithTitle:@"Gnu" intvalue:4 cmdLine:@"braces=gnu"],
-			[CssProcssor configWithTitle:@"Gnu Saver" intvalue:5 cmdLine:@"braces=gnu_saver"],
-			[CssProcssor configWithTitle:@"Banner" intvalue:6 cmdLine:@"braces=banner"],
-			[CssProcssor configWithTitle:@"Horstmann" intvalue:7 cmdLine:@"braces=horstmann"],
+			[CssProcssor configWithTitle:@"Default" intvalue:0 cmdLine:@"default"],
+            [CssProcssor configWithTitle:@"Aligned Braces" intvalue:1 cmdLine:@"aligned_braces"],
+			[CssProcssor configWithTitle:@"Pico" intvalue:2 cmdLine:@"pico"],
+			[CssProcssor configWithTitle:@"Pico Extra" intvalue:3 cmdLine:@"pico_extra"],
+			[CssProcssor configWithTitle:@"Gnu" intvalue:4 cmdLine:@"gnu"],
+			[CssProcssor configWithTitle:@"Gnu Saver" intvalue:5 cmdLine:@"gnu_saver"],
+			[CssProcssor configWithTitle:@"Banner" intvalue:6 cmdLine:@"banner"],
+			[CssProcssor configWithTitle:@"Horstmann" intvalue:7 cmdLine:@"horstmann"],
 		nil];
     }
     return configsBraces;
@@ -75,11 +75,11 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     if (!configsSorting)
     {
 		configsSorting = [[NSArray alloc] initWithObjects:
-			[CssProcssor configWithTitle:@"None" intvalue:0 cmdLine:@"sort_declarations=none"],
-            [CssProcssor configWithTitle:@"ABC ascending" intvalue:1 cmdLine:@"sort_declarations=abc"],
-			[CssProcssor configWithTitle:@"ABC descending" intvalue:2 cmdLine:@"sort_declarations=abc_desc"],
-            [CssProcssor configWithTitle:@"Length ascending" intvalue:3 cmdLine:@"sort_declarations=length"],
-			[CssProcssor configWithTitle:@"Length descending" intvalue:4 cmdLine:@"sort_declarations=length_desc"],
+			[CssProcssor configWithTitle:@"None" intvalue:0 cmdLine:@"none"],
+            [CssProcssor configWithTitle:@"ABC ascending" intvalue:1 cmdLine:@"abc"],
+			[CssProcssor configWithTitle:@"ABC descending" intvalue:2 cmdLine:@"abc_desc"],
+            [CssProcssor configWithTitle:@"Length ascending" intvalue:3 cmdLine:@"length"],
+			[CssProcssor configWithTitle:@"Length descending" intvalue:4 cmdLine:@"length_desc"],
 		nil];
     }
     return configsSorting;
@@ -91,8 +91,8 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     if (!configsAlignment)
     {
 		configsAlignment = [[NSArray alloc] initWithObjects:
-			[CssProcssor configWithTitle:@"Left" intvalue:0 cmdLine:@"alignment=left"],
-            [CssProcssor configWithTitle:@"Right" intvalue:1 cmdLine:@"alignment=right"],
+			[CssProcssor configWithTitle:@"Left" intvalue:0 cmdLine:@"left"],
+            [CssProcssor configWithTitle:@"Right" intvalue:1 cmdLine:@"right"],
 		nil];
     }
     return configsAlignment;
@@ -104,11 +104,11 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     if (!configsIndentSize)
     {
 		configsIndentSize = [[NSArray alloc] initWithObjects:
-			[CssProcssor configWithTitle:@"Default" intvalue:0 cmdLine:@"indent_size=default"],
-			[CssProcssor configWithTitle:@"1" intvalue:1 cmdLine:@"indent_size=1"],
-            [CssProcssor configWithTitle:@"2" intvalue:2 cmdLine:@"indent_size=2"],
-			[CssProcssor configWithTitle:@"3" intvalue:3 cmdLine:@"indent_size=3"],
-			[CssProcssor configWithTitle:@"4" intvalue:4 cmdLine:@"indent_size=4"],
+			[CssProcssor configWithTitle:@"Default" intvalue:0 cmdLine:@"default"],
+			[CssProcssor configWithTitle:@"1" intvalue:1 cmdLine:@"1"],
+            [CssProcssor configWithTitle:@"2" intvalue:2 cmdLine:@"2"],
+			[CssProcssor configWithTitle:@"3" intvalue:3 cmdLine:@"3"],
+			[CssProcssor configWithTitle:@"4" intvalue:4 cmdLine:@"4"],
 		nil];
     }
     return configsIndentSize;
@@ -120,10 +120,10 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
     if (!configIndentLevels)
     {
 		configIndentLevels = [[NSArray alloc] initWithObjects:
-			[CssProcssor configWithTitle:@"1 Level" intvalue:0 cmdLine:@"max_child_level=1"],
-			[CssProcssor configWithTitle:@"2 Levels" intvalue:1 cmdLine:@"max_child_level=2"],
-            [CssProcssor configWithTitle:@"3 Levels" intvalue:2 cmdLine:@"max_child_level=3"],
-			[CssProcssor configWithTitle:@"4 Levels" intvalue:3 cmdLine:@"max_child_level=4"],
+			[CssProcssor configWithTitle:@"1 Level" intvalue:0 cmdLine:@"1"],
+			[CssProcssor configWithTitle:@"2 Levels" intvalue:1 cmdLine:@"2"],
+            [CssProcssor configWithTitle:@"3 Levels" intvalue:2 cmdLine:@"3"],
+			[CssProcssor configWithTitle:@"4 Levels" intvalue:3 cmdLine:@"4"],
 		nil];
     }
     return configIndentLevels;
