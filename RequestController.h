@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+@class PhpPlugin;
 
 @interface RequestController : NSObject
 {
+	PhpPlugin *myPlugin;
+	
 	NSURL *serverURL;
 	NSDictionary *fields;
 	
@@ -18,7 +21,6 @@
 	NSString *mimetype;
 	NSString *uploadfield;
 	
-	BOOL zcompress;
 	id delegate;
 	SEL doneSelector;
 	SEL errorSelector;
@@ -37,6 +39,8 @@
          delegate: (id)aDelegate
      doneSelector: (SEL)aDoneSelector
     errorSelector: (SEL)anErrorSelector;
+
+- (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
 
 - (NSString *)serverReply;
 - (NSString *)errorReply;

@@ -7,7 +7,7 @@
 //
 
 #import "RequestController.h"
-#import "zlib.h"
+#import "PhpPlugin.h"
 
 static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 
@@ -16,13 +16,16 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 - (void)upload;
 - (NSURLRequest *)postRequestWithURL: (NSURL *)url
                                 data: (NSData *)data;
-- (NSData *)compress: (NSData *)data;
 - (void)uploadSucceeded: (BOOL)success;
 
 @end
 
-
 @implementation RequestController
+
+- (void)setMyPlugin:(PhpPlugin *)myPluginInstance
+{
+	myPlugin = myPluginInstance;
+}
 
 - (id)initWithURL: (NSURL *)aServerURL
          contents: (NSData *)aData
@@ -100,22 +103,18 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		[self uploadSucceeded:NO];
 		return;
 	}
-	if (zcompress) {
-		NSData *compressedData = [self compress:contents];
-		if (!compressedData || [compressedData length] == 0) {
-			[self uploadSucceeded:NO];
-			return;
-		}
-	}
 
 	NSURLRequest *urlRequest = [self postRequestWithURL:serverURL data:contents];
 	if (!urlRequest) {
+		[errorReply setString: @"Requestn could not be initialized"];
 		[self uploadSucceeded:NO];
 		return;
 	}
-	NSURLConnection * connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	if (!connection) {
+		[errorReply setString: @"Connection could not be initialized"];
 		[self uploadSucceeded:NO];
+		return;
 	}
 	
 	NSError *error;
@@ -140,12 +139,11 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 {
 	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 	NSMutableData *postData = [[NSMutableData alloc] initWithCapacity:512];
+	NSArray* keys = [fields allKeys];
 	
 	[urlRequest setHTTPMethod:@"POST"];	
 	[urlRequest setValue: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", BOUNDRY] forHTTPHeaderField:@"Content-Type"];
-		
-	NSArray* keys = [fields allKeys];
-	
+
 	[postData appendData: [[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData: [[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", uploadfield, filename] dataUsingEncoding:NSUTF8StringEncoding]];
 	[postData appendData: [[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", mimetype] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -154,42 +152,18 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 	
 	for (unsigned i = 0; i < [keys count]; i++) 
 	{
-		id value = [fields valueForKey: [keys objectAtIndex: i]];
 		[postData appendData:[[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
 		[postData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", [keys objectAtIndex:i]] dataUsingEncoding:NSUTF8StringEncoding]];
-		[postData appendData:[[NSString stringWithFormat:@"%@",value] dataUsingEncoding:NSUTF8StringEncoding]];
+		[postData appendData:[[NSString stringWithFormat:@"%@",[fields valueForKey: [keys objectAtIndex: i]]] dataUsingEncoding:NSUTF8StringEncoding]];
 		[postData appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
 	}
 
 	[postData appendData: [[NSString stringWithFormat:@"--%@--\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
 	[urlRequest setHTTPBody:postData];
 	
-	NSLog(@"request: %@", [[NSString alloc] initWithData:[urlRequest HTTPBody] encoding:NSUTF8StringEncoding]);
+	[myPlugin doLog:[[NSString alloc] initWithData:[urlRequest HTTPBody] encoding:NSUTF8StringEncoding]];
 	
 	return urlRequest;
-}
-
-- (NSData *)compress: (NSData *)data
-{
-	if (!data || [data length] == 0) {
-		return nil;
-	}
-	
-	uLong destSize = [data length] * 1.001 + 12; // zlib compression: destinaition size: 1% + 12bytes greater than source size
-	NSMutableData *destData = [NSMutableData dataWithLength:destSize];
-	
-	int cerror = compress([destData mutableBytes],
-						 &destSize,
-						 [data bytes],
-						 [data length]);
-	if (cerror != Z_OK) {
-		[errorReply appendString:[NSString stringWithFormat:@" Error compressing, code: %d", cerror]];
-		NSLog(@"%s: self:0x%p, zlib error on compress:%d\n",__func__, self, cerror);
-		return nil;
-	}
-	
-	[destData setLength:destSize];
-	return destData;
 }
 
 @end
