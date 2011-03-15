@@ -79,6 +79,27 @@
 			}
 		}
 		
+		/*
+		NSString *pluginsfolder = [@"~/Library/Application Support/Coda/Plug-Ins" stringByExpandingTildeInPath];
+		NSError *anerror;
+		NSArray *plugins = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:pluginsfolder error:&anerror];
+		unsigned countplugins = 0;
+		for (NSString *element in plugins) {
+			NSRange textRange;
+			textRange = [element rangeOfString:@"PhpPlugin"];
+			if (textRange.location != NSNotFound) {
+				countplugins++;
+				NSLog(@"plugin: %@", element);
+			}
+		}
+		if (countplugins > 1) {
+			int responsecont = [messageController alertInformation:@"You have multiple versions of the PHP Toolkit installed" additional:@"Click OK to open the Plugins-folder, delete the redundant Plugins and restart Coda." cancelButton:YES								];
+			if (responsecont == 1) {
+				[[NSWorkspace sharedWorkspace] selectFile:[pluginsfolder stringByAppendingString:@"/PhpPlugin.codaplugin"] inFileViewerRootedAtPath:pluginsfolder];
+			}
+		}
+		*/		
+		
 		// PHP >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate PHP", @"") underSubmenuWithTitle:@"PHP"
 									 target:self selector:@selector(validatePhp)
@@ -99,7 +120,7 @@
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate HTML online", @"") underSubmenuWithTitle:@"HTML"
 									 target:self selector:@selector(doValidateRemoteHtml)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+						  representedObject:nil keyEquivalent:@"$~^o" pluginName:[self name]]; // cmd+alt+ctrl+v
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy HTML", @"") underSubmenuWithTitle:@"HTML"
 									 target:self selector:@selector(doTidyHtml)
@@ -109,7 +130,7 @@
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate CSS online", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doValidateRemoteCss)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+						  representedObject:nil keyEquivalent:@"$~^t" pluginName:[self name]]; // cmd+alt+ctrl+t
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doTidyCss)
@@ -139,7 +160,6 @@
 									 target:self selector:@selector(checkForUpdateNow)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
-		
 		[controller registerActionWithTitle:NSLocalizedString(@"Help!", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(goToHelpWebsite)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
@@ -149,7 +169,7 @@
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
 		
 		// Check startup msg
-		NSString * last_version_run = [[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun];
+		NSString *last_version_run = [[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun];
 		if (![last_version_run isEqualToString: [self pluginVersionNumber]]) {
 			[messageController showInfoMessage:[@"PHP & Web Toolkit updated to " stringByAppendingString: [self pluginVersionNumber]] 
 									additional:@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)"
@@ -160,7 +180,6 @@
 		
 		// check for updates (autocheck)
 		[updateController checkForUpdateAuto];
-
 	}
 	
 	return self;
@@ -188,15 +207,13 @@
 - (void)doValidateHtml
 {
 	[messageController clearResult:self];
-	
-	CodaTextView	*textView = [controller focusedTextView:self];
 	NSMutableArray	*args = [NSMutableArray array];
 	
 	[args addObject:@"-config"];
 	[args addObject:[[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"]];
 	[args addObject:@"--newline"];
-	[args addObject:[self currentLineEnding:textView]];
-	[args addObject:[self currentEncoding:textView]];
+	[args addObject:[self currentLineEnding:[controller focusedTextView:self]]];
+	[args addObject:[self currentEncoding:[controller focusedTextView:self]]];
 	
 	ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES];
 		
@@ -245,12 +262,18 @@
 - (void)doJsLint
 {
 	[messageController clearResult:self];
-	
-	NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"] ];
-	ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
+	NSMutableArray *args = [NSMutableArray arrayWithObjects:
+							[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"],
+							@"--",
+							[self getEditorText],
+							nil];
+	ValidationResult *myresult = [self validateWith:
+								  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
+//								  [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] 
+										  arguments:args called:@"JSLint" showResult:YES];
 	
 	if ([myresult hasErrorMessage]) {
-				[messageController showResult:[myresult result]
+				[messageController showResult:[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]
 							   forUrl:@""
 		 					withTitle:@"JSLint validation result"
 		 ];
@@ -262,8 +285,6 @@
 - (void)doValidateRemoteHtml
 {
 	[messageController clearResult:self];
-	CodaTextView *textView = [controller focusedTextView:self];
-	
 	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
 								 @"1", @"ss",
@@ -272,20 +293,23 @@
 								 @"markup-validator", @"tests",								 
 								 nil];
 	
-	[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
+	RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
 								  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
 									fields:args
 							   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorParamFile]
-								  filename:[textView path] //@"my.html" 
+								  filename:[[controller focusedTextView:self] path] //@"my.html" 
 								  mimetype:@"text/html"
 								  delegate:self 
-							  doneSelector:@selector(doValidateRemoteHtmlDone:) errorSelector:@selector(doValidateRemoteHtmlDone:)];
+							  doneSelector:@selector(doValidateRemoteHtmlDone:) errorSelector:@selector(doValidateRemoteHtmlDone:)] autorelease];
+	if (!myreq) {}
 }
 - (void)doValidateRemoteHtmlDone:(id)sender
 {
 	NSString *resultText = [sender serverReply];
 	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:@"No output from HTML online service received." additional:@"Make sure you're online and check the Preferences."];
+		[messageController alertCriticalError:@"No output from HTML online service received."
+								   additional:[@"Make sure you're online and check the Preferences.\n\n" stringByAppendingString:[sender errorReply]]
+		 ];
 	}
 	else {
 		[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
@@ -298,24 +322,27 @@
 - (void)doValidateRemoteCss
 {
 	[messageController clearResult:self];
-	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObject:
-								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam]
-																   forKey:@"profile"];
+	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
+								 nil];
 	
-	[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
+	RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
 								  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
 									fields:args
 							   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorParamFile]
-								  filename:@"my.css" 
+								  filename:[[controller focusedTextView:self] path] //@"my.css" 
 								  mimetype:@"text/css"
 								  delegate:self 
-							  doneSelector:@selector(doValidateRemoteCssDone:) errorSelector:@selector(doValidateRemoteCssDone:)];
+							  doneSelector:@selector(doValidateRemoteCssDone:) errorSelector:@selector(doValidateRemoteCssDone:)] autorelease];
+	if (!myreq) {}
 }
 - (void)doValidateRemoteCssDone:(id)sender
 {
 	NSString *resultText = [sender serverReply];
 	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:@"No output from CSS online service received." additional:@"Make sure you're online and check the Preferences."];
+		[messageController alertCriticalError:@"No output from CSS online service received." 
+								   additional:[@"Make sure you're online and check the Preferences.\n\n" stringByAppendingString:[sender errorReply]]
+		 ];
 	}
 	else {
 		[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]] 
@@ -448,14 +475,17 @@
 		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] forKey:@"docblock"];
 	}
 	
-	[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]]
+	RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]]
 					 contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
 					   fields:args
 				  uploadfield:@"css" 
 					 filename:@"my.css" 
 					 mimetype:@"text/css"
 					 delegate:self 
-				 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)];
+				 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)]
+								autorelease];
+								
+	if (!myreq) {}
 }
 
 - (void)doProcssorRemoteDone:(id)sender
@@ -494,8 +524,17 @@
 
 - (void)doJsTidy
 {
-	NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]];
-	[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];
+
+	NSMutableArray *args = [NSMutableArray arrayWithObjects:
+							[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"],
+							@"--",
+							[self getEditorText],
+							nil];
+	 [self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidyNew"];
+
+	
+	//NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]];
+	//[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 }
 
 - (void)doJsMinify
@@ -509,23 +548,27 @@
 {
 	int avail = [updateController isUpdateAvailable];
 	if (avail == 1) {
-		int res = [messageController alertInformation:@"An update for PHP & Web Toolkit is available!\nClick OK to download. (Restart Coda after installing)" additional:@"You can enable automatic checking for updates in Preferences." cancelButton:YES];
+		int res = [messageController alertInformation:@"An update for PHP & Web Toolkit is available!\nClick OK to download. (Restart Coda after installing)"
+										   additional:@"You can enable automatic checking for updates in Preferences." cancelButton:YES];
 		if (res == 1) {
 			[self downloadUpdate:nil];
 		}
 	}
 	else if (avail == 0) {
-		[messageController showInfoMessage:@"No update available" additional:@"You can enable automatic checking for updates in Preferences."];
+		[messageController showInfoMessage:@"No update available"
+								additional:@"You can enable automatic checking for updates in Preferences."];
 	}
 	else if (avail == 3) {
-		[messageController alertCriticalError:@"Could not check for updates, please make sure you're connected to the internet or try again later." additional:@"You can disable the automatic check in the preferences."];
+		[messageController alertCriticalError:@"Could not check for updates, please make sure you're connected to the internet or try again later." 
+								additional:@"You can disable the automatic check in the preferences."];
 	}
 }
 
 - (void)showUpdateAvailable
 {
 	int res = [messageController alertInformation:@"An update for PHP & Web Toolkit is available!\nClick OK to download in your browser." 
-									   additional:@"You can disable automatic checking for updates in Preferences." cancelButton:YES];
+									   additional:@"You can disable automatic checking for updates in Preferences."
+									 cancelButton:YES];
 	if (res == 1) {
 		[self downloadUpdate:nil];					
 	}	
@@ -664,12 +707,6 @@
 	return NO;
 }
 
-- (BOOL)editorPathPresent /* Is a textview path present? @deprecated */
-{	
-	CodaTextView *textView = [controller focusedTextView:self];
-	return ([textView path] != nil);
-}
-
 - (void)replaceEditorTextWith:(NSString *)newText
 {
 	CodaTextView *textView = [controller focusedTextView:self];
@@ -781,11 +818,6 @@
 
 - (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show
 {
-	if (![self editorTextPresent]) {
-		NSBeep();
-		return nil;
-	}
-	
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 
 	BOOL usesstdout = ![name isEqualToString:@"Tidy"];
@@ -793,7 +825,7 @@
 	[myResult setResult:resultText];
 	
 	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:[name stringByAppendingString:@" returned nothing"] additional:@"Make sure the file has no errors and try using UTF-8 encoding."];
+		[messageController alertCriticalError:[name stringByAppendingString:@" returned nothing"] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
 	}
 	else {
 		if ([resultText rangeOfString:@"No warnings or errors were found"].location != NSNotFound || [resultText rangeOfString:@"No syntax errors detected"].location != NSNotFound) {
@@ -810,24 +842,28 @@
 
 - (void)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
 {
-	if (![self editorTextPresent]) {
-		NSBeep();
-		return;
-	}
-
 	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:YES];
 	
 	if (resultText == nil || [resultText length] < 6) {
-		[messageController alertCriticalError:[name stringByAppendingString:@" returned nothing"] additional:@"Make sure the file has no errors and try using UTF-8 encoding."];
+		[messageController alertCriticalError:[name stringByAppendingString:@" returned nothing"] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"\nFatal"]) {
-		[messageController alertCriticalError:@"Exception received." additional:[@"Make sure the file has no errors and try using UTF-8 encoding.\n\n" stringByAppendingString: resultText]];
+		[messageController alertCriticalError:@"Exception received." additional:[@"Make sure the file has no errors, try using UTF-8 encoding.\n\n" stringByAppendingString: resultText]];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"!ERROR"]) {
-		[messageController alertCriticalError:[resultText substringFromIndex:1] additional:@"Make sure the file has no errors and try using UTF-8 encoding."];
+		[messageController alertCriticalError:[resultText substringFromIndex:1] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
 	}
 	else {
-		[self replaceEditorTextWith:resultText];
+		if ([name isEqualToString:@"JSTidyNew"]) {
+			CodaTextView	*textView = [controller focusedTextView:self];
+			[self replaceEditorTextWith:
+			 [[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:[textView encoding]]
+			 ];
+		}
+		else {
+			[self replaceEditorTextWith:resultText];
+		}		
+		
 		[messageController showInfoMessage:[name stringByAppendingString:@" done"]];
 	}	
 }
@@ -873,10 +909,10 @@
 		[aTask setStandardOutput:fromPipe];
 		[aTask setStandardError:errPipe];
 		[aTask setArguments:cmdlineOptions];
+		[aTask setLaunchPath:launchPath];
 	
 		[self doLog: [NSString stringWithFormat:@"Executing %@ at path %@ with %@", aTask, launchPath, cmdlineOptions] ];
 		
-		[aTask setLaunchPath:launchPath];
 		[aTask launch];
 		[writing writeData:dataIn];
 		[writing closeFile];
