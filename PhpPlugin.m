@@ -8,11 +8,7 @@
 /*
  @TODO: phptidy configurable (continue)
 		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  $replace_phptags = true; 
-		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;		
- 
- @TODO: NS_Log(@"RES: %@", [JSHelper executeScript:@"function myfunc(i){return i;}; myfunc('hallo');"]);
- 
- @TODO: 
+		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
  */
 
 #import "PhpPlugin.h"
@@ -77,28 +73,7 @@
 			@catch (NSException *e) {
 				[messageController alertCriticalException:e];
 			}
-		}
-		
-		/*
-		NSString *pluginsfolder = [@"~/Library/Application Support/Coda/Plug-Ins" stringByExpandingTildeInPath];
-		NSError *anerror;
-		NSArray *plugins = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:pluginsfolder error:&anerror];
-		unsigned countplugins = 0;
-		for (NSString *element in plugins) {
-			NSRange textRange;
-			textRange = [element rangeOfString:@"PhpPlugin"];
-			if (textRange.location != NSNotFound) {
-				countplugins++;
-				NSLog(@"plugin: %@", element);
-			}
-		}
-		if (countplugins > 1) {
-			int responsecont = [messageController alertInformation:@"You have multiple versions of the PHP Toolkit installed" additional:@"Click OK to open the Plugins-folder, delete the redundant Plugins and restart Coda." cancelButton:YES								];
-			if (responsecont == 1) {
-				[[NSWorkspace sharedWorkspace] selectFile:[pluginsfolder stringByAppendingString:@"/PhpPlugin.codaplugin"] inFileViewerRootedAtPath:pluginsfolder];
-			}
-		}
-		*/		
+		}	
 		
 		// PHP >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate PHP", @"") underSubmenuWithTitle:@"PHP"
@@ -120,7 +95,7 @@
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate HTML online", @"") underSubmenuWithTitle:@"HTML"
 									 target:self selector:@selector(doValidateRemoteHtml)
-						  representedObject:nil keyEquivalent:@"$~^o" pluginName:[self name]]; // cmd+alt+ctrl+v
+						  representedObject:nil keyEquivalent:@"$~^v" pluginName:[self name]]; // cmd+alt+ctrl+v
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy HTML", @"") underSubmenuWithTitle:@"HTML"
 									 target:self selector:@selector(doTidyHtml)
@@ -130,7 +105,7 @@
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate CSS online", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doValidateRemoteCss)
-						  representedObject:nil keyEquivalent:@"$~^t" pluginName:[self name]]; // cmd+alt+ctrl+t
+						  representedObject:nil keyEquivalent:@"$~^p" pluginName:[self name]]; // cmd+alt+ctrl+p
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doTidyCss)
@@ -175,7 +150,7 @@
 									additional:@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)"
 										sticky:YES
 			 ];
-			[[NSUserDefaults standardUserDefaults] setObject:[self pluginVersionNumber] forKey: PrefLastVersionRun];
+			[[NSUserDefaults standardUserDefaults] setObject:[self pluginVersionNumber] forKey:PrefLastVersionRun];
 		}
 		
 		// check for updates (autocheck)
@@ -262,6 +237,7 @@
 - (void)doJsLint
 {
 	[messageController clearResult:self];
+
 	NSMutableArray *args = [NSMutableArray arrayWithObjects:
 							[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"],
 							@"--",
@@ -269,15 +245,15 @@
 							nil];
 	ValidationResult *myresult = [self validateWith:
 								  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
-//								  [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] 
 										  arguments:args called:@"JSLint" showResult:YES];
-	
 	if ([myresult hasErrorMessage]) {
-				[messageController showResult:[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]
+				[messageController showResult:[[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding] autorelease]
 							   forUrl:@""
 		 					withTitle:@"JSLint validation result"
 		 ];
 	}
+	// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]]; ValidationResult *myresult = [self validateWith: [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
+	// if ([myresult hasErrorMessage]) { [messageController showResult:[myresult result] forUrl:@"" withTitle:@"JSLint validation result" ]; }
 }
 
 #pragma mark Remote Validation
@@ -524,17 +500,14 @@
 
 - (void)doJsTidy
 {
-
 	NSMutableArray *args = [NSMutableArray arrayWithObjects:
 							[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"],
 							@"--",
 							[self getEditorText],
 							nil];
-	 [self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidyNew"];
+	[self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidy"];
 
-	
-	//NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]];
-	//[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
+	// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]]; [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 }
 
 - (void)doJsMinify
@@ -820,7 +793,10 @@
 {
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 
-	BOOL usesstdout = ![name isEqualToString:@"Tidy"];
+	BOOL usesstdout = YES;
+	if ([name isEqualToString:@"Tidy"]) {
+		usesstdout = NO;
+	}
 	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:usesstdout];
 	[myResult setResult:resultText];
 	
@@ -854,7 +830,7 @@
 		[messageController alertCriticalError:[resultText substringFromIndex:1] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
 	}
 	else {
-		if ([name isEqualToString:@"JSTidyNew"]) {
+		if ([name isEqualToString:@"JSTidy"]) {
 			CodaTextView	*textView = [controller focusedTextView:self];
 			[self replaceEditorTextWith:
 			 [[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:[textView encoding]]

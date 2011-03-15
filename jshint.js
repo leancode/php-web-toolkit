@@ -5905,7 +5905,7 @@ if (typeof exports == 'object' && exports)
     exports.JSHINT = JSHINT;
     
 // END JSHINT
-    
+
 var JSHINTWRAP = function (input) {
 	var prefs = [ 'bitwise', 'browser', 'cap', 'css', 'debug', 'devel', 'eqeqeq',  'fragment', 'immed', 'newcap', 'nomen', 'on'];
 	
