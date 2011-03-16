@@ -81,7 +81,7 @@
 
 - (void)alertCriticalException:(NSException*)e
 {
-	[self alertCriticalError: @"Oops, we have an exception." additional:
+	[self alertCriticalError: @"Sorry, we have an exception." additional:
 		[
 		 [ [e name] stringByAppendingString:@"\n\nReason:\n" ]
 		 stringByAppendingString:[e reason]
@@ -121,7 +121,7 @@
 	}
 }
 
-- (void)hideInfoMessage: (BOOL)fadeout
+- (void)hideInfoMessage:(BOOL)fadeout
 {
 	if (panelTimer != nil) {
 		[panelTimer invalidate];

@@ -24,7 +24,9 @@
 		AC13AE1A126F5BDF00B5B8FF /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE14126F5BDF00B5B8FF /* SBJsonParser.m */; };
 		AC13AE1B126F5BDF00B5B8FF /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */; };
 		AC24F8BC0FFFCFC70077A062 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */; };
-		AC260C211321684D002AAAA4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC260C201321684D002AAAA4 /* Cocoa.framework */; };
+		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
+		AC29FF29133035EA005E5150 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF28133035EA005E5150 /* Sparkle.framework */; };
+		AC29FF2B13303622005E5150 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC29FF28133035EA005E5150 /* Sparkle.framework */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
 		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
 		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
@@ -32,7 +34,6 @@
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
 		AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209EF12B6D5E50080B995 /* Preferences.xib */; };
 		AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7B768810F8F70F00089B11 /* CssTidyConfig.m */; };
-		AC8BBBBA13300E3E0000EBB6 /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = AC09ABDF1151A8B400E7E40F /* js-call.sh */; };
 		AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */; };
 		AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */; };
 		AC8C51BA110A63CA00EB784D /* tidy_config_format_indented.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B9110A63CA00EB784D /* tidy_config_format_indented.txt */; };
@@ -52,6 +53,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		AC29FF2A13303611005E5150 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AC29FF2B13303622005E5150 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AC8353AE0FFFC8110063890D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -101,8 +112,9 @@
 		AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		AC1E93D81316D4290087D5C3 /* JSHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSHelper.h; sourceTree = "<group>"; };
 		AC1E93D91316D4290087D5C3 /* JSHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; path = JSHelper.m; sourceTree = "<group>"; };
-		AC260C201321684D002AAAA4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "My Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
+		AC29FF261330213A005E5150 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		AC29FF28133035EA005E5150 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		AC394B4C1323FEE100A9FC27 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InfoPanel.xib; sourceTree = "<group>"; };
 		AC3E522713298B9D00EFD884 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
 		AC3E522813298B9E00EFD884 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
@@ -145,7 +157,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC260C211321684D002AAAA4 /* Cocoa.framework in Frameworks */,
+				AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */,
+				AC29FF29133035EA005E5150 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,7 +244,8 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AC260C201321684D002AAAA4 /* Cocoa.framework */,
+				AC29FF28133035EA005E5150 /* Sparkle.framework */,
+				AC29FF261330213A005E5150 /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -320,6 +334,7 @@
 			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "PhpPlugin" */;
 			buildPhases = (
 				8D5B49AF048680CD000E48DA /* Resources */,
+				AC29FF2A13303611005E5150 /* CopyFiles */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				AC8353AE0FFFC8110063890D /* CopyFiles */,
@@ -364,27 +379,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				AC6209D812B6D4440080B995 /* Localizable.strings in Resources */,
+				AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */,
+				AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */,
+				AC102CDF1326C4BA00F69278 /* InfoPanel.xib in Resources */,
+				ACEF739F132727E00025427D /* ResultPanel.xib in Resources */,
 				AC08F434131341D80040EB0F /* jshint-min.js in Resources */,
 				AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */,
 				ACF177B20F01638700CA7641 /* phptidy-coda.php in Resources */,
 				AC08F3D513133DCA0040EB0F /* csstidy.php in Resources */,
 				AC0AF9B111A1D3000002B0EA /* jsminify.php in Resources */,
-				AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */,
-				AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */,
-				ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */,
 				ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */,
 				AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */,
 				AC8C51BA110A63CA00EB784D /* tidy_config_format_indented.txt in Resources */,
 				AC8C51BC110A63D900EB784D /* tidy_config_format_compressed.txt in Resources */,
 				AC8C51BE110A63EF00EB784D /* tidy_config_format_default.txt in Resources */,
 				AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */,
-				ACA91D8D1264E4C10032639D /* tidy in Resources */,
-				AC6209D812B6D4440080B995 /* Localizable.strings in Resources */,
-				AC102CDF1326C4BA00F69278 /* InfoPanel.xib in Resources */,
 				AC102F171327047900F69278 /* growlnotify in Resources */,
-				ACEF739F132727E00025427D /* ResultPanel.xib in Resources */,
-				AC8BBBBA13300E3E0000EBB6 /* js-call.sh in Resources */,
+				ACA91D8D1264E4C10032639D /* tidy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +514,7 @@
 				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = PhpPlugin;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = codaplugin;
 			};
 			name = Release;
@@ -545,7 +560,6 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				SDKROOT = macosx10.5;
 				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;

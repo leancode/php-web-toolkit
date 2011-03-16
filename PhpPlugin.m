@@ -144,8 +144,7 @@
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
 		
 		// Check startup msg
-		NSString *last_version_run = [[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun];
-		if (![last_version_run isEqualToString: [self pluginVersionNumber]]) {
+		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
 			[messageController showInfoMessage:[@"PHP & Web Toolkit updated to " stringByAppendingString: [self pluginVersionNumber]] 
 									additional:@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)"
 										sticky:YES
@@ -181,150 +180,185 @@
 
 - (void)doValidateHtml
 {
-	[messageController clearResult:self];
-	NSMutableArray	*args = [NSMutableArray array];
-	
-	[args addObject:@"-config"];
-	[args addObject:[[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"]];
-	[args addObject:@"--newline"];
-	[args addObject:[self currentLineEnding:[controller focusedTextView:self]]];
-	[args addObject:[self currentEncoding:[controller focusedTextView:self]]];
-	
-	ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES];
+	@try {
+		[messageController clearResult:self];
+		NSMutableArray	*args = [NSMutableArray array];
 		
-	if ([myresult hasErrorMessage]) {
-		[messageController showResult:[NSString stringWithFormat:@"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>%@</pre>",[self escapeEntities:[[myresult result] mutableCopy]]]
-							   forUrl:@""
-		 					withTitle:@"Tidy validation result"
-		 ];
+		[args addObject:@"-config"];
+		[args addObject:[[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"]];
+		[args addObject:@"--newline"];
+		[args addObject:[self currentLineEnding:[controller focusedTextView:self]]];
+		[args addObject:[self currentEncoding:[controller focusedTextView:self]]];
+		
+		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES];
+			
+		if ([myresult hasErrorMessage]) {
+			[messageController showResult:[NSString stringWithFormat:@"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>%@</pre>",[self escapeEntities:[[myresult result] mutableCopy]]]
+								   forUrl:@""
+								withTitle:@"Tidy validation result"
+			 ];
+		}
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
 	}
 }
 
 - (void)validatePhp
 {
-	NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
-	ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO];
+	@try {
+		NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
+		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO];
 
-	if ([myresult hasErrorMessage]) {
-		NSBeep();
-		int lineOfError = 0;
-		NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
-		[scanner scanInt: &lineOfError];
-		
-		[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
-	}
-	else if ([myresult valid]) {
-		NSMutableString *addInfo = [NSMutableString stringWithString:@""];
-		
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefAutoSave]) {
-			[[controller focusedTextView:self] save];
-			[addInfo appendString:@"File was automatically saved."];
+		if ([myresult hasErrorMessage]) {
+			NSBeep();
+			int lineOfError = 0;
+			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
+			[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
+			[scanner scanInt: &lineOfError];
+			
+			[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
 		}
-		
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefPhpBeepOnly]) {
-			[[NSSound soundNamed:@"Tink"] play];
+		else if ([myresult valid]) {
+			NSMutableString *addInfo = [NSMutableString stringWithString:@""];
+			
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefAutoSave]) {
+				[[controller focusedTextView:self] save];
+				[addInfo appendString:@"File was automatically saved."];
+			}
+			
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefPhpBeepOnly]) {
+				[[NSSound soundNamed:@"Tink"] play];
+			}
+			else {
+				[messageController showInfoMessage:@"No PHP syntax errors" additional:addInfo];
+			}	
 		}
 		else {
-			[messageController showInfoMessage:@"No PHP syntax errors" additional:addInfo];
-		}	
+			[messageController alertCriticalError:@"Error parsing PHP - this should not happen" additional:@"Please check the preferences"];
+		}
 	}
-	else {
-		[messageController alertCriticalError:@"Error parsing PHP - this should not happen" additional:@"Please check the preferences"];
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
 	}
 }
 
 - (void)doJsLint
 {
-	[messageController clearResult:self];
+	@try {
+		[messageController clearResult:self];
 
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:
-							[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"],
-							@"--",
-							[self getEditorText],
-							nil];
-	ValidationResult *myresult = [self validateWith:
-								  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
-										  arguments:args called:@"JSLint" showResult:YES];
-	if ([myresult hasErrorMessage]) {
-				[messageController showResult:[[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding] autorelease]
-							   forUrl:@""
-		 					withTitle:@"JSLint validation result"
-		 ];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:
+								[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"],
+								@"--",
+								[self getEditorText],
+								nil];
+		ValidationResult *myresult = [self validateWith:
+									  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
+											  arguments:args called:@"JSLint" showResult:YES];
+		if ([myresult hasErrorMessage]) {
+					[messageController showResult:[[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding] autorelease]
+								   forUrl:@""
+								withTitle:@"JSLint validation result"
+			 ];
+		}
+		// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]]; ValidationResult *myresult = [self validateWith: [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
+		// if ([myresult hasErrorMessage]) { [messageController showResult:[myresult result] forUrl:@"" withTitle:@"JSLint validation result" ]; }
 	}
-	// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]]; ValidationResult *myresult = [self validateWith: [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
-	// if ([myresult hasErrorMessage]) { [messageController showResult:[myresult result] forUrl:@"" withTitle:@"JSLint validation result" ]; }
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
 }
 
 #pragma mark Remote Validation
 
 - (void)doValidateRemoteHtml
 {
-	[messageController clearResult:self];
-	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
-								 @"1", @"ss",
-								 @"yes", @"showsource",
-								 @"custom", @"ucn_task",
-								 @"markup-validator", @"tests",								 
-								 nil];
-	
-	RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
-								  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
-									fields:args
-							   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorParamFile]
-								  filename:[[controller focusedTextView:self] path] //@"my.html" 
-								  mimetype:@"text/html"
-								  delegate:self 
-							  doneSelector:@selector(doValidateRemoteHtmlDone:) errorSelector:@selector(doValidateRemoteHtmlDone:)] autorelease];
-	if (!myreq) {}
+	@try {
+		[messageController clearResult:self];
+		NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
+									 @"1", @"ss",
+									 @"yes", @"showsource",
+									 @"custom", @"ucn_task",
+									 @"markup-validator", @"tests",								 
+									 nil];
+		
+		RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
+									  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
+										fields:args
+								   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorParamFile]
+									  filename:[[controller focusedTextView:self] path]
+									  mimetype:@"text/html"
+									  delegate:self 
+								  doneSelector:@selector(doValidateRemoteHtmlDone:) errorSelector:@selector(doValidateRemoteHtmlDone:)] autorelease];
+		if (!myreq) {}
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
 }
 - (void)doValidateRemoteHtmlDone:(id)sender
 {
-	NSString *resultText = [sender serverReply];
-	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:@"No output from HTML online service received."
-								   additional:[@"Make sure you're online and check the Preferences.\n\n" stringByAppendingString:[sender errorReply]]
-		 ];
+	@try {
+		NSString *resultText = [sender serverReply];
+		if (resultText == nil || [resultText length] == 0) {
+			[messageController alertCriticalError:@"No response from HTML online validator"
+									   additional:[@"Make sure you're online and check the Preferences.\n\nError: " stringByAppendingString:[sender errorReply]]
+			 ];
+		}
+		else {
+			[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
+								   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
+								withTitle:[@"HTML validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
+			 ];
+		}
 	}
-	else {
-		[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
-							   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
-							withTitle:[@"HTML validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
-		 ];
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
 	}
 }
 
 - (void)doValidateRemoteCss
 {
-	[messageController clearResult:self];
-	NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-								 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
-								 nil];
-	
-	RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
-								  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
-									fields:args
-							   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorParamFile]
-								  filename:[[controller focusedTextView:self] path] //@"my.css" 
-								  mimetype:@"text/css"
-								  delegate:self 
-							  doneSelector:@selector(doValidateRemoteCssDone:) errorSelector:@selector(doValidateRemoteCssDone:)] autorelease];
-	if (!myreq) {}
+	@try {
+		[messageController clearResult:self];
+		NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
+									 nil];
+		
+		RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
+									  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
+										fields:args
+								   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorParamFile]
+									  filename:[[controller focusedTextView:self] path]
+									  mimetype:@"text/css"
+									  delegate:self 
+								  doneSelector:@selector(doValidateRemoteCssDone:) errorSelector:@selector(doValidateRemoteCssDone:)] autorelease];
+		if (!myreq) {}
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
 }
 - (void)doValidateRemoteCssDone:(id)sender
 {
-	NSString *resultText = [sender serverReply];
-	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:@"No output from CSS online service received." 
-								   additional:[@"Make sure you're online and check the Preferences.\n\n" stringByAppendingString:[sender errorReply]]
-		 ];
+	@try {
+		NSString *resultText = [sender serverReply];
+		if (resultText == nil || [resultText length] == 0) {
+			[messageController alertCriticalError:@"No response from CSS online validator" 
+									   additional:[@"Make sure you're online and check the Preferences.\n\nError: " stringByAppendingString:[sender errorReply]]
+			 ];
+		}
+		else {
+			[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]] 
+								   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]
+								withTitle:[@"CSS validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]]
+			 ];
+		}
 	}
-	else {
-		[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]] 
-							   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]
-							withTitle:[@"CSS validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]]
-		 ];
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
 	}
 }
 
@@ -333,186 +367,224 @@
 
 -(void)doTidyHtml
 {
-	NSString *myConfig = [[HtmlTidyConfig configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefHtmlTidyConfig]] cmdLineParam];
-	NSString *configFile = [[myBundle resourcePath] stringByAppendingString:[[@"/tidy_config_format_" stringByAppendingString:myConfig] stringByAppendingString:@".txt"]];
+	@try {
+		NSString *myConfig = [[HtmlTidyConfig configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefHtmlTidyConfig]] cmdLineParam];
+		NSString *configFile = [[myBundle resourcePath] stringByAppendingString:[[@"/tidy_config_format_" stringByAppendingString:myConfig] stringByAppendingString:@".txt"]];
 	
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", configFile, @"--newline", [self currentLineEnding:[controller focusedTextView:self]], [self currentEncoding:[controller focusedTextView:self]], nil];
-	[self reformatWith:[self tidyExecutable] arguments:args called:@"tidy"];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", configFile, @"--newline", [self currentLineEnding:[controller focusedTextView:self]], [self currentEncoding:[controller focusedTextView:self]], nil];
+		[self reformatWith:[self tidyExecutable] arguments:args called:@"tidy"];
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
 }
 
 -(void)doTidyCss
 {
-	NSString *myConfig = [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam];
-
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", myConfig, @"-l", [self currentLineEnding:[controller focusedTextView:self]], nil];
-	[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"] arguments:args called:@"CSSTidy"];
+	@try {
+		NSString *myConfig = [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", myConfig, @"-l", [self currentLineEnding:[controller focusedTextView:self]], nil];
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"] arguments:args called:@"CSSTidy"];
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
 }
 
 - (void)doStripPhp
 {
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-w", @"--", nil];	
-	[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP Strip"];
+	@try {
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-n", @"-w", @"--", nil];	
+		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP Strip"];
+	}
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
+	}
 }
 
 - (void)doTidyPhp
 {
-	NSMutableArray *args = [NSMutableArray array];
-	
-	[args addObject:@"-l"];
-	[args addObject: [self currentLineEnding:[controller focusedTextView:self]]];
-	
-	int myPhpTidyBracesConfigIdx = [[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBraces];
-	NSString *myConfig = [[PhpTidyConfig configForIndex: myPhpTidyBracesConfigIdx] cmdLineParam];
-	
-	[args addObject:@"-b"];
-	[args addObject:myConfig];
-	
-	[args addObject:@"-a"];
- 	if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBlankLines] == 1) {
-		[args addObject:@"1"];
-	}
-	else {
-		[args addObject:@"0"]; 		 
-	}
-	
-	[args addObject:@"-w"];
- 	if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyWhitespace] == 1) {
-		[args addObject:@"1"];
-	}
-	else {
-		[args addObject:@"0"]; 		 
-	}
-	
-	[args addObject:@"-c"];
- 	if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyComma] == 1) {
-		[args addObject:@"1"];
-	}
-	else {
-		[args addObject:@"0"]; 		 
-	}
-	
-	[args addObject:@"-f"];
- 	if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyFixBrackets] == 1) {
-		[args addObject:@"1"];
-	}
-	else {
-		[args addObject:@"0"]; 		 
-	}
+	@try {	
+		NSMutableArray *args = [NSMutableArray array];
 		
-	[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"] arguments:args called:@"PHPTidy"];
+		[args addObject:@"-l"];
+		[args addObject: [self currentLineEnding:[controller focusedTextView:self]]];
+		
+		int myPhpTidyBracesConfigIdx = [[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBraces];
+		NSString *myConfig = [[PhpTidyConfig configForIndex: myPhpTidyBracesConfigIdx] cmdLineParam];
+		
+		[args addObject:@"-b"];
+		[args addObject:myConfig];
+		
+		[args addObject:@"-a"];
+		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBlankLines] == 1) {
+			[args addObject:@"1"];
+		}
+		else {
+			[args addObject:@"0"]; 		 
+		}
+		
+		[args addObject:@"-w"];
+		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyWhitespace] == 1) {
+			[args addObject:@"1"];
+		}
+		else {
+			[args addObject:@"0"]; 		 
+		}
+		
+		[args addObject:@"-c"];
+		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyComma] == 1) {
+			[args addObject:@"1"];
+		}
+		else {
+			[args addObject:@"0"]; 		 
+		}
+		
+		[args addObject:@"-f"];
+		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyFixBrackets] == 1) {
+			[args addObject:@"1"];
+		}
+		else {
+			[args addObject:@"0"]; 		 
+		}
+			
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"] arguments:args called:@"PHPTidy"];
+	}
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
+	}
 }
 
 - (void)doProcssorRemote
 {
-	NSMutableDictionary *args = [NSMutableDictionary dictionary];
+	@try {
+		NSMutableDictionary *args = [NSMutableDictionary dictionary];
 
-	[args setObject:@"file" forKey:@"source"];
-	if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] isEqualToString:@"1"] ) {
-		[args setObject:[[CssProcssor configForIntvalueSorting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcSort]] cmdLineParam]
-				 forKey:@"sort_declarations"];
-		
-		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcGrouping] != nil) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcGrouping] forKey:@"grouping"];
+		[args setObject:@"file" forKey:@"source"];
+		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] isEqualToString:@"1"] ) {
+			[args setObject:[[CssProcssor configForIntvalueSorting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcSort]] cmdLineParam]
+					 forKey:@"sort_declarations"];
+			
+			if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcGrouping] != nil) {
+				[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcGrouping] forKey:@"grouping"];
+			}
 		}
+		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSafe] != nil) {
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] forKey:@"safe"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] != nil) {
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] forKey:@"indent_rules"];
+		}
+		
+		if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] isEqualToString:@"1"] ) {
+			//	[args setObject:[[CssProcssor configForIntvalueIndentLevels:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentLevel]] cmdLineParam] forKey:@"indent_level"];
+			[args setObject:@"space" forKey:@"indent_type"];
+		}
+		else if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] forKey:@"tabbing"];
+			[args setObject:[[CssProcssor configForIntvalueAlignment:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcAlignment]] cmdLineParam]
+					 forKey:@"alignment"];
+		}
+		
+		[args setObject:[[CssProcssor configForIntvalueFormatting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcFormatting]] cmdLineParam]
+				 forKey:@"property_formatting"];
+		[args setObject:[[CssProcssor configForIntvalueBraces:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcBraces]] cmdLineParam]
+				 forKey:@"braces"];
+		[args setObject:[[CssProcssor configForIntvalueIndentSize:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentSize]] cmdLineParam]
+				 forKey:@"indent_size"];
+		
+		if ([[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSelectorsSame] != nil) {
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSelectorsSame] forKey:@"selectors_on_same_line"];
+		}
+		
+		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] != nil) {
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] forKey:@"blank_line_rules"];
+		}
+		
+		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] != nil) {
+			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] forKey:@"docblock"];
+		}
+		
+		RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]]
+						 contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
+						   fields:args
+					  uploadfield:@"css" 
+						 filename:@"my.css" 
+						 mimetype:@"text/css"
+						 delegate:self 
+					 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)]
+									autorelease];
+									
+		if (!myreq) {}
 	}
-	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSafe] != nil) {
-		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] forKey:@"safe"];
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
 	}
-	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] != nil) {
-		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] forKey:@"indent_rules"];
-	}
-	
-	if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] isEqualToString:@"1"] ) {
-		//	[args setObject:[[CssProcssor configForIntvalueIndentLevels:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentLevel]] cmdLineParam] forKey:@"indent_level"];
-		[args setObject:@"space" forKey:@"indent_type"];
-	}
-	else if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
-		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] forKey:@"tabbing"];
-		[args setObject:[[CssProcssor configForIntvalueAlignment:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcAlignment]] cmdLineParam]
-				 forKey:@"alignment"];
-	}
-	
-	[args setObject:[[CssProcssor configForIntvalueFormatting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcFormatting]] cmdLineParam]
-			 forKey:@"property_formatting"];
-	[args setObject:[[CssProcssor configForIntvalueBraces:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcBraces]] cmdLineParam]
-			 forKey:@"braces"];
-	[args setObject:[[CssProcssor configForIntvalueIndentSize:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentSize]] cmdLineParam]
-			 forKey:@"indent_size"];
-	
-	if ([[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSelectorsSame] != nil) {
-		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSelectorsSame] forKey:@"selectors_on_same_line"];
-	}
-	
-	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] != nil) {
-		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] forKey:@"blank_line_rules"];
-	}
-	
-	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] != nil) {
-		[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] forKey:@"docblock"];
-	}
-	
-	RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]]
-					 contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
-					   fields:args
-				  uploadfield:@"css" 
-					 filename:@"my.css" 
-					 mimetype:@"text/css"
-					 delegate:self 
-				 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)]
-								autorelease];
-								
-	if (!myreq) {}
 }
 
 - (void)doProcssorRemoteDone:(id)sender
 {
-	NSString *resultText = [sender serverReply];
-	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:@"No output from proCSSor online service received." additional:@"Make sure you're online and check the Preferences."];
-	}
-	else {
-		NSError *error;
-		SBJsonParser *json = [SBJsonParser alloc];
-		
-		if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
-			[messageController alertCriticalError:@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." additional:@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de"];
+	@try {
+		NSString *resultText = [sender serverReply];
+		if (resultText == nil || [resultText length] == 0) {
+			[messageController alertCriticalError:@"No response from proCSSor.com" additional:[@"Make sure you're online, check the Preferences.\n\nError:\n" stringByAppendingString:[sender errorReply]]];
 		}
 		else {
-			NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
-			if (jsonResult == nil) {
-				[json release];
-				[messageController alertCriticalError:@"Invalid response from proCSSor received." additional:[error localizedDescription]];
-				return;
-			}
-			NSString *cssResult = [jsonResult objectForKey:@"css"];
-			if (cssResult == nil || [cssResult length] == 0) {
-				[json release];
-				[messageController alertCriticalError:@"No CSS received, make sure the CSS file is valid" additional:@"(No JSON object called 'css' from proCSSor received.)"];
-				return;
-			}		
+			NSError *error;
+			SBJsonParser *json = [SBJsonParser alloc];
 			
-			[self replaceEditorTextWith:cssResult];
-			[messageController showInfoMessage:@"proCSSor done"];
+			if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
+				[messageController alertCriticalError:@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." additional:@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de"];
+			}
+			else {
+				NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
+				if (jsonResult == nil) {
+					[json release];
+					[messageController alertCriticalError:@"Invalid response from proCSSor received." additional:[error localizedDescription]];
+					return;
+				}
+				NSString *cssResult = [jsonResult objectForKey:@"css"];
+				if (cssResult == nil || [cssResult length] == 0) {
+					[json release];
+					[messageController alertCriticalError:@"No CSS received, make sure the CSS file is valid" additional:@"Error: No JSON object called 'css' from proCSSor received"];
+					return;
+				}		
+				
+				[self replaceEditorTextWith:cssResult];
+				[messageController showInfoMessage:@"proCSSor done"];
+			}
+			[json release];
 		}
-		[json release];
+	}
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
 	}
 }
 
 - (void)doJsTidy
 {
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:
-							[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"],
-							@"--",
-							[self getEditorText],
-							nil];
-	[self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidy"];
-
+	@try {
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:
+								[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"],
+								@"--",
+								[self getEditorText],
+								nil];
+		[self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidy"];
+	}
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
+	}
 	// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]]; [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 }
 
 - (void)doJsMinify
 {
-	[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] arguments:[NSMutableArray array] called:@"JSMinify"];
+	@try {
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] arguments:[NSMutableArray array] called:@"JSMinify"];
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
 }
 
 #pragma mark Updates
@@ -575,7 +647,7 @@
 	NSString *baseDomain = [[domain stringByDeletingLastPathComponent] stringByAppendingString:@"/"];
 	return
 		[
-		 [		   
+		 [
 		  [
 		   [input
 			stringByReplacingOccurrencesOfString:@"src=\"images/" withString: [[@"src=\"" stringByAppendingString: baseDomain] stringByAppendingString:@"images/"] ]
@@ -645,7 +717,7 @@
 		}
 		[textView setSelectedRange: NSMakeRange(pos, 0)]; // [textView rangeOfCurrentLine].length
 	}
-	@catch (NSException * e) {
+	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
 }
@@ -812,7 +884,7 @@
 	if (show && [myResult valid]) {
 		[messageController showInfoMessage:[name stringByAppendingString:@": No errors"] additional:resultText];
 	}
-	
+
 	return [myResult autorelease];
 }
 
