@@ -44,7 +44,7 @@
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert setAlertStyle: alertStyle];
 	[alert addButtonWithTitle: @"Ok"];
-	[alert setIcon: [[NSImage alloc] initWithContentsOfFile:[myPlugin pluginIconPath]]];
+	[alert setIcon: [[[NSImage alloc] initWithContentsOfFile:[myPlugin pluginIconPath]] autorelease]];
 	[alert setMessageText: msg];
 	if (addMsg != nil) {
 		[alert setInformativeText: addMsg];		
@@ -207,11 +207,9 @@
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {
-
 }
 - (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame
 {
-
 }
 
 #pragma mark Growl

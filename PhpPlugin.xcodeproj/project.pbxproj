@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		AC035B10132AD58500FD06CC /* RequestController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC035B0F132AD58400FD06CC /* RequestController.m */; };
 		AC08B81312EE13FC00EC8CC1 /* PhpTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */; };
 		AC08F3D513133DCA0040EB0F /* csstidy.php in Resources */ = {isa = PBXBuildFile; fileRef = AC08F3D413133DCA0040EB0F /* csstidy.php */; };
@@ -27,6 +26,7 @@
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
 		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
+		AC46272C13304DC500B4B0AF /* plug-ins.icns in Resources */ = {isa = PBXBuildFile; fileRef = AC46272B13304DC500B4B0AF /* plug-ins.icns */; };
 		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
 		AC6209D812B6D4440080B995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC6209D712B6D4440080B995 /* Localizable.strings */; };
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
@@ -74,7 +74,6 @@
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin_Prefix.pch; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhpPlugin.codaplugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +113,7 @@
 		AC394B4C1323FEE100A9FC27 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InfoPanel.xib; sourceTree = "<group>"; };
 		AC3E522713298B9D00EFD884 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
 		AC3E522813298B9E00EFD884 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
+		AC46272B13304DC500B4B0AF /* plug-ins.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "plug-ins.icns"; sourceTree = "<group>"; };
 		AC5C56E1126A557700359B53 /* CssProcssor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssProcssor.h; sourceTree = "<group>"; };
 		AC5C56E2126A557700359B53 /* CssProcssor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssProcssor.m; sourceTree = "<group>"; };
 		AC6209CC12B6D3340080B995 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -143,7 +143,6 @@
 		ACF177B10F01638700CA7641 /* phptidy-coda.php */ = {isa = PBXFileReference; explicitFileType = text.script.php; fileEncoding = 4; path = "phptidy-coda.php"; sourceTree = "<group>"; };
 		ACF56A2312D9175700F2D04D /* CssLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssLevel.h; sourceTree = "<group>"; };
 		ACF56A2412D9175700F2D04D /* CssLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssLevel.m; sourceTree = "<group>"; };
-		ACFC72EE1330467400E4FA0E /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpPlugin.m; sourceTree = "<group>"; };
 		BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,7 +187,8 @@
 			isa = PBXGroup;
 			children = (
 				8D5B49B7048680CD000E48DA /* Info.plist */,
-				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+				AC46272B13304DC500B4B0AF /* plug-ins.icns */,
+				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
 				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				AC102CDE1326C4BA00F69278 /* InfoPanel.xib */,
 				ACEF739E132727E00025427D /* ResultPanel.xib */,
@@ -207,7 +207,6 @@
 				AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */,
 				AC8C51B9110A63CA00EB784D /* tidy_config_format_indented.txt */,
 				ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */,
-				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -374,7 +373,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */,
-				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				AC6209D812B6D4440080B995 /* Localizable.strings in Resources */,
 				AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */,
 				AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */,
@@ -393,6 +391,7 @@
 				AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */,
 				AC102F171327047900F69278 /* growlnotify in Resources */,
 				ACA91D8D1264E4C10032639D /* tidy in Resources */,
+				AC46272C13304DC500B4B0AF /* plug-ins.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,14 +443,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C167EFE841241C02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		AC102CDE1326C4BA00F69278 /* InfoPanel.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -464,7 +455,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				AC6209CC12B6D3340080B995 /* English */,
-				ACFC72EE1330467400E4FA0E /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -499,7 +489,6 @@
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -509,7 +498,6 @@
 				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = PhpPlugin;
-				SDKROOT = "";
 				WRAPPER_EXTENSION = codaplugin;
 			};
 			name = Release;
@@ -599,7 +587,6 @@
 		AC7908621329924400CADF8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
