@@ -25,8 +25,6 @@
 		AC13AE1B126F5BDF00B5B8FF /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */; };
 		AC24F8BC0FFFCFC70077A062 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */; };
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
-		AC29FF29133035EA005E5150 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF28133035EA005E5150 /* Sparkle.framework */; };
-		AC29FF2B13303622005E5150 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC29FF28133035EA005E5150 /* Sparkle.framework */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
 		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
 		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
@@ -59,7 +57,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AC29FF2B13303622005E5150 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +111,6 @@
 		AC1E93D91316D4290087D5C3 /* JSHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; path = JSHelper.m; sourceTree = "<group>"; };
 		AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "My Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
 		AC29FF261330213A005E5150 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		AC29FF28133035EA005E5150 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		AC394B4C1323FEE100A9FC27 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InfoPanel.xib; sourceTree = "<group>"; };
 		AC3E522713298B9D00EFD884 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
 		AC3E522813298B9E00EFD884 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
@@ -147,9 +143,9 @@
 		ACF177B10F01638700CA7641 /* phptidy-coda.php */ = {isa = PBXFileReference; explicitFileType = text.script.php; fileEncoding = 4; path = "phptidy-coda.php"; sourceTree = "<group>"; };
 		ACF56A2312D9175700F2D04D /* CssLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssLevel.h; sourceTree = "<group>"; };
 		ACF56A2412D9175700F2D04D /* CssLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssLevel.m; sourceTree = "<group>"; };
+		ACFC72EE1330467400E4FA0E /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpPlugin.m; sourceTree = "<group>"; };
 		BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin.h; sourceTree = "<group>"; };
-		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,7 +154,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */,
-				AC29FF29133035EA005E5150 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,16 +187,15 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				AC102CDE1326C4BA00F69278 /* InfoPanel.xib */,
 				ACEF739E132727E00025427D /* ResultPanel.xib */,
 				AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */,
 				AC6209EF12B6D5E50080B995 /* Preferences.xib */,
-				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
-				AC6209D712B6D4440080B995 /* Localizable.strings */,
-				8D5B49B7048680CD000E48DA /* Info.plist */,
 				AC102F161327047900F69278 /* growlnotify */,
 				ACA91D8C1264E4C10032639D /* tidy */,
-				AC09ABDF1151A8B400E7E40F /* js-call.sh */,
 				AC08F430131341C20040EB0F /* jshint-min.js */,
 				ACC4EE40127CD012004DD845 /* jstidy-min.js */,
 				AC0AF9B011A1D3000002B0EA /* jsminify.php */,
@@ -244,7 +238,6 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AC29FF28133035EA005E5150 /* Sparkle.framework */,
 				AC29FF261330213A005E5150 /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -254,7 +247,6 @@
 			isa = PBXGroup;
 			children = (
 				089C167FFE841241C02AAC07 /* AppKit.framework */,
-				D2F7E65807B2D6F200F64583 /* CoreData.framework */,
 				089C1672FE841209C02AAC07 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
@@ -271,6 +263,7 @@
 		32C88E010371C26100C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				AC09ABDF1151A8B400E7E40F /* js-call.sh */,
 				AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */,
 				32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */,
 				AC1E93D81316D4290087D5C3 /* JSHelper.h */,
@@ -364,6 +357,7 @@
 				Japanese,
 				French,
 				German,
+				de,
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* Zap Gremlins */;
 			projectDirPath = "";
@@ -470,6 +464,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				AC6209CC12B6D3340080B995 /* English */,
+				ACFC72EE1330467400E4FA0E /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -522,10 +517,6 @@
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					"$(ARCHS_STANDARD_32_64_BIT)",
-				);
 				CURRENT_PROJECT_VERSION = 3.0beta;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = supported;
@@ -567,7 +558,6 @@
 		AC7908611329924400CADF8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CURRENT_PROJECT_VERSION = 3.0beta;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = supported;

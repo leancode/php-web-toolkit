@@ -57,8 +57,9 @@
 			@try {
 				SBJsonParser *json = [SBJsonParser alloc];
 				if (![json respondsToSelector:@selector(objectWithString:error:)]) {
-					int lesscssresp = [messageController alertInformation:@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead."
-								additional:@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once, but proCSSor is disabled until the conflict is resolved."
+					int lesscssresp = [messageController alertInformation:
+									   NSLocalizedString(@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead.",@"")
+								additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once, but proCSSor is disabled until the conflict is resolved.",@"")
 							  cancelButton:YES];
 
 					if (lesscssresp == 1) {
@@ -145,8 +146,8 @@
 		
 		// Check startup msg
 		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
-			[messageController showInfoMessage:[@"PHP & Web Toolkit updated to " stringByAppendingString: [self pluginVersionNumber]] 
-									additional:@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)"
+			[messageController showInfoMessage:[NSLocalizedString(@"PHP & Web Toolkit updated to ",@"") stringByAppendingString: [self pluginVersionNumber]] 
+									additional:NSLocalizedString(@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)",@"")
 										sticky:YES
 			 ];
 			[[NSUserDefaults standardUserDefaults] setObject:[self pluginVersionNumber] forKey:PrefLastVersionRun];
@@ -195,7 +196,7 @@
 		if ([myresult hasErrorMessage]) {
 			[messageController showResult:[NSString stringWithFormat:@"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>%@</pre>",[self escapeEntities:[[myresult result] mutableCopy]]]
 								   forUrl:@""
-								withTitle:@"Tidy validation result"
+								withTitle:NSLocalizedString(@"Tidy validation result",@"")
 			 ];
 		}
 	}
@@ -224,18 +225,19 @@
 			
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefAutoSave]) {
 				[[controller focusedTextView:self] save];
-				[addInfo appendString:@"File was automatically saved."];
+				[addInfo appendString:NSLocalizedString(@"File was automatically saved.",@"")];
 			}
 			
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefPhpBeepOnly]) {
 				[[NSSound soundNamed:@"Tink"] play];
 			}
 			else {
-				[messageController showInfoMessage:@"No PHP syntax errors" additional:addInfo];
+				[messageController showInfoMessage:NSLocalizedString(@"No PHP syntax errors",@"") additional:addInfo];
 			}	
 		}
 		else {
-			[messageController alertCriticalError:@"Error parsing PHP - this should not happen" additional:@"Please check the preferences"];
+			[messageController alertCriticalError:NSLocalizedString(@"Error parsing PHP - this should not happen",@"")
+									   additional:NSLocalizedString(@"Please check the preferences",@"")];
 		}
 	}
 	@catch (NSException *e) {	
@@ -303,14 +305,14 @@
 	@try {
 		NSString *resultText = [sender serverReply];
 		if (resultText == nil || [resultText length] == 0) {
-			[messageController alertCriticalError:@"No response from HTML online validator"
-									   additional:[@"Make sure you're online and check the Preferences.\n\nError: " stringByAppendingString:[sender errorReply]]
+			[messageController alertCriticalError:NSLocalizedString(@"No response from HTML online validator",@"")
+									   additional:[NSLocalizedString(@"Make sure you're online and check the Preferences.\n\nError: ",@"") stringByAppendingString:[sender errorReply]]
 			 ];
 		}
 		else {
 			[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
 								   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
-								withTitle:[@"HTML validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
+								withTitle:[NSLocalizedString(@"HTML validation result via ",@"") stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
 			 ];
 		}
 	}
@@ -346,14 +348,14 @@
 	@try {
 		NSString *resultText = [sender serverReply];
 		if (resultText == nil || [resultText length] == 0) {
-			[messageController alertCriticalError:@"No response from CSS online validator" 
-									   additional:[@"Make sure you're online and check the Preferences.\n\nError: " stringByAppendingString:[sender errorReply]]
+			[messageController alertCriticalError:NSLocalizedString(@"No response from CSS online validator",@"")
+									   additional:[NSLocalizedString(@"Make sure you're online and check the Preferences.\n\nError: ",@"") stringByAppendingString:[sender errorReply]]
 			 ];
 		}
 		else {
 			[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]] 
 								   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]
-								withTitle:[@"CSS validation result via " stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]]
+								withTitle:[NSLocalizedString(@"CSS validation result via ",@"") stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorUrl]]
 			 ];
 		}
 	}
@@ -361,7 +363,6 @@
 		[messageController alertCriticalException:e];
 	}
 }
-
 
 #pragma mark Tidy HTML/CSS/PHP
 
@@ -527,26 +528,30 @@
 	@try {
 		NSString *resultText = [sender serverReply];
 		if (resultText == nil || [resultText length] == 0) {
-			[messageController alertCriticalError:@"No response from proCSSor.com" additional:[@"Make sure you're online, check the Preferences.\n\nError:\n" stringByAppendingString:[sender errorReply]]];
+			[messageController alertCriticalError:NSLocalizedString(@"No response from proCSSor.com",@"")
+									   additional:[NSLocalizedString(@"Make sure you're online, check the Preferences.\n\nError:\n",@"") stringByAppendingString:[sender errorReply]]];
 		}
 		else {
 			NSError *error;
 			SBJsonParser *json = [SBJsonParser alloc];
 			
 			if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
-				[messageController alertCriticalError:@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." additional:@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de"];
+				[messageController alertCriticalError:NSLocalizedString(@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." ,@"")
+										   additional:NSLocalizedString(@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de",@"")];
 			}
 			else {
 				NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
 				if (jsonResult == nil) {
 					[json release];
-					[messageController alertCriticalError:@"Invalid response from proCSSor received." additional:[error localizedDescription]];
+					[messageController alertCriticalError:NSLocalizedString(@"Invalid response from proCSSor received.",@"") 
+											   additional:[error localizedDescription]];
 					return;
 				}
 				NSString *cssResult = [jsonResult objectForKey:@"css"];
 				if (cssResult == nil || [cssResult length] == 0) {
 					[json release];
-					[messageController alertCriticalError:@"No CSS received, make sure the CSS file is valid" additional:@"Error: No JSON object called 'css' from proCSSor received"];
+					[messageController alertCriticalError:NSLocalizedString(@"No CSS received, make sure the CSS file is valid" ,@"")
+																			additional:NSLocalizedString(@"Error: No JSON object called 'css' from proCSSor received",@"")];
 					return;
 				}		
 				
@@ -600,19 +605,19 @@
 		}
 	}
 	else if (avail == 0) {
-		[messageController showInfoMessage:@"No update available"
-								additional:@"You can enable automatic checking for updates in Preferences."];
+		[messageController showInfoMessage:NSLocalizedString(@"No update available",@"")
+								additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")];
 	}
 	else if (avail == 3) {
-		[messageController alertCriticalError:@"Could not check for updates, please make sure you're connected to the internet or try again later." 
-								additional:@"You can disable the automatic check in the preferences."];
+		[messageController alertCriticalError:NSLocalizedString(@"Could not check for updates, please make sure you're connected to the internet or try again later.",@"")
+								additional:NSLocalizedString(@"You can disable the automatic check in the preferences.",@"")];
 	}
 }
 
 - (void)showUpdateAvailable
 {
-	int res = [messageController alertInformation:@"An update for PHP & Web Toolkit is available!\nClick OK to download in your browser." 
-									   additional:@"You can disable automatic checking for updates in Preferences."
+	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download in your browser.",@"")
+									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
 									 cancelButton:YES];
 	if (res == 1) {
 		[self downloadUpdate:nil];					
@@ -700,7 +705,7 @@
 		while (true) {
 			currLineNumber = [textView currentLineNumber];
 			if (prevLineNumber == currLineNumber && numIterations > 10) {
-				[messageController alertCriticalError:@"Could not execute goToLine()" additional:@"Please use Mac or Unix line endings if possible"];
+				[messageController alertCriticalError:NSLocalizedString(@"Could not execute goToLine()",@"") additional:NSLocalizedString(@"Please use Mac or Unix line endings if possible",@"")];
 				break;
 			}
 			if (currLineNumber >= lineNumber || numIterations > 65536) {
@@ -757,7 +762,8 @@
 	CodaTextView *textView = [controller focusedTextView:self];
 	
 	if (newText == nil || [newText length] < 1) {
-		[messageController alertCriticalError:@"No new text received in replaceEditorTextWith." additional:@"This should not happen, please report a bug at www.chipwreck.de"];
+		[messageController alertCriticalError:NSLocalizedString(@"No new text received in replaceEditorTextWith.",@"")
+								   additional:NSLocalizedString(@"This should not happen, please report a bug at www.chipwreck.de",@"")];
 	}
 	else {
 		NSRange endRange;
@@ -873,7 +879,7 @@
 	[myResult setResult:resultText];
 	
 	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertCriticalError:[name stringByAppendingString:@" returned nothing"] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
+		[messageController alertCriticalError:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
 		if ([resultText rangeOfString:@"No warnings or errors were found"].location != NSNotFound || [resultText rangeOfString:@"No syntax errors detected"].location != NSNotFound) {
@@ -882,7 +888,7 @@
 	}
 	
 	if (show && [myResult valid]) {
-		[messageController showInfoMessage:[name stringByAppendingString:@": No errors"] additional:resultText];
+		[messageController showInfoMessage:[name stringByAppendingString:NSLocalizedString(@": No errors",@"")] additional:resultText];
 	}
 
 	return [myResult autorelease];
@@ -893,13 +899,13 @@
 	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:YES];
 	
 	if (resultText == nil || [resultText length] < 6) {
-		[messageController alertCriticalError:[name stringByAppendingString:@" returned nothing"] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
+		[messageController alertCriticalError:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"\nFatal"]) {
-		[messageController alertCriticalError:@"Exception received." additional:[@"Make sure the file has no errors, try using UTF-8 encoding.\n\n" stringByAppendingString: resultText]];
+		[messageController alertCriticalError:NSLocalizedString(@"Exception received.",@"") additional:[NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.\n\n",@"") stringByAppendingString: resultText]];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"!ERROR"]) {
-		[messageController alertCriticalError:[resultText substringFromIndex:1] additional:@"Make sure the file has no errors, try using UTF-8 encoding."];
+		[messageController alertCriticalError:[resultText substringFromIndex:1] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
 		if ([name isEqualToString:@"JSTidy"]) {

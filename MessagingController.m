@@ -44,7 +44,7 @@
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert setAlertStyle: alertStyle];
 	[alert addButtonWithTitle: @"Ok"];
-	[alert setIcon: [NSImage imageNamed:@"/codaphp-plugin-icon.png"]];
+	[alert setIcon: [[NSImage alloc] initWithContentsOfFile:[myPlugin pluginIconPath]]];
 	[alert setMessageText: msg];
 	if (addMsg != nil) {
 		[alert setInformativeText: addMsg];		
@@ -81,9 +81,9 @@
 
 - (void)alertCriticalException:(NSException*)e
 {
-	[self alertCriticalError: @"Sorry, we have an exception." additional:
+	[self alertCriticalError: NSLocalizedString(@"Sorry, we have an exception.",@"") additional:
 		[
-		 [ [e name] stringByAppendingString:@"\n\nReason:\n" ]
+		 [ [e name] stringByAppendingString:NSLocalizedString(@"\n\nReason:\n",@"") ]
 		 stringByAppendingString:[e reason]
 		]
 	];
@@ -142,7 +142,6 @@
 		[animation startAnimation];
 		[animation release];
 	}
-	
 	[infoPanel close];
 }
 
