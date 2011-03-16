@@ -42,7 +42,6 @@
 			}
 		}
 	}
-	[self isUpdateAvailableAsync];
 }
 
 - (IBAction)downloadUpdate:(id)sender
@@ -98,7 +97,7 @@
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
 							 timeoutInterval:10];
-	theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+	NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {
 		receivedData = [[NSMutableData data] retain];

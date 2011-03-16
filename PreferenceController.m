@@ -19,6 +19,7 @@ NSString* const PrefPhpLocal = @"dechipwreckPHPLocal";
 NSString* const PrefTidyLocal = @"dechipwreckTidyLocal";
 NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
 NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
+NSString* const PrefInfoPanelAfter = @"dechipwreckInfoPanelFadeOutAfter";
 NSString* const PrefResultWindow = @"dechipwreckResultWindow";
 
 NSString* const PrefHtmlValidatorUrl = @"dechipwreckHtmlValidatorUrl";
@@ -143,6 +144,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefHtmlTidyConfig];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefProcSafe];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssLevel];
+	[defaultValues setObject:[NSNumber numberWithInt:4] forKey: PrefInfoPanelAfter];
 	
 	return defaultValues;
 }

@@ -14,6 +14,7 @@ extern NSString* const PrefPhpLocal;
 extern NSString* const PrefTidyLocal;
 extern NSString* const PrefTidyInternal;
 extern NSString* const PrefUseGrowl;
+extern NSString* const PrefInfoPanelAfter;
 extern NSString* const PrefResultWindow;
 
 extern NSString* const PrefHtmlValidatorUrl;

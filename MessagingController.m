@@ -19,7 +19,10 @@
 		[NSBundle loadNibNamed:@"InfoPanel" owner:self];
 		[NSBundle loadNibNamed:@"ResultPanel" owner:self];
 		[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
-		durationInfoPanel = 4.0;
+		durationInfoPanel = [[NSUserDefaults standardUserDefaults] integerForKey:PrefInfoPanelAfter];
+		if (!durationInfoPanel) {
+			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:4] forKey: PrefInfoPanelAfter];
+		}
 	}
 
 	return self;
@@ -106,9 +109,21 @@
 	else {
 		[self hideInfoMessage:NO];
 		[infoText setStringValue:msg];
-		[infoTextAdditional setStringValue:additionalText];
 		[infoPanel setAlphaValue:1.0];
-		[infoPanel orderFront:self];
+		
+		[infoTextAdditional setStringValue:additionalText];
+		/*
+		if ([additionalText length] <= 10) {
+			[infoPanel setFrame:NSMakeRect([infoPanel frame].origin.x, [infoPanel frame].origin.y, 400, 110) display:YES animate:YES];
+		}
+		else if ([additionalText length] <= 80) {
+			[infoPanel setFrame:NSMakeRect([infoPanel frame].origin.x, [infoPanel frame].origin.y - 20, 400, 130) display:YES animate:YES];
+		}
+		else {
+			[infoPanel setFrame:NSMakeRect([infoPanel frame].origin.x, [infoPanel frame].origin.y - 45, 400, 155) display:YES animate:YES];
+		}
+		 */
+		
 		if (isSticky) {
 			NSButton *closeButton = [infoPanel standardWindowButton:NSWindowCloseButton];
 			[closeButton setHidden:NO];
@@ -118,6 +133,7 @@
 			[closeButton setHidden:YES];
 			panelTimer = [NSTimer scheduledTimerWithTimeInterval:durationInfoPanel target:self selector:@selector(hideInfoMessage:) userInfo:nil repeats:NO];
 		}
+		[infoPanel orderFront:self];
 	}
 }
 

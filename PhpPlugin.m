@@ -140,11 +140,6 @@
 									 target:self selector:@selector(goToHelpWebsite)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
-		
-		[controller registerActionWithTitle:NSLocalizedString(@"Run Tests", @"") underSubmenuWithTitle:nil
-									 target:self selector:@selector(test)
-						  representedObject:nil keyEquivalent:@"$~1" pluginName:[self name]]; // cmd+alt+1
-		
 		[controller registerActionWithTitle:NSLocalizedString(@"Preferences/About...", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(showPreferencesWindow)
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
@@ -272,6 +267,10 @@
 {
 	@try {
 		[messageController clearResult:self];
+		if ([[self getEditorText] length] > 65535) {
+			[messageController alertCriticalError:@"File is too large - more than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a know issue currently, sorry."];
+			return;
+		}
 
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:
 								[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"],
@@ -282,7 +281,13 @@
 									  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
 											  arguments:args called:@"JSLint" showResult:YES];
 		if ([myresult hasErrorMessage]) {
-					[messageController showResult:[[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding] autorelease]
+					[messageController showResult:[
+												   [@"<style type='text/css'>body {font-size: 13px; font-family: sans-serif; } h2 {font-size: 19px; } h2.warning { color: blue; } h2.error { color: red; } p { margin-bottom: 0; } p.evidence,pre,code { color:#444; font-family: monospace; background: #f5f5f5; border: 1px solid #ccc; font-size: 12px; margin-top: 2px; margin-left: 4px; padding: 2px 4px; }</style>"
+													stringByAppendingString:
+														[[NSString alloc] initWithData:
+														 [[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]
+													]
+											autorelease]
 								   forUrl:@""
 								withTitle:@"JSLint validation result"
 			 ];
@@ -591,6 +596,11 @@
 
 - (void)doJsTidy
 {
+	if ([[self getEditorText] length] > 65535) {
+		[messageController alertCriticalError:@"File is too large - more than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a know issue currently, sorry."];
+		return;
+	}
+	
 	@try {
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:
 								[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"],
@@ -917,6 +927,7 @@
 	return [myResult autorelease];
 }
 
+
 - (void)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
 {
 	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:YES];
@@ -932,9 +943,8 @@
 	}
 	else {
 		if ([name isEqualToString:@"JSTidy"]) {
-			CodaTextView	*textView = [controller focusedTextView:self];
 			[self replaceEditorTextWith:
-			 [[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:[textView encoding]]
+			 [[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:[[controller focusedTextView:self] encoding]]
 			 ];
 		}
 		else {
@@ -944,6 +954,7 @@
 		[messageController showInfoMessage:[name stringByAppendingString:@" done"]];
 	}	
 }
+
 
 - (NSMutableString *)executeFilter:(NSString *)command arguments:(NSMutableArray *)args usestdout:(BOOL)yesorno
 {
@@ -955,6 +966,7 @@
 	}
 	return [NSMutableString stringWithString:result];
 }
+
 
 - (NSString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout
 {
@@ -998,6 +1010,8 @@
 		
 		[aTask terminate];
 		[aTask release];
+//		[self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
+		
 		return resultData;
 	}
 	@catch (NSException *e) {	
