@@ -44,7 +44,7 @@
 
 // actions: local validation
 - (void)doValidateHtml;
-- (void)validatePhp;
+- (void)doValidatePhp;
 - (void)doJsLint;
 
 // actions: remote validation

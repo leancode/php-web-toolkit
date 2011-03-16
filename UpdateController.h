@@ -14,6 +14,7 @@
 {
 	PhpPlugin *myPlugin;
 	NSMutableData *receivedData;
+	NSURLConnection *theConnection;
 }
 - (void)setMyPlugin:(PhpPlugin*)myPluginInstance;
 

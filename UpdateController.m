@@ -98,7 +98,7 @@
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
 							 timeoutInterval:10];
-	NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+	theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {
 		receivedData = [[NSMutableData data] retain];

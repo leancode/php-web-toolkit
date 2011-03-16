@@ -78,7 +78,7 @@
 		
 		// PHP >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate PHP", @"") underSubmenuWithTitle:@"PHP"
-									 target:self selector:@selector(validatePhp)
+									 target:self selector:@selector(doValidatePhp)
 						  representedObject:nil keyEquivalent:@"$@v" pluginName:[self name]]; // cmd+shift+v
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Strip Whitespace and Comments", @"") underSubmenuWithTitle:@"PHP"
@@ -140,6 +140,11 @@
 									 target:self selector:@selector(goToHelpWebsite)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
+		
+		[controller registerActionWithTitle:NSLocalizedString(@"Run Tests", @"") underSubmenuWithTitle:nil
+									 target:self selector:@selector(test)
+						  representedObject:nil keyEquivalent:@"$~1" pluginName:[self name]]; // cmd+alt+1
+		
 		[controller registerActionWithTitle:NSLocalizedString(@"Preferences/About...", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(showPreferencesWindow)
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
@@ -165,12 +170,30 @@
 	return @"PHP & Web Toolkit";
 }
 
+- (void)test
+{
+	CodaTextView* myView = [controller makeUntitledDocument];
+	[myView setSelectedRange:NSMakeRange(0, 0)];
+	[myView insertText:@"<?php $a = 1; ?>"];
+	[self doValidatePhp];
+	[self doValidateHtml];
+	[self doValidateRemoteCss];
+	[self doValidateRemoteHtml];
+	[self doJsMinify];
+	[self doJsLint];
+	[self doJsTidy];
+	[self doProcssorRemote];
+	[self doStripPhp];
+	[self doTidyCss];
+}
+
+
 - (BOOL)validateMenuItem:(NSMenuItem *)aMenuItem
 {
 	SEL action = [aMenuItem action];
 	
 	if ( ![self editorTextPresent] ) {
-		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) ) {
+		if (action != @selector(showPreferencesWindow) && action != @selector(test) &&  action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) ) {
 			return NO;
 		}
 	}
@@ -205,7 +228,7 @@
 	}
 }
 
-- (void)validatePhp
+- (void)doValidatePhp
 {
 	@try {
 		NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
@@ -902,10 +925,10 @@
 		[messageController alertCriticalError:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"\nFatal"]) {
-		[messageController alertCriticalError:NSLocalizedString(@"Exception received.",@"") additional:[NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.\n\n",@"") stringByAppendingString: resultText]];
+		[messageController alertCriticalError:[name stringByAppendingString:NSLocalizedString(@" exception received.",@"")] additional:[NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.\n\n",@"") stringByAppendingString: resultText]];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"!ERROR"]) {
-		[messageController alertCriticalError:[resultText substringFromIndex:1] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
+		[messageController alertCriticalError:[name stringByAppendingFormat:@": %@",[resultText substringFromIndex:1]] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
 		if ([name isEqualToString:@"JSTidy"]) {
