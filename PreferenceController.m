@@ -139,7 +139,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseSelection];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefAutoSave];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefResultWindow];
+	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefResultWindow];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefPhpBeepOnly];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefTidyInternal];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefUpdateCheck];

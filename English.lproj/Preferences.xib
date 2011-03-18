@@ -2585,7 +2585,6 @@ dXJlcyAtIGJ1dCBkb2VzIG5vdCB3b3JrIG9uIG9sZGVyIE1hY3M</string>
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{418, 37}, {18, 18}}</string>
 																<reference key="NSSuperview" ref="167439502"/>
-																<reference key="NSNextKeyView" ref="880107628"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="50520270">
 																	<int key="NSCellFlags">-2080244224</int>
@@ -2865,7 +2864,7 @@ dXJlcyAtIGJ1dCBkb2VzIG5vdCB3b3JrIG9uIG9sZGVyIE1hY3M</string>
 														<string>NeXT TIFF v4.0 pasteboard type</string>
 													</object>
 												</object>
-												<string key="NSFrame">{{329, 392}, {128, 128}}</string>
+												<string key="NSFrame">{{325, 388}, {132, 132}}</string>
 												<reference key="NSSuperview" ref="340104885"/>
 												<reference key="NSNextKeyView" ref="902555911"/>
 												<bool key="NSEnabled">YES</bool>
@@ -2947,7 +2946,7 @@ dXJlcyAtIGJ1dCBkb2VzIG5vdCB3b3JrIG9uIG9sZGVyIE1hY3M</string>
 												<int key="NSvFlags">258</int>
 												<string key="NSFrame">{{89, 17}, {376, 14}}</string>
 												<reference key="NSSuperview" ref="340104885"/>
-												<reference key="NSNextKeyView" ref="688089058"/>
+												<reference key="NSNextKeyView" ref="880107628"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="582580912">
@@ -4849,13 +4848,13 @@ dXJlcyAtIGJ1dCBkb2VzIG5vdCB3b3JrIG9uIG9sZGVyIE1hY3M</string>
 							<reference ref="835103660"/>
 							<reference ref="245304961"/>
 							<reference ref="637353704"/>
-							<reference ref="428307781"/>
 							<reference ref="492170314"/>
 							<reference ref="808213775"/>
 							<reference ref="556598428"/>
 							<reference ref="1042033143"/>
 							<reference ref="87807592"/>
 							<reference ref="1034868062"/>
+							<reference ref="428307781"/>
 						</object>
 						<reference key="parent" ref="827613070"/>
 					</object>

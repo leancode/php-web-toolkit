@@ -886,7 +886,6 @@
 	return [myResult autorelease];
 }
 
-
 - (void)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
 {
 	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:YES];
@@ -912,7 +911,6 @@
 	}	
 }
 
-
 - (NSMutableString *)executeFilter:(NSString *)command arguments:(NSMutableArray *)args usestdout:(BOOL)yesorno
 {
 	CodaTextView	*textView = [controller focusedTextView:self];
@@ -923,7 +921,6 @@
 	}
 	return [NSMutableString stringWithString:result];
 }
-
 
 - (NSString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout
 {
