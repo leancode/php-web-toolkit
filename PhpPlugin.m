@@ -9,6 +9,8 @@
  @TODO: phptidy configurable (continue)
 		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  $replace_phptags = true; 
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
+ 
+  @TODO: jshint/lint configuration?
  */
 
 #import "PhpPlugin.h"
@@ -271,29 +273,30 @@
 			[messageController alertCriticalError:@"File is too large - more than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a know issue currently, sorry."];
 			return;
 		}
-
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:
-								[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"],
-								@"--",
-								[self getEditorText],
-								nil];
-		ValidationResult *myresult = [self validateWith:
-									  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
-											  arguments:args called:@"JSLint" showResult:YES];
-		if ([myresult hasErrorMessage]) {
-					[messageController showResult:[
-												   [@"<style type='text/css'>body {font-size: 13px; font-family: sans-serif; } h2 {font-size: 19px; } h2.warning { color: blue; } h2.error { color: red; } p { margin-bottom: 0; } p.evidence,pre,code { color:#444; font-family: monospace; background: #f5f5f5; border: 1px solid #ccc; font-size: 12px; margin-top: 2px; margin-left: 4px; padding: 2px 4px; }</style>"
-													stringByAppendingString:
-														[[NSString alloc] initWithData:
-														 [[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]
-													]
-											autorelease]
-								   forUrl:@""
-								withTitle:@"JSLint validation result"
-			 ];
+		
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
+			NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]];
+			ValidationResult *myresult = [self validateWith: [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
+			if ([myresult hasErrorMessage]) {
+				[messageController showResult:
+									[[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
+									   forUrl:@""
+									withTitle:@"JSLint validation result"];
+			}
 		}
-		// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]]; ValidationResult *myresult = [self validateWith: [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
-		// if ([myresult hasErrorMessage]) { [messageController showResult:[myresult result] forUrl:@"" withTitle:@"JSLint validation result" ]; }
+		else {
+			NSMutableArray *args = [NSMutableArray arrayWithObjects: [[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", 
+									[self getEditorText], nil];
+			ValidationResult *myresult = [self validateWith:
+										  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
+												  arguments:args called:@"JSLint" showResult:YES];
+			if ([myresult hasErrorMessage]) {
+				[messageController showResult:
+											[[MessagingController getCssForJsLint] stringByAppendingString: [[NSString alloc] initWithData: [[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]]	
+									   forUrl:@""
+									withTitle:@"JSLint validation result"];
+			}
+		}
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
@@ -602,17 +605,19 @@
 	}
 	
 	@try {
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:
-								[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"],
-								@"--",
-								[self getEditorText],
-								nil];
-		[self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidy"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
+			NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]];
+			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
+		}
+		else {
+			NSMutableArray *args = [NSMutableArray arrayWithObjects: [[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], nil];
+			[self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidy"];
+		}
+		
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
-	// NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]]; [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 }
 
 - (void)doJsMinify
@@ -942,10 +947,8 @@
 		[messageController alertCriticalError:[name stringByAppendingFormat:@": %@",[resultText substringFromIndex:1]] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
-		if ([name isEqualToString:@"JSTidy"]) {
-			[self replaceEditorTextWith:
-			 [[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:[[controller focusedTextView:self] encoding]]
-			 ];
+		if ([name isEqualToString:@"JSTidy"] && (![[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell])) {
+			[self replaceEditorTextWith:[[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:NSUTF8StringEncoding]];
 		}
 		else {
 			[self replaceEditorTextWith:resultText];

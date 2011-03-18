@@ -26,7 +26,6 @@
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
 		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
-		AC46272C13304DC500B4B0AF /* plug-ins.icns in Resources */ = {isa = PBXBuildFile; fileRef = AC46272B13304DC500B4B0AF /* plug-ins.icns */; };
 		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
 		AC6209D812B6D4440080B995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC6209D712B6D4440080B995 /* Localizable.strings */; };
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
@@ -39,6 +38,7 @@
 		AC8C51BE110A63EF00EB784D /* tidy_config_format_default.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51BD110A63EF00EB784D /* tidy_config_format_default.txt */; };
 		AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC9E07C51118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt */; };
 		ACA91D8D1264E4C10032639D /* tidy in Resources */ = {isa = PBXBuildFile; fileRef = ACA91D8C1264E4C10032639D /* tidy */; };
+		ACB7A41A133177130051D672 /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = AC09ABDF1151A8B400E7E40F /* js-call.sh */; };
 		ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC89E2510A4092F0075B1A0 /* Encoding.m */; };
 		ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */ = {isa = PBXBuildFile; fileRef = ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */; };
 		ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */; };
@@ -186,8 +186,8 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AC09ABDF1151A8B400E7E40F /* js-call.sh */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
-				AC46272B13304DC500B4B0AF /* plug-ins.icns */,
 				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
 				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				AC102CDE1326C4BA00F69278 /* InfoPanel.xib */,
@@ -262,7 +262,7 @@
 		32C88E010371C26100C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				AC09ABDF1151A8B400E7E40F /* js-call.sh */,
+				AC46272B13304DC500B4B0AF /* plug-ins.icns */,
 				AC260C4A13216A55002AAAA4 /* My Growl Registration Ticket.growlRegDict */,
 				32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */,
 				AC1E93D81316D4290087D5C3 /* JSHelper.h */,
@@ -298,9 +298,9 @@
 				BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */,
 				BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */,
 				AC12616C10A3B7B400A9D9E8 /* PreferenceController.h */,
-				AC12616D10A3B7B400A9D9E8 /* PreferenceController.m */,
 				AC102CF31326C9D600F69278 /* MessagingController.h */,
 				AC102CF41326C9D600F69278 /* MessagingController.m */,
+				AC12616D10A3B7B400A9D9E8 /* PreferenceController.m */,
 				ACF14D0F1328229E00749312 /* UpdateController.h */,
 				ACF14D101328229E00749312 /* UpdateController.m */,
 				AC035B0E132AD58400FD06CC /* RequestController.h */,
@@ -391,7 +391,7 @@
 				AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */,
 				AC102F171327047900F69278 /* growlnotify in Resources */,
 				ACA91D8D1264E4C10032639D /* tidy in Resources */,
-				AC46272C13304DC500B4B0AF /* plug-ins.icns in Resources */,
+				ACB7A41A133177130051D672 /* js-call.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

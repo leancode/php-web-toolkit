@@ -53,12 +53,21 @@
 		[alert setInformativeText: addMsg];		
 	}
 	if (secondButton != nil) {
-		[alert addButtonWithTitle: secondButton];		
+		[alert addButtonWithTitle: secondButton];
+//		[alert addButtonWithTitle: @"Bug! Report it"];
 	}
 	
-	if ([alert runModal] == NSAlertFirstButtonReturn) {
+	int res = [alert runModal];
+	if (res == NSAlertFirstButtonReturn) {
 		ret = 1;
 	}
+	/*
+	else if (res == NSAlertFirstButtonReturn) {
+		[[NSWorkspace sharedWorkspace] launchApplication:@"Console"];
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:
+												[@"http://www.chipwreck.de/bugreport?msg=" stringByAppendingFormat:@"%@&add=%@",msg, addMsg]]];
+	}
+	 */
 	[alert release];
 	return ret;
 }
@@ -219,6 +228,11 @@
 - (IBAction)closeResult:(id)sender
 {
 	[resultPanel close];
+}
+
++ (NSString*)getCssForJsLint
+{
+	return @"<style type='text/css'>body {font-size: 13px; font-family: sans-serif; } h2 {font-size: 19px; } h2.warning { color: blue; } h2.error { color: red; } p { margin-bottom: 0; } p.evidence,pre,code { color:#444; font-family: monospace; background: #f5f5f5; border: 1px solid #ccc; font-size: 12px; margin-top: 2px; margin-left: 4px; padding: 2px 4px; }</style>";
 }
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame

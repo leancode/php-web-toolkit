@@ -21,6 +21,7 @@ NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
 NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
 NSString* const PrefInfoPanelAfter = @"dechipwreckInfoPanelFadeOutAfter";
 NSString* const PrefResultWindow = @"dechipwreckResultWindow";
+NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
 
 NSString* const PrefHtmlValidatorUrl = @"dechipwreckHtmlValidatorUrl";
 NSString* const PrefCssValidatorUrl = @"dechipwreckCssValidatorUrl";
@@ -132,6 +133,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setObject:@"ucn_file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
 	[defaultValues setObject:@"/usr/bin/tidy" forKey: PrefTidyLocal];
+	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefJsViaShell];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseGrowl];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseSelection];

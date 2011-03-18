@@ -12,6 +12,7 @@
 
 @interface UpdateController : NSObject
 {
+	NSURLConnection *theConnection;
 	PhpPlugin *myPlugin;
 	NSMutableData *receivedData;
 }

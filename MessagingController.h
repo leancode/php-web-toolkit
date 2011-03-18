@@ -51,6 +51,7 @@
 - (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title;
 - (IBAction)closeResult:(id)sender;
 - (IBAction)clearResult:(id)sender;
++ (NSString*)getCssForJsLint;
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame;
 - (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame;
 
