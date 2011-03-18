@@ -45,7 +45,7 @@
 			<object class="NSWindowTemplate" id="46651316">
 				<int key="NSWindowStyleMask">8211</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{1399, 926}, {404, 125}}</string>
+				<string key="NSWindowRect">{{1413, 866}, {404, 125}}</string>
 				<int key="NSWTFlags">1685586944</int>
 				<string key="NSWindowTitle">Coda PHP &amp; Web Toolkit</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -101,8 +101,8 @@
 							<object class="NSTextFieldCell" key="NSCell" id="789387779">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">272760832</int>
-								<string type="base64-UTF8" key="NSContents">TXVsdGlsaW5lIExhYmVsCk11bHRpbGluZSBMYWJlbApNdWx0aWxpbmUgTGFiZWwKTXVsdGlsaW5lIExh
-YmVseWdxA</string>
+								<string type="base64-UTF8" key="NSContents">TXVsdGlsaW5lIExhYmVsCk11bHRpbGluZSBMYWJlbApNdWx0aWxpbmUgTGFiZWwKRnJhbnogcXVlciBn
+dXRlIElkZWU</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">11</double>

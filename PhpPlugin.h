@@ -53,7 +53,7 @@
 - (void)doValidateRemoteHtml;
 - (void)doValidateRemoteHtmlDone:(id)sender;
 
-// actions: tidy
+// actions: reformat
 - (void)doTidyHtml;
 - (void)doTidyCss;
 - (void)doTidyPhp;
@@ -66,7 +66,6 @@
 // updates
 - (void)showUpdateAvailable;
 - (void)checkForUpdateNow;
-- (IBAction)downloadUpdate:(id)sender;
 
 // helpers
 - (NSMutableString*)escapeEntities:(NSMutableString *)myString;
@@ -83,6 +82,7 @@
 - (NSString*)currentLineEnding:(CodaTextView *)myview;
 - (NSString*)currentEncoding:(CodaTextView *)myview;
 - (NSString*)getEditorText;
+- (NSString*)currentFilename;
 - (void)replaceEditorTextWith:(NSString*)newText;
 
 // info getters

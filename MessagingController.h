@@ -43,7 +43,6 @@
 - (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg cancelButton:(BOOL)yesorno;
 - (void)alertCriticalError:(NSString*)errMsg additional:(NSString*)addMsg;
 - (void)alertCriticalException:(NSException*)e;
-- (void)showInfoMessage:(NSString*)msg;
 - (void)showInfoMessage:(NSString*)msg additional:(NSString*)additionalText;
 - (void)showInfoMessage:(NSString*)msg additional:(NSString*)additionalText sticky:(BOOL)isSticky;
 - (void)hideInfoMessage: (BOOL)fadeout;

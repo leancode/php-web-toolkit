@@ -76,6 +76,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	self = [super initWithWindowNibName:@"Preferences"]; 	
 	//	[[NSUserDefaultsController sharedUserDefaultsController] setAppliesImmediately: NO];
 	[[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:[self getDefaults]];
+	[self setDefaults];
 	return self; 
 }
 

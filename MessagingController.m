@@ -54,20 +54,12 @@
 	}
 	if (secondButton != nil) {
 		[alert addButtonWithTitle: secondButton];
-//		[alert addButtonWithTitle: @"Bug! Report it"];
 	}
 	
 	int res = [alert runModal];
 	if (res == NSAlertFirstButtonReturn) {
 		ret = 1;
 	}
-	/*
-	else if (res == NSAlertFirstButtonReturn) {
-		[[NSWorkspace sharedWorkspace] launchApplication:@"Console"];
-		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:
-												[@"http://www.chipwreck.de/bugreport?msg=" stringByAppendingFormat:@"%@&add=%@",msg, addMsg]]];
-	}
-	 */
 	[alert release];
 	return ret;
 }
@@ -84,9 +76,7 @@
 
 - (void)alertCriticalError:(NSString*)errMsg additional:(NSString*)addMsg
 {
-	int ret = [self showAlert: NSCriticalAlertStyle message:errMsg additional:addMsg secondButton:@"Help"];
-
-	if (ret != 1) {
+	if ([self showAlert: NSCriticalAlertStyle message:errMsg additional:addMsg secondButton:@"Help"] != 1) {
 		[myPlugin goToHelpWebsite];
 	}
 }
@@ -94,17 +84,10 @@
 - (void)alertCriticalException:(NSException*)e
 {
 	[self alertCriticalError: NSLocalizedString(@"Sorry, we have an exception.",@"") additional:
-		[
-		 [ [e name] stringByAppendingString:NSLocalizedString(@"\n\nReason:\n",@"") ]
-		 stringByAppendingString:[e reason]
-		]
+		[[[e name] stringByAppendingString:NSLocalizedString(@"\n\nReason:\n",@"") ] stringByAppendingString:[e reason]]
 	];
 }
 
-- (void)showInfoMessage:(NSString*)msg
-{
-	[self showInfoMessage:msg additional:@"" sticky:NO];
-}
 - (void)showInfoMessage:(NSString*)msg additional:(NSString*)additionalText
 {
 	[self showInfoMessage:msg additional:additionalText sticky:NO];
@@ -117,29 +100,12 @@
 	}
 	else {
 		[self hideInfoMessage:NO];
-		[infoText setStringValue:msg];
 		[infoPanel setAlphaValue:1.0];
-		
+		[infoText setStringValue:msg];
 		[infoTextAdditional setStringValue:additionalText];
-		/*
-		if ([additionalText length] <= 10) {
-			[infoPanel setFrame:NSMakeRect([infoPanel frame].origin.x, [infoPanel frame].origin.y, 400, 110) display:YES animate:YES];
-		}
-		else if ([additionalText length] <= 80) {
-			[infoPanel setFrame:NSMakeRect([infoPanel frame].origin.x, [infoPanel frame].origin.y - 20, 400, 130) display:YES animate:YES];
-		}
-		else {
-			[infoPanel setFrame:NSMakeRect([infoPanel frame].origin.x, [infoPanel frame].origin.y - 45, 400, 155) display:YES animate:YES];
-		}
-		 */
+		[[infoPanel standardWindowButton:NSWindowCloseButton] setHidden:!isSticky];
 		
-		if (isSticky) {
-			NSButton *closeButton = [infoPanel standardWindowButton:NSWindowCloseButton];
-			[closeButton setHidden:NO];
-		}
-		else {
-			NSButton *closeButton = [infoPanel standardWindowButton:NSWindowCloseButton];
-			[closeButton setHidden:YES];
+		if (!isSticky) {
 			panelTimer = [NSTimer scheduledTimerWithTimeInterval:durationInfoPanel target:self selector:@selector(hideInfoMessage:) userInfo:nil repeats:NO];
 		}
 		[infoPanel orderFront:self];
@@ -232,7 +198,7 @@
 
 + (NSString*)getCssForJsLint
 {
-	return @"<style type='text/css'>body {font-size: 13px; font-family: sans-serif; } h2 {font-size: 19px; } h2.warning { color: blue; } h2.error { color: red; } p { margin-bottom: 0; } p.evidence,pre,code { color:#444; font-family: monospace; background: #f5f5f5; border: 1px solid #ccc; font-size: 12px; margin-top: 2px; margin-left: 4px; padding: 2px 4px; }</style>";
+	return @"<style type='text/css'>body{font-size:13px;font-family:sans-serif;} h2{font-size:19px;} h2.warning{color:blue;} h2.error{color:red;} p{margin-bottom:0;} p.evidence,pre,code{color:#444;font-family:monospace;background:#f5f5f5;border:1px solid #ccc;font-size:12px;margin:2px 0 0 4px;padding:2px 4px;}</style>";
 }
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
