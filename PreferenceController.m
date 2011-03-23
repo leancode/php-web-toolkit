@@ -207,7 +207,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	}
 	else {
 		NSBeep();
-		[tabView selectTabViewItemAtIndex:3];
+		[tabView selectTabViewItemAtIndex:4];
 		return NO;
 	}	
 }
