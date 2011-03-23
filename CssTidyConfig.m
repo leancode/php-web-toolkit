@@ -34,7 +34,7 @@
 {
 	NSEnumerator *configEnumerator = [[CssTidyConfig configArray] objectEnumerator];
 	CssTidyConfig * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
