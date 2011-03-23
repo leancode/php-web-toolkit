@@ -12,6 +12,32 @@
 
 @synthesize intvalue, title, cmdLineParam;
 
++ (NSMutableString*)parse:(NSMutableString*)input
+{
+	return [NSMutableString stringWithString:[[HtmlTidyConfig getCssForHtmlTidy] stringByAppendingString:[HtmlTidyConfig escapeEntities:input]]];
+}
++ (NSString*)getCssForHtmlTidy
+{
+	return @"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>";
+}
++ (NSString *)escapeEntities:(NSString *)inputString
+{
+	if (inputString == nil || [inputString length] == 0) {
+		return @"";
+	}
+	NSMutableString *myString = [NSMutableString stringWithString:inputString];
+	
+    [myString replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
+    [myString replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
+    [myString replaceOccurrencesOfString:@"'"  withString:@"&#x27;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
+    [myString replaceOccurrencesOfString:@">"  withString:@"&gt;"   options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
+    [myString replaceOccurrencesOfString:@"<"  withString:@"&lt;"   options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
+	
+    return myString;
+}
+
+
+
 /* Predefined global list of configs */
 + (NSArray*)configArray
 {
@@ -34,7 +60,7 @@
 {
 	NSEnumerator *configEnumerator = [[HtmlTidyConfig configArray] objectEnumerator];
 	HtmlTidyConfig * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{

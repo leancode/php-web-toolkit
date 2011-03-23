@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "Parser.h"
 
-@interface HtmlTidyConfig : NSObject<NSCoding>
+@interface HtmlTidyConfig : NSObject<NSCoding,ResultParser>
 {
 @public
     int intvalue;
@@ -20,6 +21,9 @@
 @property (copy) NSString *title;
 @property (copy) NSString *cmdLineParam;
 
++ (NSMutableString*)parse:(NSMutableString*)input;
++ (NSString *)escapeEntities:(NSString *)inputString;
++ (NSString*)getCssForHtmlTidy;
 + (NSArray *)configArray;
 + (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
 + (HtmlTidyConfig *)configForIndex:(int)theIdx;

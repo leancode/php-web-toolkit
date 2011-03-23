@@ -135,6 +135,7 @@
 		ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_check.txt; sourceTree = "<group>"; };
 		ACD6CCDC100012FC007E94B1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SheetPHPError.xib; sourceTree = "<group>"; };
 		ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "codaphp-plugin-icon.png"; sourceTree = "<group>"; };
+		ACE5E77C13398B2900B6FCE0 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		ACEF736E1327233D0025427D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ResultPanel.xib; sourceTree = "<group>"; };
 		ACEF7401132738D40025427D /* HtmlValidationConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlValidationConfig.h; sourceTree = "<group>"; };
 		ACEF7402132738D40025427D /* HtmlValidationConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlValidationConfig.m; sourceTree = "<group>"; };
@@ -230,6 +231,7 @@
 				ACEF7402132738D40025427D /* HtmlValidationConfig.m */,
 				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
 				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
+				ACE5E77C13398B2900B6FCE0 /* Parser.h */,
 			);
 			name = Validation;
 			sourceTree = "<group>";
