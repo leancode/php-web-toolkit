@@ -277,6 +277,7 @@
 									 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
 									 @"1", @"ss",
 									 @"yes", @"showsource",
+									 @"json", @"out",
 									 @"custom", @"ucn_task",
 									 @"markup-validator", @"tests",								 
 									 nil];

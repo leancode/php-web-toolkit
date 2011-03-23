@@ -46,6 +46,8 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		mimetype = [aMimetype retain];
 		delegate = [aDelegate retain];
 		
+		[self setMyPlugin:delegate];
+		
 		doneSelector = aDoneSelector;
 		errorSelector = anErrorSelector;
 		
@@ -121,6 +123,7 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		[self uploadSucceeded:NO];
 		return;
 	}
+	[myPlugin doLog:[@"Init Connection to " stringByAppendingString:[serverURL absoluteString]]];
 	
 	NSError *error;
 	NSURLResponse *response;

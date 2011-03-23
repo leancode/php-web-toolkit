@@ -22,7 +22,7 @@
 		configs = [[NSArray alloc] initWithObjects:
 				   [HtmlValidationConfig configWithTitle:@"W3C Validator" intvalue:0 url:@"http://validator.w3.org/check" fieldname:@"uploaded_file"],
 				   [HtmlValidationConfig configWithTitle:@"Unicorn Validator" intvalue:1 url:@"http://validator.w3.org/unicorn/check" fieldname:@"ucn_file"],
-				   [HtmlValidationConfig configWithTitle:@"W3C Validator" intvalue:2 url:@"http://validator.nu" fieldname:@"file"],
+				   [HtmlValidationConfig configWithTitle:@"W3C Validator" intvalue:2 url:@"http://html5.validator.nu" fieldname:@"file"],
 		nil];
     }
     return configs;
@@ -32,7 +32,7 @@
 {
 	NSEnumerator *configEnumerator = [[HtmlValidationConfig configArray] objectEnumerator];
 	HtmlValidationConfig *aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
@@ -46,7 +46,7 @@
 {
 	NSEnumerator *configEnumerator = [[HtmlValidationConfig configArray] objectEnumerator];
 	HtmlValidationConfig *aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if ([theUrl isEqualToString:[aconfig validationUrl]])
 		{

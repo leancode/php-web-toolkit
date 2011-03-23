@@ -134,7 +134,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	NSEnumerator *configEnumerator = [[CssProcssor configArrayFormatting] objectEnumerator];
 	CssProcssor * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
@@ -148,7 +148,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	NSEnumerator *configEnumerator = [[CssProcssor configArrayAlignment] objectEnumerator];
 	CssProcssor * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
@@ -162,7 +162,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	NSEnumerator *configEnumerator = [[CssProcssor configArrayBraces] objectEnumerator];
 	CssProcssor * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
@@ -176,7 +176,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	NSEnumerator *configEnumerator = [[CssProcssor configArraySorting] objectEnumerator];
 	CssProcssor * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
@@ -190,7 +190,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	NSEnumerator *configEnumerator = [[CssProcssor configArrayIndentSize] objectEnumerator];
 	CssProcssor * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
@@ -204,7 +204,7 @@ Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.c
 {
 	NSEnumerator *configEnumerator = [[CssProcssor configArrayIndentLevels] objectEnumerator];
 	CssProcssor * aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{

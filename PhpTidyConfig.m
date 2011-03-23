@@ -33,7 +33,7 @@
 {
 	NSEnumerator *configEnumerator = [[PhpTidyConfig configArray] objectEnumerator];
 	PhpTidyConfig *aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
