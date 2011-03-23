@@ -5938,17 +5938,18 @@ return itself;
 
 // Make JSHINT a Node module, if possible.
 if (typeof exports == 'object' && exports)
-exports.JSHINT = JSHINT;
+		exports.JSHINT = JSHINT;
 
 // END JSHINT
 
 var JSHINTWRAP = function (input) {
 	var prefs = [ 'bitwise', 'browser', 'cap', 'css', 'debug', 'devel', 'eqeqeq',  'fragment', 'immed', 'newcap', 'on'];
 	
-	var options = {'predef': ['window', 'self']};
+	var options = {'predef': ['window', 'self'], 'maxerr' : 100};
 	for (var i = 0; i < prefs.length; i++) {
 		options[prefs[i]] = true;
 	}
+
 	
 	var err_desc = "";
 	var mystatus = JSHINT(input, options);
@@ -5972,7 +5973,6 @@ var JSHINTWRAP = function (input) {
 			err_desc = '<h2 class="error">Error(s)</h2>';
 		}
 	}
-	print("<style type='text/css'>body {font-size: 14px; font-family: sans-serif; } h2 {font-size: 19px; } h2.warning { color: blue; } h2.error { color: red; } p { margin-bottom: 0; } p.evidence,pre,code { font-family: monospace; background: #f5f5f5; border: 1px solid #ccc; font-size: 12px; margin-top: 2px; padding: 2px 4px; }</style>");
 	print(err_desc+"\n");
 	print(report);
 };			   

@@ -14,7 +14,7 @@
 
 + (NSMutableString*)parse:(NSMutableString*)input
 {
-	return [NSMutableString stringWithString:[[HtmlTidyConfig getCssForHtmlTidy] stringByAppendingString:[HtmlTidyConfig escapeEntities:input]]];
+	return [NSMutableString stringWithString:[[self getCssForHtmlTidy] stringByAppendingString:[self escapeEntities:input]]];
 }
 + (NSString*)getCssForHtmlTidy
 {
@@ -35,8 +35,6 @@
 	
     return myString;
 }
-
-
 
 /* Predefined global list of configs */
 + (NSArray*)configArray

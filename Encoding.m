@@ -45,7 +45,7 @@
 {
 	NSEnumerator *encodingEnumerator = [[Encoding encodingsArray] objectEnumerator];
 	Encoding *anencoding;
-	while (anencoding = [encodingEnumerator nextObject])
+	while ((anencoding = [encodingEnumerator nextObject]))
 	{
 		if (theValue == [anencoding intvalue])
 		{

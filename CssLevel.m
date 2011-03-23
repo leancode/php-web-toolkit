@@ -33,7 +33,7 @@
 {
 	NSEnumerator *configEnumerator = [[CssLevel configArray] objectEnumerator];
 	CssLevel *aconfig;
-	while (aconfig = [configEnumerator nextObject])
+	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == [aconfig intvalue])
 		{
