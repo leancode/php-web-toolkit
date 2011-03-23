@@ -30,8 +30,6 @@
 	NSString *versionNumber;
 	NSString *checkUpdateUrl;
 
-	int timeoutValue;
-	
 	NSMutableData *receivedData;
 	NSMutableString *currentStringValue;
 	NSMutableArray *htmlTidyOptions;
@@ -68,7 +66,7 @@
 - (void)checkForUpdateNow;
 
 // helpers
-- (NSMutableString*)escapeEntities:(NSMutableString *)myString;
+- (NSString *)escapeEntities:(NSString *)inputString;
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
@@ -79,8 +77,8 @@
 - (void)goToLine:(int)lineNumber;
 - (BOOL)editorSelectionPresent;
 - (BOOL)editorTextPresent;
-- (NSString*)currentLineEnding:(CodaTextView *)myview;
-- (NSString*)currentEncoding:(CodaTextView *)myview;
+- (NSString*)currentLineEnding;
+- (NSString*)currentEncoding;
 - (NSString*)getEditorText;
 - (NSString*)currentFilename;
 - (void)replaceEditorTextWith:(NSString*)newText;
@@ -91,14 +89,14 @@
 - (NSString*)phpVersion;
 - (NSString*)tidyExecutable;
 - (NSString*)tidyVersion;
+- (NSString*)jscInterpreter;
 
 // growl
 - (NSString *)growlNotify;
 
 // filter
 - (void)reformatWith:(NSString*)command arguments:(NSMutableArray*)args called:(NSString*)name;
-- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show;
-- (NSMutableString *)executeFilter:(NSString*)command arguments:(NSMutableArray*)args usestdout:(BOOL)yesorno;
-- (NSString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray*)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout;
+- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout;
+- (NSMutableString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray*)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout;
 
 @end

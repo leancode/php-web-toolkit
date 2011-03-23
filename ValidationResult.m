@@ -11,7 +11,7 @@
 
 @implementation ValidationResult
 
-@synthesize valid, result, additional;
+@synthesize valid, error, result, errorMessage, additional;
 
 - (id)init
 {
@@ -19,14 +19,15 @@
 	if (self != nil)
 	{
 		valid = NO;
+		error = NO;
 	}
 
 	return self;
 }
 
--(BOOL)hasErrorMessage
+-(BOOL)hasFailResult
 {
-	return ![self valid] && [self hasResult];
+	return ![self valid] && ![self error] && [self hasResult];
 }
 
 -(BOOL)hasResult

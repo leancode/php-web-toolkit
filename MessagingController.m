@@ -200,6 +200,10 @@
 {
 	return @"<style type='text/css'>body{font-size:13px;font-family:sans-serif;} h2{font-size:19px;} h2.warning{color:blue;} h2.error{color:red;} p{margin-bottom:0;} p.evidence,pre,code{color:#444;font-family:monospace;background:#f5f5f5;border:1px solid #ccc;font-size:12px;margin:2px 0 0 4px;padding:2px 4px;}</style>";
 }
++ (NSString*)getCssForHtmlTidy
+{
+	return @"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>";
+}
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {

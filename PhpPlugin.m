@@ -6,11 +6,11 @@
 //  Copyright 2008-2011 chipwreck.de. All rights reserved.
 
 /*
- @TODO: phptidy configurable (continue)
+@TODO: phptidy configurable (continue)
 		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  $replace_phptags = true; 
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
  
-  @TODO: jshint/lint configuration?
+@TODO: jshint/lint configuration?
  */
 
 #import "PhpPlugin.h"
@@ -42,7 +42,6 @@
 		[updateController setMyPlugin:self];
 		
 		// init vars
-		timeoutValue = 15.0;
 		controller = aController;
 		myBundle = yourBundle;
 		
@@ -176,14 +175,13 @@
 {
 	@try {
 		[messageController clearResult:self];
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:
-								@"-config", [[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"],
-								@"--newline", [self currentLineEnding:[controller focusedTextView:self]], [self currentEncoding:[controller focusedTextView:self]], nil];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"],
+								@"--newline", [self currentLineEnding], [self currentEncoding], nil];
 		
-		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES];
+		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES useStdOut:NO];
 			
-		if ([myresult hasErrorMessage]) {
-			[messageController showResult:[NSString stringWithFormat:@"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>%@</pre>",[self escapeEntities:[[myresult result] mutableCopy]]]
+		if ([myresult hasFailResult]) {
+			[messageController showResult:[[MessagingController getCssForHtmlTidy] stringByAppendingString:[self escapeEntities:[myresult result]]]
 								   forUrl:@""
 								withTitle:[@"Tidy validation result for " stringByAppendingString:[self currentFilename]]
 			 ];
@@ -198,9 +196,9 @@
 {
 	@try {
 		NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
-		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO];
+		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO useStdOut:YES];
 
-		if ([myresult hasErrorMessage]) {
+		if ([myresult hasFailResult]) {
 			NSBeep();
 			int lineOfError = 0;
 			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
@@ -239,14 +237,14 @@
 	@try {
 		[messageController clearResult:self];
 		if ([[self getEditorText] length] > 65535) {
-			[messageController alertInformation:@"File is too large - more than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a know issue currently, sorry." cancelButton:NO];
+			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
 		
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
 			NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]];
-			ValidationResult *myresult = [self validateWith: [[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES];
-			if ([myresult hasErrorMessage]) {
+			ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
+			if ([myresult hasFailResult]) {
 				[messageController showResult:
 									[[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
 									   forUrl:@""
@@ -255,12 +253,10 @@
 		}
 		else {
 			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], nil];
-			ValidationResult *myresult = [self validateWith:
-										  @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc"
-												  arguments:args called:@"JSLint" showResult:YES];
-			if ([myresult hasErrorMessage]) {
+			ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
+			if ([myresult hasFailResult]) {
 				[messageController showResult:
-											[[MessagingController getCssForJsLint] stringByAppendingString: [[NSString alloc] initWithData: [[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]]	
+											[[MessagingController getCssForJsLint] stringByAppendingString:[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]]	
 									   forUrl:@""
 									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
 			}
@@ -366,10 +362,9 @@
 -(void)doTidyHtml
 {
 	@try {
-		NSString *myConfig = [[HtmlTidyConfig configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefHtmlTidyConfig]] cmdLineParam];
-		NSString *configFile = [[myBundle resourcePath] stringByAppendingString:[[@"/tidy_config_format_" stringByAppendingString:myConfig] stringByAppendingString:@".txt"]];
-	
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", configFile, @"--newline", [self currentLineEnding:[controller focusedTextView:self]], [self currentEncoding:[controller focusedTextView:self]], nil];
+		NSString *myConfig = [[HtmlTidyConfig configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefHtmlTidyConfig]] cmdLineParam];	
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [[myBundle resourcePath] stringByAppendingString:[[@"/tidy_config_format_" stringByAppendingString:myConfig] stringByAppendingString:@".txt"]], 
+								@"--newline", [self currentLineEnding], [self currentEncoding], nil];
 		[self reformatWith:[self tidyExecutable] arguments:args called:@"Tidy"];
 	}
 	@catch (NSException *e) {	
@@ -380,8 +375,8 @@
 -(void)doTidyCss
 {
 	@try {
-		NSString *myConfig = [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam];
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", myConfig, @"-l", [self currentLineEnding:[controller focusedTextView:self]], nil];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam],
+								@"-l", [self currentLineEnding], nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"] arguments:args called:@"CSSTidy"];
 	}
 	@catch (NSException *e) {	
@@ -406,13 +401,12 @@
 		NSMutableArray *args = [NSMutableArray array];
 		
 		[args addObject:@"-l"];
-		[args addObject: [self currentLineEnding:[controller focusedTextView:self]]];
+		[args addObject: [self currentLineEnding]];
 		
 		int myPhpTidyBracesConfigIdx = [[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBraces];
-		NSString *myConfig = [[PhpTidyConfig configForIndex: myPhpTidyBracesConfigIdx] cmdLineParam];
 		
 		[args addObject:@"-b"];
-		[args addObject:myConfig];
+		[args addObject:[[PhpTidyConfig configForIndex: myPhpTidyBracesConfigIdx] cmdLineParam]];
 		
 		[args addObject:@"-a"];
 		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBlankLines] == 1) {
@@ -512,8 +506,6 @@
 						 delegate:self 
 					 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)]
 									autorelease];
-									
-		if (!myreq) {}
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
@@ -566,7 +558,7 @@
 - (void)doJsTidy
 {
 	if ([[self getEditorText] length] > 65535) {
-		[messageController alertInformation:@"File is too large - more than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a know issue currently, sorry." cancelButton:NO];
+		[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 		return;
 	}
 	
@@ -577,7 +569,7 @@
 		}
 		else {
 			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], nil];
-			[self reformatWith:@"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc" arguments:args called:@"JSTidy"];
+			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
 		}
 		
 	}
@@ -629,8 +621,13 @@
 
 #pragma mark Helper methods
 
-- (NSMutableString *)escapeEntities:(NSMutableString *)myString
+- (NSString *)escapeEntities:(NSString *)inputString
 {
+	if (inputString == nil || [inputString length] == 0) {
+		return @"";
+	}
+	NSMutableString *myString = [NSMutableString stringWithString:inputString];
+	
     [myString replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
     [myString replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
     [myString replaceOccurrencesOfString:@"'"  withString:@"&#x27;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
@@ -729,7 +726,7 @@
 	return [textView string];
 }
 
-- (BOOL)editorSelectionPresent
+- (BOOL)editorSelectionPresent /* Selection desired and present? */
 {
 	CodaTextView *textView = [controller focusedTextView:self];
 	return ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseSelection] && [textView selectedText] != nil && [[textView selectedText] length] > 5);
@@ -778,24 +775,24 @@
 					[@" - " stringByAppendingString:[[controller focusedTextView:self] siteNickname]] withString:@""];
 		}
 		return [[[controller focusedTextView:self] window] title];
-	} // return [[controller focusedTextView:self] path];
+	}
 	return @"(untitled)";
 }
 
-- (NSString *)currentLineEnding:(CodaTextView *)myview /* Get current line ending as string (CR, LF, CRLF) */
+- (NSString *)currentLineEnding /* Get current line ending as string (CR, LF, CRLF) */
 {
-	if ([[myview lineEnding] isEqualToString:@"\r\n"]) {
+	if ([[[controller focusedTextView:self] lineEnding] isEqualToString:@"\r\n"]) {
 		return @"CRLF";
 	}
-	if ([[myview lineEnding] isEqualToString:@"\n"]) {
+	if ([[[controller focusedTextView:self] lineEnding] isEqualToString:@"\n"]) {
 		return @"LF";
 	}
 	return @"CR";
 }
 
-- (NSString *)currentEncoding:(CodaTextView *)myview /* Get current encoding as string (utf8, macroman,..) */
+- (NSString *)currentEncoding /* Get current encoding as string (utf8, macroman,..) */
 {
-	Encoding *encodingObj = [Encoding encodingForIntvalue:[myview encoding]];
+	Encoding *encodingObj = [Encoding encodingForIntvalue:[[controller focusedTextView:self] encoding]];
 	if (encodingObj.cmdLineParam != nil) {
 		return encodingObj.cmdLineParam;
 	}
@@ -850,45 +847,51 @@
 	}
 }
 
-#pragma mark Growl
+- (NSString *)jscInterpreter
+{
+	return @"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
+}
 
 - (NSString *)growlNotify
 {
 	return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify"];
 }
 
+
 #pragma mark Filter
 
-- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show
+- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout
 {
+	NSMutableString *resultText = [self filterTextInput:[self getEditorText] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:usesstdout];
+	
 	ValidationResult* myResult = [[ValidationResult alloc] init];
-
-	BOOL usesstdout = YES;
-	if ([name isEqualToString:@"Tidy"]) {
-		usesstdout = NO;
-	}
-	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:usesstdout];
-	[myResult setResult:resultText];
 	
 	if (resultText == nil || [resultText length] == 0) {
-		[messageController alertInformation:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"") cancelButton:NO];
+		[myResult setError:YES];
+		[myResult setErrorMessage:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")]];
+		[myResult setAdditional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
+		[myResult setResult:resultText];
+		
 		if ([resultText rangeOfString:@"No warnings or errors were found"].location != NSNotFound || [resultText rangeOfString:@"No syntax errors detected"].location != NSNotFound) {
 			[myResult setValid:YES];
 		}
 	}
 	
-	if (show && [myResult valid]) {
+	if ([myResult error]) {
+		[messageController alertInformation:[myResult errorMessage] additional:[myResult additional] cancelButton:NO];
+	}	
+	else if ([myResult valid] && show) {
 		[messageController showInfoMessage:[name stringByAppendingString:NSLocalizedString(@": No errors",@"")] additional:resultText];
 	}
-
+	
 	return [myResult autorelease];
 }
 
 - (void)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
 {
-	NSMutableString *resultText = [self executeFilter:command arguments:args usestdout:YES];
+	NSMutableString *resultText = [self filterTextInput:[self getEditorText] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:YES];
 	
 	if (resultText == nil || [resultText length] < 6) {
 		[messageController alertInformation:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"") cancelButton:NO];
@@ -900,7 +903,7 @@
 		[messageController alertCriticalError:[name stringByAppendingFormat:@": %@",[resultText substringFromIndex:1]] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
-		if ([name isEqualToString:@"JSTidy"] && (![[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell])) {
+		if ([name isEqualToString:@"JSTidy"] && (![[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell])) { // @todo not so cool
 			[self replaceEditorTextWith:[[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:NSUTF8StringEncoding]];
 		}
 		else {
@@ -911,18 +914,7 @@
 	}	
 }
 
-- (NSMutableString *)executeFilter:(NSString *)command arguments:(NSMutableArray *)args usestdout:(BOOL)yesorno
-{
-	CodaTextView	*textView = [controller focusedTextView:self];
-	NSString		*result = [self filterTextInput:[self getEditorText] with:command options:args encoding:[textView encoding] useStdout: yesorno];
-
-	if (result == nil) {
-		return nil;
-	}
-	return [NSMutableString stringWithString:result];
-}
-
-- (NSString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout
+- (NSMutableString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout
 {
 	NSTask *aTask = [[NSTask alloc] init];
 	NSData *dataIn;
