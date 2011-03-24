@@ -19,6 +19,7 @@
 #import "MessagingController.h"
 #import "UpdateController.h"
 #import "ValidationResult.h"
+#import "HtmlValidationConfig.h"
 #import "RequestController.h"
 
 @implementation PhpPlugin
@@ -181,7 +182,7 @@
 		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES useStdOut:NO];
 			
 		if ([myresult hasFailResult]) {
-			[messageController showResult:[[MessagingController getCssForHtmlTidy] stringByAppendingString:[self escapeEntities:[myresult result]]]
+			[messageController showResult:[HtmlTidyConfig parseTidyOutput:[myresult result]]
 								   forUrl:@""
 								withTitle:[@"Tidy validation result for " stringByAppendingString:[self currentFilename]]
 			 ];
@@ -305,10 +306,29 @@
 			 ];
 		}
 		else {
-			[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
+			NSError *error;
+			SBJsonParser *json = [SBJsonParser alloc];			
+			if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
+				[messageController alertCriticalError:NSLocalizedString(@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." ,@"")
+										   additional:NSLocalizedString(@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de",@"")];
+			}
+			else {
+				NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
+				[json release];
+				json = nil;
+				
+				NSMutableString *resultFromJson = [HtmlValidationConfig parseValidatorNuOutput:jsonResult];
+				if (resultFromJson != nil && [resultFromJson length] > 0) {
+					[messageController showResult:[[MessagingController getCssforValidatorNu] stringByAppendingString:resultFromJson]
+										   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
+										withTitle:[NSLocalizedString(@"HTML validation result via ",@"") stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]];
+				}
+				else {
+					[messageController showResult:[self improveWebOutput:resultText fromDomain:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]] 
 								   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
-								withTitle:[NSLocalizedString(@"HTML validation result via ",@"") stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]
-			 ];
+								withTitle:[NSLocalizedString(@"HTML validation result via ",@"") stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]];
+				}
+			}
 		}
 	}
 	@catch (NSException *e) {	
@@ -622,22 +642,6 @@
 
 #pragma mark Helper methods
 
-- (NSString *)escapeEntities:(NSString *)inputString
-{
-	if (inputString == nil || [inputString length] == 0) {
-		return @"";
-	}
-	NSMutableString *myString = [NSMutableString stringWithString:inputString];
-	
-    [myString replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@"'"  withString:@"&#x27;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@">"  withString:@"&gt;"   options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@"<"  withString:@"&lt;"   options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-
-    return myString;
-}
-
 - (NSString *)improveWebOutput:(NSString *)input fromDomain:(NSString *)domain // Hacked stuff..improve w3c output with absolute links DON'T ASK!
 {
 	if (input == nil) return @"";
@@ -857,7 +861,6 @@
 {
 	return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify"];
 }
-
 
 #pragma mark Filter
 

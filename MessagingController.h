@@ -50,8 +50,7 @@
 - (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title;
 - (IBAction)closeResult:(id)sender;
 - (IBAction)clearResult:(id)sender;
-+ (NSString*)getCssForJsLint;
-+ (NSString*)getCssForHtmlTidy;
+
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame;
 - (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame;
 
@@ -61,5 +60,9 @@
 - (void)sheetDidEndPhpError:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 
 - (void)growlNotify:(NSString *)title description:(NSString *)desc sticky:(BOOL)isSticky;
+
++ (NSString*)getCssForJsLint;
++ (NSString*)getCssForHtmlTidy;
++ (NSString*)getCssforValidatorNu;
 
 @end

@@ -7,7 +7,8 @@
 //
 
 #import "HtmlValidationConfig.h"
-
+#import "HtmlTidyConfig.h"
+#import "MessagingController.h"
 
 @implementation HtmlValidationConfig
 
@@ -59,6 +60,53 @@
 + (HtmlValidationConfig *)configForIndex:(int)theIdx
 {
 	return [[HtmlValidationConfig configArray] objectAtIndex:theIdx];
+}
+
++ (NSMutableString*)parseValidatorNuOutput:(NSMutableDictionary*)jsonResult
+{
+	NSMutableString *resultFromJson = [NSMutableString stringWithString:@""];
+	if (jsonResult != nil) {
+		
+		if ([jsonResult isKindOfClass:[NSDictionary class]]) {
+			if ([jsonResult objectForKey:@"messages"] != nil) {
+				int numErrors = 0;
+				for (NSDictionary *dict in [jsonResult objectForKey:@"messages"]) {
+					if ([[dict objectForKey:@"type"] isEqualToString:@"error"]) {
+						numErrors++;
+					}
+					
+					[resultFromJson appendFormat:@"<p class=\"%@\">", [dict objectForKey:@"type"]];
+					if ([dict objectForKey:@"lastLine"] != nil) {
+						[resultFromJson appendFormat:@"<span>Line %@",[dict objectForKey:@"lastLine"]];
+						if ([dict objectForKey:@"firstColumn"] != nil) {
+							[resultFromJson appendFormat:@", column %@",[dict objectForKey:@"firstColumn"]];
+						}
+						[resultFromJson appendString:@"</span>"];
+					} 
+					[resultFromJson appendFormat:@" <strong>%@:</strong> %@</p>", [dict objectForKey:@"type"], [HtmlTidyConfig escapeEntities:[dict objectForKey:@"message"]]];
+					
+					if ([dict objectForKey:@"extract"] != nil) {
+						if ([dict objectForKey:@"hiliteStart"] != nil && [dict objectForKey:@"hiliteLength"] != nil && [[dict objectForKey:@"hiliteLength"] intValue] > 0) {
+							NSString *extract1 = [[dict objectForKey:@"extract"] substringToIndex:[[dict objectForKey:@"hiliteStart"] intValue]];
+							NSString *extract2 = [[dict objectForKey:@"extract"] substringWithRange:NSMakeRange([[dict objectForKey:@"hiliteStart"] intValue],[[dict objectForKey:@"hiliteLength"] intValue])];
+							NSString *extract3 = [[dict objectForKey:@"extract"] substringFromIndex:[[dict objectForKey:@"hiliteStart"] intValue] + [[dict objectForKey:@"hiliteLength"] intValue]];
+							[resultFromJson appendFormat:@"<pre>%@<span>%@</span>%@</pre>",[HtmlTidyConfig escapeEntities:extract1], [HtmlTidyConfig escapeEntities:extract2], [HtmlTidyConfig escapeEntities:extract3]];
+						}
+						else {
+							[resultFromJson appendFormat:@"<pre>%@</pre>",[HtmlTidyConfig escapeEntities:[dict objectForKey:@"extract"]]];
+						}
+					}								
+				}
+				if (numErrors == 0) {
+					[resultFromJson appendString:@"<p class=\"success\">No errors.</p>"];
+				}
+				else {
+					[resultFromJson appendFormat:@"<p class=\"errorsum\">%u errors.</p>", numErrors];
+				}
+			}
+		}
+	}
+	return resultFromJson;
 }
 
 /* Convenience constructor */

@@ -23,6 +23,7 @@
 
 + (NSMutableString*)parse:(NSMutableString*)input;
 + (NSString *)escapeEntities:(NSString *)inputString;
++ (NSString*)parseTidyOutput:(NSString*)resultText;
 + (NSString*)getCssForHtmlTidy;
 + (NSArray *)configArray;
 + (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;

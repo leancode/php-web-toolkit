@@ -204,6 +204,10 @@
 {
 	return @"<style type='text/css'>pre{font-family:sans-serif;font-size: 13px;}</style><pre>";
 }
++ (NSString*)getCssforValidatorNu
+{
+	return @"<style>*{font-family:sans-serif;font-size:13px;line-height:1.25;padding:0;margin:0}em,p span{color:#666}pre{line-heigt:1.0;margin-left:1em;font-family:monospace;font-size:11px;background-color:#eee;padding:0.25em;}pre span{font-family:monospace;font-size:11px;color:#822} p strong,p.success,p.errorsum{margin-top:0.5em;font-weight:bolder;} p.error strong{color:#822}p{font-size:13px;padding:1em;}p.success{background-color:green;color:white;}p.errorsum{background-color:red;color:white;}</style>";
+}
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {

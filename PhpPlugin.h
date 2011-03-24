@@ -66,7 +66,6 @@
 - (void)checkForUpdateNow;
 
 // helpers
-- (NSString *)escapeEntities:(NSString *)inputString;
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
