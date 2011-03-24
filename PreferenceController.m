@@ -128,10 +128,10 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 {
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	[defaultValues setObject:@"http://jigsaw.w3.org/css-validator/validator" forKey: PrefCssValidatorUrl];
-	[defaultValues setObject:@"http://validator.w3.org/unicorn/check" forKey: PrefHtmlValidatorUrl];
+	[defaultValues setObject:@"http://html5.validator.nu" forKey: PrefHtmlValidatorUrl];
 	[defaultValues setObject:@"http://procssor.com/api" forKey: PrefProCSSorUrl];
 	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
-	[defaultValues setObject:@"ucn_file" forKey: PrefHtmlValidatorParamFile];
+	[defaultValues setObject:@"file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
 	[defaultValues setObject:@"/usr/bin/tidy" forKey: PrefTidyLocal];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefJsViaShell];
