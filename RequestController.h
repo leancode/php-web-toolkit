@@ -35,13 +35,20 @@
 		   fields: (NSDictionary *)aFields
 	  uploadfield: (NSString *)anUploadfield
 		 filename: (NSString *)aFilename
+		 mimetype: (NSString *)aMimetype;
+
+- (id)initWithURL: (NSURL *)aServerURL
+         contents: (NSData *)aData
+		   fields: (NSDictionary *)aFields
+	  uploadfield: (NSString *)anUploadfield
+		 filename: (NSString *)aFilename
 		 mimetype: (NSString *)aMimetype
          delegate: (id)aDelegate
      doneSelector: (SEL)aDoneSelector
     errorSelector: (SEL)anErrorSelector;
 
 - (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
-
+- (BOOL)doUpload;
 - (NSString *)serverReply;
 - (NSString *)errorReply;
 

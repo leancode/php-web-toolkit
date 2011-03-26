@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ValidationResult.h"
+#import "Parser.h"
 
 @interface Validator : NSObject
 {
@@ -15,20 +16,27 @@
 
 @public
 	NSString* name;
-	NSDictionary* args;
+	NSMutableArray* args;
 	BOOL synchronous;	
-	id command;
-	id inputParser;
-	id outputParser;
+	NSURL* command;
+	id<InputParser> inputParser;
+	id<ResultParser> resultParser;
 }
 
 @property BOOL synchronous;
 @property (copy) NSString *name;
-@property (copy) NSDictionary *args;
-@property (copy) id command;
+@property (copy) NSMutableArray *args;
+@property (copy) NSURL *command;
 @property (copy) id inputParser;
-@property (copy) id outputParser;
+@property (copy) id resultParser;
 
--(ValidationResult*)validate;
+
+-(id)initWithCommand:(NSURL *)cmd arguments:(NSMutableArray *)options;
+-(NSMutableString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)encoding useStdout:(BOOL)useout;
+
+-(ValidationResult*)validate:(NSString*)input encoding:(NSStringEncoding)encoding useStdout:(BOOL)useout;
+
+-(ValidationResult*)validateCmdline:(NSString*)input cmd:(NSString*)cmd encoding:(NSStringEncoding)encoding useStdout:(BOOL)useout;
+-(ValidationResult*)validateOnline:(NSString*)input url:(NSURL*)url encoding:(NSStringEncoding)encoding uploadField:(NSString*)field filename:(NSString*)filename mime:(NSString*)mimetype;
 
 @end

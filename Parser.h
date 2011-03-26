@@ -9,5 +9,23 @@
 #import <Foundation/Foundation.h>
 
 @protocol ResultParser <NSObject>
-+ (NSMutableString*)parse:(NSMutableString*)input;
++ (NSMutableString*)parse: (NSString*)input;
+@end
+
+@protocol InputParser <NSObject>
++ (NSMutableString*)parse: (NSString*)input;
+@end
+
+
+@interface NilParser: NSObject<InputParser>
+	+ (NSMutableString*)parse: (NSString*)input;
+@end
+
+@implementation NilParser
+
++ (NSMutableString*)parse: (NSString*)input
+{
+	return [NSMutableString stringWithString:input];
+}
+
 @end

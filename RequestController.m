@@ -14,6 +14,7 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 @interface RequestController(private)
 
 - (void)upload;
+- (BOOL)uploadReturn;
 - (NSURLRequest *)postRequestWithURL: (NSURL *)url
                                 data: (NSData *)data;
 - (void)uploadSucceeded: (BOOL)success;
@@ -57,6 +58,35 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		[self upload];
 	}
 	return self;
+}
+
+- (id)initWithURL: (NSURL *)aServerURL
+         contents: (NSData *)aData
+		   fields: (NSDictionary *)aFields
+	  uploadfield: (NSString *)anUploadfield
+		 filename: (NSString *)aFilename
+		 mimetype: (NSString *)aMimetype
+{
+	if ((self = [super init])) {
+		serverURL = [aServerURL retain];
+		contents = [aData retain];
+		fields = [aFields retain];
+		uploadfield = [anUploadfield retain];
+		filename = [aFilename retain];
+		mimetype = [aMimetype retain];
+		delegate = self;
+		
+		[self setMyPlugin:delegate];
+		
+		serverReply = [[NSMutableString alloc] init];
+		errorReply = [[NSMutableString alloc] init];
+	}
+	return self;
+}
+
+- (BOOL)doUpload
+{
+	return [self uploadReturn];
 }
 
 - (void)dealloc
@@ -104,24 +134,22 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 
 @implementation RequestController (private)
 
-- (void)upload
+- (BOOL)uploadReturn
 {	
 	if (!contents || [contents length] == 0) {
-		[self uploadSucceeded:NO];
-		return;
+		[errorReply setString: @"No input received"];
+		return NO;
 	}
-
+	
 	NSURLRequest *urlRequest = [self postRequestWithURL:serverURL data:contents];
 	if (!urlRequest) {
 		[errorReply setString: @"Request could not be initialized"];
-		[self uploadSucceeded:NO];
-		return;
+		return NO;
 	}
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	if (!connection) {
 		[errorReply setString: @"Connection could not be initialized"];
-		[self uploadSucceeded:NO];
-		return;
+		return NO;
 	}
 	[myPlugin doLog:[@"Init Connection to " stringByAppendingString:[serverURL absoluteString]]];
 	
@@ -131,11 +159,15 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 	
 	if (!result) {
 		errorReply = [NSMutableString stringWithString:[error localizedDescription]];
-		[self uploadSucceeded:NO];
-		return;
+		return NO;
 	}
 	serverReply = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
-	[self uploadSucceeded:YES];
+	return YES;
+}
+
+- (void)upload
+{
+	[self uploadSucceeded:[self uploadReturn]];
 }
 
 - (void)uploadSucceeded: (BOOL)success
