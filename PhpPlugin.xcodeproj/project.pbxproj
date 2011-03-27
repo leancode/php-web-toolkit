@@ -22,7 +22,6 @@
 		AC13AE19126F5BDF00B5B8FF /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE12126F5BDF00B5B8FF /* SBJsonBase.m */; };
 		AC13AE1A126F5BDF00B5B8FF /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE14126F5BDF00B5B8FF /* SBJsonParser.m */; };
 		AC13AE1B126F5BDF00B5B8FF /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AC13AE16126F5BDF00B5B8FF /* SBJsonWriter.m */; };
-		AC24F8BC0FFFCFC70077A062 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */; };
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
 		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
@@ -42,7 +41,6 @@
 		ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC89E2510A4092F0075B1A0 /* Encoding.m */; };
 		ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */ = {isa = PBXBuildFile; fileRef = ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */; };
 		ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */; };
-		ACE5E77F133990F100B6FCE0 /* Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACE5E77E133990F100B6FCE0 /* Validator.m */; };
 		ACEF739F132727E00025427D /* ResultPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF739E132727E00025427D /* ResultPanel.xib */; };
 		ACEF7403132738D40025427D /* HtmlValidationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEF7402132738D40025427D /* HtmlValidationConfig.m */; };
 		ACF14D111328229E00749312 /* UpdateController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF14D101328229E00749312 /* UpdateController.m */; };
@@ -67,7 +65,6 @@
 			dstPath = "~/Library/Application Support/Coda/Plug-Ins/";
 			dstSubfolderSpec = 0;
 			files = (
-				AC24F8BC0FFFCFC70077A062 /* PhpPlugin.codaplugin in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +74,7 @@
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin_Prefix.pch; sourceTree = "<group>"; };
-		8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhpPlugin.codaplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = PhpPlugin.codaplugin; path = "/Volumes/data/Users/mario/Projekte/OSX/Coda Plugins/PhpPlugin/build/Release/PhpPlugin.codaplugin"; sourceTree = "<absolute>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC035B0E132AD58400FD06CC /* RequestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestController.h; sourceTree = "<group>"; };
 		AC035B0F132AD58400FD06CC /* RequestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestController.m; sourceTree = "<group>"; };
@@ -136,9 +133,6 @@
 		ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_check.txt; sourceTree = "<group>"; };
 		ACD6CCDC100012FC007E94B1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SheetPHPError.xib; sourceTree = "<group>"; };
 		ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "codaphp-plugin-icon.png"; sourceTree = "<group>"; };
-		ACE5E77C13398B2900B6FCE0 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
-		ACE5E77D133990F100B6FCE0 /* Validator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Validator.h; sourceTree = "<group>"; };
-		ACE5E77E133990F100B6FCE0 /* Validator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Validator.m; sourceTree = "<group>"; };
 		ACEF736E1327233D0025427D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ResultPanel.xib; sourceTree = "<group>"; };
 		ACEF7401132738D40025427D /* HtmlValidationConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlValidationConfig.h; sourceTree = "<group>"; };
 		ACEF7402132738D40025427D /* HtmlValidationConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlValidationConfig.m; sourceTree = "<group>"; };
@@ -232,11 +226,8 @@
 				AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */,
 				ACEF7401132738D40025427D /* HtmlValidationConfig.h */,
 				ACEF7402132738D40025427D /* HtmlValidationConfig.m */,
-				ACE5E77C13398B2900B6FCE0 /* Parser.h */,
 				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
 				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
-				ACE5E77D133990F100B6FCE0 /* Validator.h */,
-				ACE5E77E133990F100B6FCE0 /* Validator.m */,
 			);
 			name = Validation;
 			sourceTree = "<group>";
@@ -261,7 +252,6 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -444,7 +434,6 @@
 				ACF14D111328229E00749312 /* UpdateController.m in Sources */,
 				AC3E522913298B9E00EFD884 /* InfoView.m in Sources */,
 				AC035B10132AD58500FD06CC /* RequestController.m in Sources */,
-				ACE5E77F133990F100B6FCE0 /* Validator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

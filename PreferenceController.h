@@ -145,5 +145,4 @@ extern NSString* const PrefPhpTidyFixBrackets;
 - (void)loadHtmlTidyCustomConfig;
 - (void)saveHtmlTidyCustomConfig:(NSString*)contents;
 
-
 @end
