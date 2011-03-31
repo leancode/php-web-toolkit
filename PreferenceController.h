@@ -60,6 +60,7 @@ extern NSString* const PrefPhpTidyBlankLines;
 extern NSString* const PrefPhpTidyComma;
 extern NSString* const PrefPhpTidyWhitespace;
 extern NSString* const PrefPhpTidyFixBrackets;
+extern NSString* const PrefPhpTidyReplacePhpTags;
 
 @interface PreferenceController : NSWindowController
 {	

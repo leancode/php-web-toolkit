@@ -7,7 +7,11 @@
 
 /*
 @TODO: phptidy configurable (continue)
-		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  $replace_phptags = true; 
+		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  
+ 
+ $replace_phptags = true; 
+ 
+ 
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
  
 @TODO: jshint/lint configuration?
@@ -455,6 +459,14 @@
 		
 		[args addObject:@"-f"];
 		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyFixBrackets] == 1) {
+			[args addObject:@"1"];
+		}
+		else {
+			[args addObject:@"0"]; 		 
+		}
+		
+		[args addObject:@"-p"];
+		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyReplacePhpTags] == 1) {
 			[args addObject:@"1"];
 		}
 		else {

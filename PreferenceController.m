@@ -65,6 +65,7 @@ NSString* const PrefPhpTidyBlankLines = @"dechipwreckPrefPhpTidyBlankLines";
 NSString* const PrefPhpTidyComma = @"dechipwreckPrefPhpTidyComma";
 NSString* const PrefPhpTidyWhitespace = @"dechipwreckPrefPhpTidyWhitespace";
 NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
+NSString* const PrefPhpTidyReplacePhpTags = @"dechipwreckPrefPhpTidyReplacePhpTags";
 
 @implementation PreferenceController
 
@@ -147,6 +148,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefHtmlTidyConfig];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefProcSafe];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssLevel];
+	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefPhpTidyReplacePhpTags];
 	[defaultValues setObject:[NSNumber numberWithInt:4] forKey: PrefInfoPanelAfter];
 	
 	return defaultValues;

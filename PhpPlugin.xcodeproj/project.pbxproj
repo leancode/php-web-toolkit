@@ -36,6 +36,7 @@
 		AC8C51BC110A63D900EB784D /* tidy_config_format_compressed.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51BB110A63D900EB784D /* tidy_config_format_compressed.txt */; };
 		AC8C51BE110A63EF00EB784D /* tidy_config_format_default.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51BD110A63EF00EB784D /* tidy_config_format_default.txt */; };
 		AC9E07C61118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC9E07C51118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt */; };
+		ACA67CD41343AC6200B705B5 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */; };
 		ACA91D8D1264E4C10032639D /* tidy in Resources */ = {isa = PBXBuildFile; fileRef = ACA91D8C1264E4C10032639D /* tidy */; };
 		ACB7A41A133177130051D672 /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = AC09ABDF1151A8B400E7E40F /* js-call.sh */; };
 		ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC89E2510A4092F0075B1A0 /* Encoding.m */; };
@@ -65,6 +66,7 @@
 			dstPath = "~/Library/Application Support/Coda/Plug-Ins/";
 			dstSubfolderSpec = 0;
 			files = (
+				ACA67CD41343AC6200B705B5 /* PhpPlugin.codaplugin in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +76,6 @@
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin_Prefix.pch; sourceTree = "<group>"; };
-		8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = PhpPlugin.codaplugin; path = "/Volumes/data/Users/mario/Projekte/OSX/Coda Plugins/PhpPlugin/build/Release/PhpPlugin.codaplugin"; sourceTree = "<absolute>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC035B0E132AD58400FD06CC /* RequestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestController.h; sourceTree = "<group>"; };
 		AC035B0F132AD58400FD06CC /* RequestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestController.m; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 		ACF177B10F01638700CA7641 /* phptidy-coda.php */ = {isa = PBXFileReference; explicitFileType = text.script.php; fileEncoding = 4; path = "phptidy-coda.php"; sourceTree = "<group>"; };
 		ACF56A2312D9175700F2D04D /* CssLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssLevel.h; sourceTree = "<group>"; };
 		ACF56A2412D9175700F2D04D /* CssLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssLevel.m; sourceTree = "<group>"; };
+		ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhpPlugin.codaplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpPlugin.m; sourceTree = "<group>"; };
 		BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -252,6 +254,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -336,7 +339,7 @@
 			name = PhpPlugin;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = "Zap Gremlins";
-			productReference = 8D5B49B6048680CD000E48DA /* PhpPlugin.codaplugin */;
+			productReference = ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
