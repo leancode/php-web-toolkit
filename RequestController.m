@@ -9,7 +9,7 @@
 #import "RequestController.h"
 #import "PhpPlugin.h"
 
-static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
+static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 
 @interface RequestController(private)
 
