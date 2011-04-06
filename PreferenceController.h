@@ -62,6 +62,26 @@ extern NSString* const PrefPhpTidyWhitespace;
 extern NSString* const PrefPhpTidyFixBrackets;
 extern NSString* const PrefPhpTidyReplacePhpTags;
 
+extern NSString* const PrefJSHintAsi;
+extern NSString* const PrefJSHintBitwise;
+extern NSString* const PrefJSHintCurly;
+extern NSString* const PrefJSHintEqeqeq;
+extern NSString* const PrefJSHintEvil;
+extern NSString* const PrefJSHintForin;
+extern NSString* const PrefJSHintImmed;
+extern NSString* const PrefJSHintLoopfunc;
+extern NSString* const PrefJSHintNewcap;
+extern NSString* const PrefJSHintNoempty; 
+extern NSString* const PrefJSHintNomen;
+extern NSString* const PrefJSHintOnevar;
+extern NSString* const PrefJSHintPlusplus;
+extern NSString* const PrefJSHintRegexp;
+extern NSString* const PrefJSHintSafe;
+extern NSString* const PrefJSHintStrict;
+extern NSString* const PrefJSHintSub;
+extern NSString* const PrefJSHintUndef;
+extern NSString* const PrefJSHintWhite;
+
 @interface PreferenceController : NSWindowController
 {	
 	PhpPlugin *myPlugin;

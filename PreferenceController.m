@@ -67,6 +67,28 @@ NSString* const PrefPhpTidyWhitespace = @"dechipwreckPrefPhpTidyWhitespace";
 NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 NSString* const PrefPhpTidyReplacePhpTags = @"dechipwreckPrefPhpTidyReplacePhpTags";
 
+
+NSString* const PrefJSHintAsi = @"dechipwreckPrefJSHintAsi";
+NSString* const PrefJSHintCurly = @"dechipwreckPrefJSHintCurly";
+NSString* const PrefJSHintEqeqeq = @"dechipwreckPrefJSHintEqeqeq";
+NSString* const PrefJSHintEvil = @"dechipwreckPrefJSHintEvil";
+NSString* const PrefJSHintForin = @"dechipwreckPrefJSHintForin";
+NSString* const PrefJSHintImmed = @"dechipwreckPrefJSHintImmed";
+NSString* const PrefJSHintLoopfunc = @"dechipwreckPrefJSHintLoopfunc";
+NSString* const PrefJSHintSafe = @"dechipwreckPrefJSHintSafe";
+NSString* const PrefJSHintStrict = @"dechipwreckPrefJSHintStrict";
+NSString* const PrefJSHintSub = @"dechipwreckPrefJSHintSub";
+
+NSString* const PrefJSHintBitwise = @"dechipwreckPrefJSHintBitwise";
+NSString* const PrefJSHintNewcap = @"dechipwreckPrefJSHintNewcap";
+NSString* const PrefJSHintNoempty = @"dechipwreckPrefJSHintNoempty";
+NSString* const PrefJSHintNomen = @"dechipwreckPrefJSHintNomen";
+NSString* const PrefJSHintOnevar = @"dechipwreckPrefJSHintOnevar";
+NSString* const PrefJSHintPlusplus = @"dechipwreckPrefJSHintPlusplus";
+NSString* const PrefJSHintRegexp = @"dechipwreckPrefJSHintRegexp";
+NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";
+NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite";
+
 @implementation PreferenceController
 
 # pragma mark -

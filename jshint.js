@@ -5941,45 +5941,45 @@ if (typeof exports == 'object' && exports)
 		exports.JSHINT = JSHINT;
 
 // END JSHINT
-
-var JSHINTWRAP = function (input) {
-	var prefs = [ 'bitwise', 'browser', 'cap', 'css', 'debug', 'devel', 'eqeqeq',  'fragment', 'immed', 'newcap', 'on'];
-	
-	var options = {'predef': ['window', 'self'], 'maxerr' : 100};
-	for (var i = 0; i < prefs.length; i++) {
+	   
+var JSHINTWRAP = function (input, prefs) {
+   prefs = prefs.split(',');
+   var options = {'predef': ['window', 'self'], 'maxerr' : 100};
+   for (var i = 0; i < prefs.length; i++) {
+	   if (prefs[i] != '') {
 		options[prefs[i]] = true;
+	   }
 	}
-
-	
+	   
 	var err_desc = "";
 	var mystatus = JSHINT(input, options);
 	var report = JSHINT.report(true);
-	
+	   
 	if (mystatus === true) {
-		if (!report) {
-			print('No warnings or errors were found');
-			return;
-		}
-		else {
-			err_desc = '<h2 class="warning">Warning: Implied Globals</h2>';
-		}
+	   if (!report) {
+		print('No warnings or errors were found');
+		return;
+	   }
+	   else {
+		err_desc = '<h2 class="warning">Warning: Implied Globals</h2>';
+	   }
 	}
 	else {
-		var err = JSHINT.errors;
-		if (err[err.length - 1] === null) {
-			err_desc = '<h2 class="error">Fatal Error</h2>';
-		}
-		else {
-			err_desc = '<h2 class="error">Error(s)</h2>';
-		}
+	   var err = JSHINT.errors;
+	   if (err[err.length - 1] === null) {
+		err_desc = '<h2 class="error">Fatal Error</h2>';
+	   }
+	   else {
+		err_desc = '<h2 class="error">Error(s)</h2>';
+	   }
 	}
 	print(err_desc+"\n");
 	print(report);
-};			   
-
+};
+	   
 if (!arguments[0]) {
-    print('No input received...');
+   print('No input received...');
 }
 else {
-	JSHINTWRAP(arguments[0]);
+   JSHINTWRAP(arguments[0], arguments[1]);
 }

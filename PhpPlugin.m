@@ -14,7 +14,47 @@
  
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
  
-@TODO: jshint/lint configuration?
+@TODO: jshint/lint configuration:
+
+ 
+	browser    : true, // if the standard browser globals should be predefined
+	cap        : true, // if upper case HTML should be allowed
+	css        : true, // if CSS workarounds should be tolerated
+	debug      : true, // if debugger statements should be allowed
+	devel      : true, // if logging should be allowed (console, alert, etc.)
+	fragment   : true, // if HTML fragments should be allowed
+	laxbreak   : true, // if line breaks should not be checked
+	on         : true, // if HTML event handlers should be allowed
+	passfail   : true, // if the scan should stop on first error
+
+
+ asi        : true, // if automatic semicolon insertion should be tolerated
+
+ curly      : true, // if curly braces around blocks should be required (even in if/for/while)
+ eqeqeq     : true, // if === should be required
+ evil       : true, // if eval should be allowed
+ forin      : true, // if for in statements must filter
+ immed      : true, // if immediate invocations must be wrapped in parens
+ loopfunc   : true, // if functions should be allowed to be defined within loops
+ safe       : true, // if use of some browser features should be restricted
+ strict     : true, // require the "use strict"; pragma
+ sub        : true, // if all forms of subscript notation are tolerated
+
+ boss       : true, // if advanced usage of assignments and == should be allowed	
+ noarg      : true, // if arguments.caller and arguments.callee should be disallowed
+ nonew      : true, // if using `new` for side-effects should be disallowed 
+ 
+ adsafe     : true, // if ADsafe should be enforced 
+ es5        : true, // if ES5 syntax should be allowed
+ couch      : true, // if CouchDB globals should be predefined
+ jquery     : true, // if jQuery globals should be predefined
+ node       : true, // if the Node.js environment globals should be predefined
+ rhino      : true, // if the Rhino environment globals should be predefined
+ windows    : true, // if MS Windows-specific globals should be predefined
+ widget     : true  // if the Yahoo Widgets globals should be predefined
+
+ 
+ 
  */
 
 #import "PhpPlugin.h"
@@ -245,26 +285,72 @@
 			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
-		
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
-			NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"]];
-			ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
-			if ([myresult hasFailResult]) {
-				[messageController showResult:
-									[[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
-									   forUrl:@""
-									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
-			}
+		NSMutableString* options = [NSMutableString stringWithString:@"browser,cap,css,debug,devel,fragment,on,laxbreak,jquery,"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintBitwise]) {
+			[options appendString:@"bitwise,"];
 		}
-		else {
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], nil];
-			ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
-			if ([myresult hasFailResult]) {
-				[messageController showResult:
-											[[MessagingController getCssForJsLint] stringByAppendingString:[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]]	
-									   forUrl:@""
-									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
-			}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNewcap]) {
+			[options appendString:@"newcap,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNoempty]) {
+			[options appendString:@"noempty,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNomen]) {
+			[options appendString:@"nomen,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintOnevar]) {
+			[options appendString:@"onevar,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintPlusplus]) {
+			[options appendString:@"plusplus,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintRegexp]) {
+			[options appendString:@"regexp,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintUndef]) {
+			[options appendString:@"undef,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintWhite]) {
+			[options appendString:@"white,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintAsi]) {
+			[options appendString:@"asi,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintCurly]) {
+			[options appendString:@"curly,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEqeqeq]) {
+			[options appendString:@"eqeqeq,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEvil]) {
+			[options appendString:@"evil,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintForin]) {
+			[options appendString:@"forin,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintImmed]) {
+			[options appendString:@"immed,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLoopfunc]) {
+			[options appendString:@"loopfunc,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSafe]) {
+			[options appendString:@"safe,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintStrict]) {
+			[options appendString:@"strict,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSub]) {
+			[options appendString:@"sub,"];
+		}
+		
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
+		ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
+		if ([myresult hasFailResult]) {
+			[messageController showResult:
+			 [[MessagingController getCssForJsLint] stringByAppendingString:[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]]	
+								   forUrl:@""
+								withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
 		}
 	}
 	@catch (NSException *e) {	
@@ -462,7 +548,7 @@
 			[args addObject:@"1"];
 		}
 		else {
-			[args addObject:@"0"]; 		 
+			[args addObject:@"0"];
 		}
 		
 		[args addObject:@"-p"];
