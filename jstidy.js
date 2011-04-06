@@ -184,7 +184,6 @@ function js_beautify(js_source_text, options) {
     // the blocks and expressions we pass so we only trigger on those chars in our
     // own level, and keep track of the colons so we only trigger on the matching '?'.
 
-
     function is_ternary_op() {
         var level = 0,
             colon_count = 0;
@@ -381,7 +380,7 @@ function js_beautify(js_source_text, options) {
             if (input.charAt(parser_pos) === '*') {
                 parser_pos += 1;
                 if (parser_pos < input_length) {
-                    while (! (input.charAt(parser_pos) === '*' && input.charAt(parser_pos + 1) && input.charAt(parser_pos + 1) === '/') && parser_pos < input_length) {
+                    while (!(input.charAt(parser_pos) === '*' && input.charAt(parser_pos + 1) && input.charAt(parser_pos + 1) === '/') && parser_pos < input_length) {
                         c = input.charAt(parser_pos);
                         comment += c;
                         if (c === '\x0d' || c === '\x0a') {
@@ -908,7 +907,7 @@ function js_beautify(js_source_text, options) {
                     } else {
                         flags.var_line_tainted = false;
                     }
-                // } else if (token_text === ':') {
+                    // } else if (token_text === ':') {
                     // hmm, when does this happen? tests don't catch this
                     // flags.var_line = false;
                 }
@@ -962,10 +961,9 @@ function js_beautify(js_source_text, options) {
                     }
                 }
                 break;
-            // } else if (in_array(token_text, ['--', '++', '!']) || (in_array(token_text, ['-', '+']) && (in_array(last_type, ['TK_START_BLOCK', 'TK_START_EXPR', 'TK_EQUALS']) || in_array(last_text, line_starters) || in_array(last_text, ['==', '!=', '+=', '-=', '*=', '/=', '+', '-'])))) {
+                // } else if (in_array(token_text, ['--', '++', '!']) || (in_array(token_text, ['-', '+']) && (in_array(last_type, ['TK_START_BLOCK', 'TK_START_EXPR', 'TK_EQUALS']) || in_array(last_text, line_starters) || in_array(last_text, ['==', '!=', '+=', '-=', '*=', '/=', '+', '-'])))) {
             } else if (in_array(token_text, ['--', '++', '!']) || (in_array(token_text, ['-', '+']) && (in_array(last_type, ['TK_START_BLOCK', 'TK_START_EXPR', 'TK_EQUALS', 'TK_OPERATOR']) || in_array(last_text, line_starters)))) {
                 // unary operators (and binary +/- pretending to be unary) special cases
-
                 space_before = false;
                 space_after = false;
 
@@ -1085,11 +1083,11 @@ function js_beautify(js_source_text, options) {
 if (typeof exports !== "undefined")
     exports.js_beautify = js_beautify;
 */
-   
+
 
 if (!arguments[0]) {
     print('No input received...');
 }
 else {
-	return js_beautify(arguments[0]);
+    print(js_beautify(arguments[0]));
 }
