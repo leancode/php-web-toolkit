@@ -11,11 +11,9 @@
  
  $replace_phptags = true; 
  
- 
 		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
  
-@TODO: jshint/lint configuration:
-
+@TODO: jshint/lint configuration?:
  
 	browser    : true, // if the standard browser globals should be predefined
 	cap        : true, // if upper case HTML should be allowed
@@ -27,18 +25,6 @@
 	on         : true, // if HTML event handlers should be allowed
 	passfail   : true, // if the scan should stop on first error
 
-
- asi        : true, // if automatic semicolon insertion should be tolerated
-
- curly      : true, // if curly braces around blocks should be required (even in if/for/while)
- eqeqeq     : true, // if === should be required
- evil       : true, // if eval should be allowed
- forin      : true, // if for in statements must filter
- immed      : true, // if immediate invocations must be wrapped in parens
- loopfunc   : true, // if functions should be allowed to be defined within loops
- safe       : true, // if use of some browser features should be restricted
- strict     : true, // require the "use strict"; pragma
- sub        : true, // if all forms of subscript notation are tolerated
 
  boss       : true, // if advanced usage of assignments and == should be allowed	
  noarg      : true, // if arguments.caller and arguments.callee should be disallowed
@@ -52,8 +38,6 @@
  rhino      : true, // if the Rhino environment globals should be predefined
  windows    : true, // if MS Windows-specific globals should be predefined
  widget     : true  // if the Yahoo Widgets globals should be predefined
-
- 
  
  */
 
