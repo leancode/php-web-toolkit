@@ -89,6 +89,11 @@ NSString* const PrefJSHintRegexp = @"dechipwreckPrefJSHintRegexp";
 NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";
 NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite";
 
+NSString* const PrefJSTidyPreserveNewlines = @"dechipwreckPrefJSTidyPreserveNewlines";
+NSString* const PrefJSTidySpaceAfterAnonFunction = @"dechipwreckPrefJSTidySpaceAfterAnonFunction";
+NSString* const PrefJSTidyBracesOnOwnLine = @"dechipwreckPrefJSTidyBracesOnOwnLine";
+NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
+
 @implementation PreferenceController
 
 # pragma mark -

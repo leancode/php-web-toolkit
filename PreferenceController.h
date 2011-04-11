@@ -82,6 +82,11 @@ extern NSString* const PrefJSHintSub;
 extern NSString* const PrefJSHintUndef;
 extern NSString* const PrefJSHintWhite;
 
+extern NSString* const PrefJSTidyPreserveNewlines;
+extern NSString* const PrefJSTidySpaceAfterAnonFunction;
+extern NSString* const PrefJSTidyBracesOnOwnLine;
+extern NSString* const PrefJSTidyIndentSize;
+
 @interface PreferenceController : NSWindowController
 {	
 	PhpPlugin *myPlugin;

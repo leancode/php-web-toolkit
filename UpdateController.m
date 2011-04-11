@@ -35,7 +35,7 @@
 		}
 		else {
 			long timediff = (now - lastupdate);
-			if (timediff > 86400) {
+			if (timediff > 259200) { // every three days
 				[self isUpdateAvailableAsync];
 				[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
 				[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Did check and set last update to %u", now]];

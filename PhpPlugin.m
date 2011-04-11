@@ -331,10 +331,19 @@
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
 		ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
 		if ([myresult hasFailResult]) {
-			[messageController showResult:
-			 [[MessagingController getCssForJsLint] stringByAppendingString:[[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding]]	
-								   forUrl:@""
-								withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
+			NSString *res = [[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
+			if (res != nil) {
+				[messageController showResult:
+				 [[MessagingController getCssForJsLint] stringByAppendingString:res]
+									   forUrl:@""
+									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
+			}
+			else {
+				[messageController showResult:
+				 [[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
+									   forUrl:@""
+									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
+			}
 		}
 	}
 	@catch (NSException *e) {	

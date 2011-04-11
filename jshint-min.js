@@ -552,52 +552,10 @@ m+=n;}
 o.push(m+'<br>*/</pre>');}
 o.push('</div>');}}
 return o.join('');};itself.jshint=itself;itself.edition='2011-03-01';return itself;}());if(typeof exports=='object'&&exports)
-exports.JSHINT=JSHINT;
-
-// END JSHINT
-	   
-var JSHINTWRAP = function (input, prefs) {
-   prefs = prefs.split(',');
-   var options = {'predef': ['window', 'self'], 'maxerr' : 100};
-   for (var i = 0; i < prefs.length; i++) {
-	   if (prefs[i] != '') {
-		options[prefs[i]] = true;
-	   }
-	}
-	   
-	var err_desc = "";
-	var mystatus = JSHINT(input, options);
-	var report = JSHINT.report(true);
-	   
-	if (mystatus === true) {
-	   if (!report) {
-		print('No warnings or errors were found');
-		return;
-	   }
-	   else {
-		err_desc = '<h2 class="warning">Warning: Implied Globals</h2>';
-	   }
-	}
-	else {
-	   var err = JSHINT.errors;
-	   if (err[err.length - 1] === null) {
-		err_desc = '<h2 class="error">Fatal Error</h2>';
-	   }
-	   else if (err.length > 0) {
-		err_desc = '<h2 class="error">Error(s)</h2>';
-	   }
-	   else {
-		err_desc = '<h2 class="error"></h2>';
-	   }
-	}
-
-	print(err_desc+"\n");
-	print(report);
-};
-	   
-if (!arguments[0]) {
-   print('No input received...');
-}
-else {
-   JSHINTWRAP(arguments[0], arguments[1]);
-}
+exports.JSHINT=JSHINT;var JSHINTWRAP=function(input,prefs){prefs=prefs.split(',');var options={'predef':['window','self'],'maxerr':100};for(var i=0;i<prefs.length;i++){if(prefs[i]!=''){options[prefs[i]]=true;}}
+var err_desc="";var mystatus=JSHINT(input,options);var report=JSHINT.report(true);if(mystatus===true){if(!report){print('No warnings or errors were found');return;}
+else{err_desc='<h2 class="warning">Warning: Implied Globals</h2>';}}
+else{var err=JSHINT.errors;if(err[err.length-1]===null){err_desc='<h2 class="error">Fatal Error</h2>';}
+else{err_desc='<h2 class="error">Error(s)</h2>';}}
+print(err_desc+"\n");print(report);};if(!arguments[0]||!arguments[1]){print('No input received...');}
+else{JSHINTWRAP(arguments[0],arguments[1]);}

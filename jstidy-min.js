@@ -108,6 +108,4 @@ print_token();print_newline();break;case'TK_UNKNOWN':print_token();break;}
 last_last_text=last_text;last_type=token_type;last_text=token_text;}
 return output.join('').replace(/[\n ]+$/,'');}
 if(!arguments[0]){print('No input received...');}
-else{
-	print(js_beautify(arguments[0], {space_after_anon_function: true, braces_on_own_line: true}));
-}
+else{print(js_beautify(arguments[0],{space_after_anon_function:true,braces_on_own_line:true}));}

@@ -5977,7 +5977,7 @@ var JSHINTWRAP = function (input, prefs) {
 	print(report);
 };
 	   
-if (!arguments[0]) {
+if (!arguments[0] || !arguments[1]) {
    print('No input received...');
 }
 else {

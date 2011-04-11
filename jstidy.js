@@ -1084,7 +1084,6 @@ if (typeof exports !== "undefined")
     exports.js_beautify = js_beautify;
 */
 
-
 if (!arguments[0]) {
     print('No input received...');
 }

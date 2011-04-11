@@ -325,6 +325,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "PhpPlugin" */;
 			buildPhases = (
+				AC57EA0C134D0AD1005D1C5E /* ShellScript */,
+				AC57EA0D134D0C5B005D1C5E /* ShellScript */,
 				8D5B49AF048680CD000E48DA /* Resources */,
 				AC29FF2A13303611005E5150 /* CopyFiles */,
 				8D5B49B1048680CD000E48DA /* Sources */,
@@ -410,6 +412,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "killall Coda\nopen -a Coda\n";
+		};
+		AC57EA0C134D0AD1005D1C5E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/jshint.js",
+			);
+			outputPaths = (
+				"$(SRCROOT)/test.js",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "~/Applications/jsminify.php \"${SRCROOT}/jshint.js\" \"${SRCROOT}/jshint-min.js\"";
+		};
+		AC57EA0D134D0C5B005D1C5E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "~/Applications/jsminify.php \"${SRCROOT}/jstidy.js\" \"${SRCROOT}/jstidy-min.js\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -506,7 +536,11 @@
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 3.0beta;
+				ARCHS = (
+					ppc,
+					"$(ARCHS_STANDARD_32_64_BIT)",
+				);
+				CURRENT_PROJECT_VERSION = 3.0;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -530,6 +564,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				SDKROOT = macosx10.5;
 				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
@@ -537,7 +572,9 @@
 		AC7908611329924400CADF8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 3.0beta;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 3.0;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
