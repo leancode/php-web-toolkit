@@ -108,7 +108,7 @@ print_token();print_newline();break;case'TK_UNKNOWN':print_token();break;}
 last_last_text=last_text;last_type=token_type;last_text=token_text;}
 return output.join('').replace(/[\n ]+$/,'');}
 if(!arguments[0]||!arguments[1]){print('No input received:');}
-else{var options={'indent_size':4,'preserve_newlines':false};prefs=arguments[1].split(',');for(var i=0;i<prefs.length;i++){if(prefs[i]!=''){if(prefs[i]=='indent_char_space'){options['indent_char']=' ';}
-else if(prefs[i]=='indent_char_tab'){options['indent_char']="\t";}
+else{var options={'preserve_newlines':false};prefs=arguments[1].split(',');for(var i=0;i<prefs.length;i++){if(prefs[i]!=''){if(prefs[i]=='indent_char_space'){options['indent_char']=' ';options['indent_size']=4;}
+else if(prefs[i]=='indent_char_tab'){options['indent_char']="\t";options['indent_size']=1;}
 else{options[prefs[i]]=true;}}}
 print(js_beautify(arguments[0],options));}

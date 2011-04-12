@@ -551,6 +551,14 @@
 		else {
 			[args addObject:@"0"]; 		 
 		}
+		
+		[args addObject:@"-i"];
+		if ([[controller focusedTextView:self] usesTabs]) {
+			[args addObject:@"t"];
+		}
+		else {
+			[args addObject:@"s"]; 		 
+		}
 			
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"] arguments:args called:@"PHPTidy"];
 	}
@@ -688,8 +696,7 @@
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidySpaceAfterAnonFunction]) {
 			[options appendString:@"space_after_anon_function,"];
 		}
-		CodaTextView *textView = [controller focusedTextView:self];
-		if ([textView usesTabs]) {
+		if ([[controller focusedTextView:self] usesTabs]) {
 			[options appendString:@"indent_char_tab,"];
 		}
 		else {

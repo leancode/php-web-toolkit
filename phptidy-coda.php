@@ -190,6 +190,15 @@ if (isset($argv[13]) && $argv[13] == '-p' && isset($argv[14]) && strlen($argv[14
 		$replace_phptags = false;
 	}
 }
+
+if (isset($argv[15]) && $argv[15] == '-i' && isset($argv[16]) && strlen($argv[16]) > 0) {
+	if ($argv[16] == 't') {
+		$indent_char = "\t";
+	}
+	else {
+		$indent_char = "    ";
+	}
+}
 	
 	
 $command = 'source';
