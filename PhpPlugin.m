@@ -589,6 +589,9 @@
 			[args setObject:[[CssProcssor configForIntvalueAlignment:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcAlignment]] cmdLineParam]
 					 forKey:@"alignment"];
 		}
+		if (![ [[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
+			[args setObject:@"0" forKey:@"tabbing"];
+		}
 		
 		[args setObject:[[CssProcssor configForIntvalueFormatting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcFormatting]] cmdLineParam]
 				 forKey:@"property_formatting"];
@@ -675,19 +678,44 @@
 	}
 	
 	@try {
+		NSMutableString* options = [NSMutableString stringWithString:@""];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyBracesOnOwnLine]) {
+			[options appendString:@"braces_on_own_line,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyPreserveNewlines]) {
+			[options appendString:@"preserve_newlines,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidySpaceAfterAnonFunction]) {
+			[options appendString:@"space_after_anon_function,"];
+		}
+		CodaTextView *textView = [controller focusedTextView:self];
+		if ([textView usesTabs]) {
+			[options appendString:@"indent_char_tab,"];
+		}
+		else {
+			[options appendString:@"indent_char_space,"];
+		}
+		
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
+		[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
+		/*
+		ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
+		
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
 			NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]];
 			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 		}
 		else {
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], nil];
+			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];
 			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
 		}
+		 */
 		
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
+
 }
 
 - (void)doJsMinify

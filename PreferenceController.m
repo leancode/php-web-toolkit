@@ -93,7 +93,7 @@ NSString* const PrefJSTidyPreserveNewlines = @"dechipwreckPrefJSTidyPreserveNewl
 NSString* const PrefJSTidySpaceAfterAnonFunction = @"dechipwreckPrefJSTidySpaceAfterAnonFunction";
 NSString* const PrefJSTidyBracesOnOwnLine = @"dechipwreckPrefJSTidyBracesOnOwnLine";
 NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
-
+	
 @implementation PreferenceController
 
 # pragma mark -

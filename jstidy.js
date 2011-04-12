@@ -21,7 +21,6 @@
     indent_char (default space)      — character to indent with,
     preserve_newlines (default true) — whether existing line breaks should be preserved,
     indent_level (default 0)         — initial indentation level, you probably won't need this ever,
-
     space_after_anon_function (default false) — if true, then space is added between "function ()"
             (jslint is happy about this); if false, then the common "function()" output is used.
     braces_on_own_line (default false) - ANSI / Allman brace style, each opening/closing brace gets its own line.
@@ -29,7 +28,6 @@
     e.g
 
     js_beautify(js_source_text, {indent_size: 1, indent_char: '\t'});
-
 
 */
 
@@ -1084,9 +1082,30 @@ if (typeof exports !== "undefined")
     exports.js_beautify = js_beautify;
 */
 
-if (!arguments[0]) {
-    print('No input received...');
+
+// Start JSTidy for Coda PHP & Web Toolkit
+
+if (!arguments[0] || !arguments[1]) {
+    print('No input received:');
 }
 else {
-    print(js_beautify(arguments[0], {space_after_anon_function: true, braces_on_own_line: true}));
+	var options = {'preserve_newlines': false};
+	prefs = arguments[1].split(',');
+	for (var i = 0; i < prefs.length; i++) {
+		if (prefs[i] != '') {
+			if (prefs[i] == 'indent_char_space') {
+				options['indent_char'] = ' ';
+				options['indent_size'] = 4;
+			}
+			else if (prefs[i] == 'indent_char_tab') {
+				options['indent_char'] = "\t";
+				options['indent_size'] = 1;
+			}
+			else {
+				options[prefs[i]] = true;
+			}
+		}
+	}
+
+	print(js_beautify(arguments[0], options));
 }
