@@ -61,6 +61,7 @@ extern NSString* const PrefPhpTidyComma;
 extern NSString* const PrefPhpTidyWhitespace;
 extern NSString* const PrefPhpTidyFixBrackets;
 extern NSString* const PrefPhpTidyReplacePhpTags;
+extern NSString* const PrefPhpTidyReplaceShellComments;
 
 extern NSString* const PrefJSHintAsi;
 extern NSString* const PrefJSHintBitwise;

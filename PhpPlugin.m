@@ -6,14 +6,7 @@
 //  Copyright 2008-2011 chipwreck.de. All rights reserved.
 
 /*
-@TODO: phptidy configurable (continue)
-		$fix_token_case = true; $fix_builtin_functions_case = true; $indent = true; $replace_inline_tabs = true;  
- 
- $replace_phptags = true; 
- 
-		$add_file_docblock = false;	$add_function_docblocks = false; $add_doctags = false; $fix_docblock_space = false;
- 
-@TODO: jshint/lint configuration?:
+@later: jshint/lint configuration?:
  
 	browser    : true, // if the standard browser globals should be predefined
 	cap        : true, // if upper case HTML should be allowed
@@ -559,6 +552,14 @@
 		else {
 			[args addObject:@"s"]; 		 
 		}
+		
+		[args addObject:@"-r"];
+		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyReplaceShellComments] == 1) {
+			[args addObject:@"1"];
+		}
+		else {
+			[args addObject:@"0"]; 		 
+		}
 			
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"] arguments:args called:@"PHPTidy"];
 	}
@@ -590,7 +591,13 @@
 		
 		if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] isEqualToString:@"1"] ) {
 			//	[args setObject:[[CssProcssor configForIntvalueIndentLevels:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentLevel]] cmdLineParam] forKey:@"indent_level"];
-			[args setObject:@"space" forKey:@"indent_type"];
+			if ([[controller focusedTextView:self] usesTabs]) {
+				[args setObject:@"tab" forKey:@"indent_type"];
+			}
+			else {
+				[args setObject:@"space" forKey:@"indent_type"];
+			}
+			
 		}
 		else if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
 			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] forKey:@"tabbing"];

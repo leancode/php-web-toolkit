@@ -66,7 +66,7 @@ NSString* const PrefPhpTidyComma = @"dechipwreckPrefPhpTidyComma";
 NSString* const PrefPhpTidyWhitespace = @"dechipwreckPrefPhpTidyWhitespace";
 NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 NSString* const PrefPhpTidyReplacePhpTags = @"dechipwreckPrefPhpTidyReplacePhpTags";
-
+NSString* const PrefPhpTidyReplaceShellComments = @"dechipwreckPrefPhpTidyReplaceShellComments";
 
 NSString* const PrefJSHintAsi = @"dechipwreckPrefJSHintAsi";
 NSString* const PrefJSHintCurly = @"dechipwreckPrefJSHintCurly";
