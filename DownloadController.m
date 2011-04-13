@@ -104,7 +104,7 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
 		NSTask *unzipTask = [[NSTask alloc] init]; //if ([[NSWorkspace sharedWorkspace] openFile:TmpUpdateFile withApplication:@"Finder" andDeactivate:YES]) {
 		[unzipTask setLaunchPath:@"/usr/bin/unzip"];
 		[unzipTask setCurrentDirectoryPath:@"/tmp/"];
-		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", TmpUpdateFile, nil]];
+		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", @"-q", TmpUpdateFile, nil]];
 		[unzipTask launch];
 		[unzipTask waitUntilExit];
 		

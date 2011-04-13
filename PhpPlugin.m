@@ -745,9 +745,9 @@
 {
 	int avail = [updateController isUpdateAvailable];
 	if (avail == 1) {
-		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download (restart Coda after installing)",@"")
+		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to download (restart Coda after installing)",@"")
 										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")
-										 thirdButton:@"Update (beta)"];
+										 thirdButton:@"Install now (beta)"];
 		if (res == 1) {
 			[updateController downloadUpdate:nil];
 		}
@@ -767,9 +767,9 @@
 
 - (void)showUpdateAvailable
 {
-	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download (restart Coda after installing)",@"")
+	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to download (restart Coda after installing)",@"")
 									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
-									 thirdButton:@"Update (beta)"];
+									 thirdButton:@"Install now (beta)"];
 	if (res == 1) {
 		[updateController downloadUpdate:nil];
 	}
@@ -807,7 +807,12 @@
 - (void)doLog:(NSString *)loggable
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefDebugMode])  {
-		NSLog(@"[Coda PHP Toolkit] %@", loggable);
+		if ([loggable length] > 2048) {
+			NSLog(@"[Coda PHP Toolkit] %@ [...]", [loggable substringToIndex:2040]);
+		}
+		else {
+			NSLog(@"[Coda PHP Toolkit] %@", loggable);
+		}
 	}	
 }
 
@@ -1068,7 +1073,7 @@
 		NSPipe *fromPipe = [NSPipe pipe];
 		NSPipe *errPipe = [NSPipe pipe];
 		NSFileHandle *writing = [toPipe fileHandleForWriting];
-		NSFileHandle *reading;	
+		NSFileHandle *reading;
 		if (useout) {
 			reading = [fromPipe fileHandleForReading];
 		}
