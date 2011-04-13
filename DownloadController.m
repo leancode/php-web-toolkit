@@ -3,17 +3,16 @@
 //  PhpPlugin
 //
 //  Created by mario on 13.04.11.
-//  Copyright 2011 wysiwyg software design gmbh. All rights reserved.
 //
 
 #import "DownloadController.h"
 #import "PhpPlugin.h"
 
-NSString* const TmpUpdateFile = @"coda-plugin-update.zip";
 NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
-NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin-current.zip";
 
 @implementation DownloadController
+
+@synthesize downloadPath, downloadUrl, downloadFilename, theDownload, downloadResponse;
 
 - (id)init
 {
@@ -29,40 +28,57 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
 	myPlugin = myPluginInstance;
 }
 
-- (void)startDownloadingURL:sender
+- (void)startDownloadingURL:(NSString*)url
 {
-    NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:DownloadUrl]
+	if (url == nil) {
+		[self reportError:@"No download URL given"];
+		return;
+	}
+	[self setDownloadUrl:url];
+	
+	// Create destination dir	
+	NSString *nowTimestamp = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
+	[self setDownloadPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[@"coda-plugin-update-" stringByAppendingString:nowTimestamp]]];
+	NSError *myerr;
+	if (![[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:NO attributes:nil error:&myerr]) {
+		[self reportError:[NSString stringWithFormat:@"Could not create temporary path: %@, %@", downloadPath, [myerr localizedDescription]]];
+		return;
+	}
+	
+	// Create request
+    NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:downloadUrl]
 												cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData //NSURLRequestUseProtocolCachePolicy
 											timeoutInterval:60.0];
 	theDownload = [[NSURLDownload alloc] initWithRequest:theRequest delegate:self];
     if (theDownload)
-	{		
-		[[NSFileManager defaultManager] removeItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile] error:NULL];
-		[[NSFileManager defaultManager] removeItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile] error:NULL];
-		
-        [theDownload setDestination:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile] allowOverwrite:YES];
-
+	{
 		[downloadPanel makeKeyAndOrderFront:self];
 		[downloadWebButton setEnabled:NO];
-		[responseLabel setStringValue:@"Download started."];
+		[responseLabel setStringValue:@"Download initialized."];
     }
 	else {
-		[self reportError:[NSString stringWithFormat:@"Could not start download. Perhaps no access to @%", [NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile]]];
+		[self reportError:[NSString stringWithFormat:@"Could not start download from %@. Perhaps no access to @%", downloadUrl, downloadPath]];
     }
 }
 
-- (void)setDownloadResponse:(NSURLResponse *)aDownloadResponse
+- (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
 {
-    [aDownloadResponse retain];
-    [downloadResponse release];
-    downloadResponse = aDownloadResponse;
+	[self setDownloadFilename:filename];
+    [theDownload setDestination:[downloadPath stringByAppendingPathComponent:downloadFilename] allowOverwrite:YES];
+	[myPlugin doLog:[NSString stringWithFormat:@"decideDestinationWithSuggestedFilename %@, final dest is: %@", filename, [downloadPath stringByAppendingPathComponent:downloadFilename]]];
+}
+
+-(void)download:(NSURLDownload *)download didCreateDestination:(NSString *)path
+{
+	[responseLabel setStringValue:@"Download started."];
+	[progressIndicator startAnimation:self];
+	[myPlugin doLog:[NSString stringWithFormat:@"didCreateDestination %@, final dest is: %@", path, [downloadPath stringByAppendingPathComponent:downloadFilename]]];
 }
 
 - (void)download:(NSURLDownload *)download didReceiveResponse:(NSURLResponse *)response
 {
     bytesReceived = 0;
     [self setDownloadResponse:response];
-	[progressIndicator startAnimation:self];
 }
 
 - (void)download:(NSURLDownload *)download didReceiveDataOfLength:(NSUInteger)length;
@@ -103,26 +119,29 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
 	@try {
 		[responseLabel setStringValue:@"Unpacking..."];
 		
-		NSTask *unzipTask = [[NSTask alloc] init]; //if ([[NSWorkspace sharedWorkspace] openFile:TmpUpdateFile withApplication:@"Finder" andDeactivate:YES]) {
+		NSTask *unzipTask = [[NSTask alloc] init];
 		[unzipTask setLaunchPath:@"/usr/bin/unzip"];
-		[unzipTask setCurrentDirectoryPath:NSTemporaryDirectory()];
-		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", @"-q",[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile], nil]];
+		[unzipTask setCurrentDirectoryPath:downloadPath];
+		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", @"-q",[downloadPath stringByAppendingPathComponent:downloadFilename], nil]];
 		[unzipTask launch];
 		[unzipTask waitUntilExit];
 		
 		[responseLabel setStringValue:@"Unpacking done."];
 		
-		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]])
+		NSString *unpackedFolder = [downloadPath stringByAppendingPathComponent:[downloadFilename stringByDeletingPathExtension]];
+		NSString *unpackedBundle = [unpackedFolder stringByAppendingPathComponent:TmpUnpackedFile];
+		
+		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:unpackedBundle])
 		{
-			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]] path] withApplication:@"Coda"]) {
+			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:unpackedBundle] path] withApplication:@"Coda"]) {
 				[downloadPanel close];
 			}
 			else {
-				[self reportError:[NSString stringWithFormat:@"Could not open %@ with Coda", [NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]]];
+				[self reportError:[NSString stringWithFormat:@"Could not open %@ with Coda", unpackedBundle]];
 			}
 		}
 		else {
-			[self reportError:[NSString stringWithFormat:@"Could find unpacked file %@", [NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]]];
+			[self reportError:[NSString stringWithFormat:@"Could find unpacked file %@", unpackedBundle]];
 		}
 		
 		[unzipTask release];
@@ -140,6 +159,7 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
 
 - (void)reportError:(NSString*)err
 {
+	[downloadPanel makeKeyAndOrderFront:self];
 	[myPlugin doLog:err];
 	[responseLabel setStringValue:[NSString stringWithFormat:@"Error!\n%@\n\nClick the button to download from the website", err]];
 	[responseLabel setTextColor:[NSColor redColor]];
@@ -149,7 +169,6 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
 
 - (void)dealloc
 {
-	[theDownload release];
     [super dealloc];
 }
 

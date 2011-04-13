@@ -23,31 +23,35 @@
 			[myPlugin pluginVersionNumber]];
 }
 
+- (NSString *)downloadUrl
+{
+	return [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
+									[myPlugin pluginVersionNumber]];
+}
+
+- (NSString *)directDownloadUrl
+{
+	return [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&direct=1&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
+								 [myPlugin pluginVersionNumber]];
+}
+
 - (void)checkForUpdateAuto
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUpdateCheck]) {
 		long lastupdate = [[NSUserDefaults standardUserDefaults] integerForKey:PrefLastUpdateCheck];
 		long now = (long)[[NSDate date] timeIntervalSince1970];
-		if (lastupdate == 0) {
+		long timediff = (now - lastupdate);
+		if (lastupdate == 0 || timediff > 259200) { // never or after three days
 			[self isUpdateAvailableAsync];
 			[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
-			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate not set, is now %u and did check", now]];
-		}
-		else {
-			long timediff = (now - lastupdate);
-			if (timediff > 259200) { // every three days
-				[self isUpdateAvailableAsync];
-				[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
-				[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Did check and set last update to %u", now]];
-			}
+			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate empty or expired, is now %u and did check", now]];
 		}
 	}
 }
 
 - (IBAction)downloadUpdate:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL: [ NSURL URLWithString: [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
-																			 [myPlugin pluginVersionNumber]] ] ];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self downloadUrl]]];
 }
 
 - (int)isUpdateAvailable

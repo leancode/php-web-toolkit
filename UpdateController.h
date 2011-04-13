@@ -20,6 +20,8 @@
 
 - (void)checkForUpdateAuto;
 - (NSString*)versioncheckUrl;
+- (NSString*)downloadUrl;
+- (NSString*)directDownloadUrl;
 - (IBAction)downloadUpdate:(id)sender;
 - (int)isUpdateAvailable;
 - (void)isUpdateAvailableAsync;

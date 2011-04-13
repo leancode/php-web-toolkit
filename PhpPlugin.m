@@ -70,6 +70,7 @@
 		// init vars
 		controller = aController;
 		myBundle = yourBundle;
+
 		
 		NSLog(@"Starting Coda PHPPlugin, version: %@ - report bugs at http://www.chipwreck.de", [self pluginVersionNumber]);
 				
@@ -749,7 +750,7 @@
 										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")
 										 cancelButton:YES];
 		if (res == 1) {
-			[downloadController startDownloadingURL:self];
+			[downloadController startDownloadingURL:[updateController directDownloadUrl]];
 		}
 	}
 	else if (avail == 0) {
@@ -773,7 +774,7 @@
 									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
 									 cancelButton:YES];
 	if (res == 1) {
-		[downloadController startDownloadingURL:self];
+		[downloadController startDownloadingURL:[updateController directDownloadUrl]];
 	}
 }
 

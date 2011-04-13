@@ -12,11 +12,13 @@
 
 extern NSString* const TmpUpdateFile;
 extern NSString* const TmpUnpackedFile;
-extern NSString* const DownloadUrl;
 
 @interface DownloadController : NSWindowController
 {
 	PhpPlugin *myPlugin;
+	NSString *downloadUrl;
+	NSString *downloadFilename;
+	NSString *downloadPath;
 	NSURLResponse *downloadResponse;
 	NSURLDownload *theDownload;
 	int64_t bytesReceived;
@@ -27,8 +29,14 @@ extern NSString* const DownloadUrl;
 	IBOutlet NSProgressIndicator *progressIndicator;
 }
 
+@property (copy) NSString *downloadUrl;
+@property (copy) NSString *downloadFilename;
+@property (copy) NSString *downloadPath;
+@property (copy) NSURLDownload *theDownload;
+@property (copy) NSURLResponse *downloadResponse;
+
 - (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
-- (void)startDownloadingURL:sender;
+- (void)startDownloadingURL:(NSString*)url;
 - (void)reportError:(NSString*)err;
 - (IBAction)extractAndInstall:(id)sender;
 - (IBAction)downloadWebsite:(id)sender;
