@@ -21,7 +21,6 @@ extern NSString* const DownloadUrl;
 	int64_t bytesReceived;
 	
 	IBOutlet NSPanel *downloadPanel;
-	IBOutlet NSButton *doneButton;
 	IBOutlet NSTextField *responseLabel;
 	IBOutlet NSProgressIndicator *progressIndicator;
 }
