@@ -76,7 +76,6 @@
 	return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:@"Cancel" thirdButton:thirdButton];
 }
 
-
 - (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg cancelButton:(BOOL)yesorno
 {
 	if (yesorno) {

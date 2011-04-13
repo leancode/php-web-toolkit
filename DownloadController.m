@@ -9,8 +9,8 @@
 #import "DownloadController.h"
 #import "PhpPlugin.h"
 
-NSString* const TmpUpdateFile = @"/tmp/coda-plugin-update.zip";
-NSString* const TmpUnpackedFile = @"/tmp/PhpPlugin.codaplugin";
+NSString* const TmpUpdateFile = @"coda-plugin-update.zip";
+NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin-current.zip";
 
 @implementation DownloadController
@@ -34,18 +34,20 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:DownloadUrl]
 												cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData //NSURLRequestUseProtocolCachePolicy
 											timeoutInterval:60.0];
-	NSURLDownload  *theDownload = [[NSURLDownload alloc] initWithRequest:theRequest
-																delegate:self];
+	theDownload = [[NSURLDownload alloc] initWithRequest:theRequest delegate:self];
     if (theDownload)
-	{
-		[[NSFileManager defaultManager] removeItemAtPath:TmpUnpackedFile error:NULL];
-        [theDownload setDestination:TmpUpdateFile allowOverwrite:YES];
+	{		
+		[[NSFileManager defaultManager] removeItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile] error:NULL];
+		[[NSFileManager defaultManager] removeItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile] error:NULL];
+		
+        [theDownload setDestination:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile] allowOverwrite:YES];
 
 		[downloadPanel makeKeyAndOrderFront:self];
+		[downloadWebButton setEnabled:NO];
 		[responseLabel setStringValue:@"Download started."];
     }
 	else {
-		[self reportError:@"Could not start download (no access to /tmp/ ?)"];
+		[self reportError:[NSString stringWithFormat:@"Could not start download. Perhaps no access to @%", [NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile]]];
     }
 }
 
@@ -93,34 +95,34 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
     [download release];
 	[progressIndicator stopAnimation:self];
 	[responseLabel setStringValue:@"Finished."];
-	[self doneButtonPushed:self];	
+	[self extractAndInstall:self];	
 }
 
-- (IBAction)doneButtonPushed:(id)sender
+- (IBAction)extractAndInstall:(id)sender
 {
 	@try {
 		[responseLabel setStringValue:@"Unpacking..."];
 		
 		NSTask *unzipTask = [[NSTask alloc] init]; //if ([[NSWorkspace sharedWorkspace] openFile:TmpUpdateFile withApplication:@"Finder" andDeactivate:YES]) {
 		[unzipTask setLaunchPath:@"/usr/bin/unzip"];
-		[unzipTask setCurrentDirectoryPath:@"/tmp/"];
-		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", @"-q", TmpUpdateFile, nil]];
+		[unzipTask setCurrentDirectoryPath:NSTemporaryDirectory()];
+		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", @"-q",[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUpdateFile], nil]];
 		[unzipTask launch];
 		[unzipTask waitUntilExit];
 		
 		[responseLabel setStringValue:@"Unpacking done."];
 		
-		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:TmpUnpackedFile])
+		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]])
 		{
-			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:TmpUnpackedFile] path] withApplication:@"Coda"]) {
+			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]] path] withApplication:@"Coda"]) {
 				[downloadPanel close];
 			}
 			else {
-				[self reportError:[NSString stringWithFormat:@"Could not open %@ with Coda", TmpUnpackedFile]];
+				[self reportError:[NSString stringWithFormat:@"Could not open %@ with Coda", [NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]]];
 			}
 		}
 		else {
-			[self reportError:[NSString stringWithFormat:@"Could find unpacked file %@", TmpUnpackedFile]];
+			[self reportError:[NSString stringWithFormat:@"Could find unpacked file %@", [NSTemporaryDirectory() stringByAppendingPathComponent:TmpUnpackedFile]]];
 		}
 		
 		[unzipTask release];
@@ -130,16 +132,24 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin
 	}
 }
 
+- (IBAction)downloadWebsite:(id)sender
+{
+	[myPlugin downloadUpdateWeb];
+	[downloadPanel close];
+}
+
 - (void)reportError:(NSString*)err
 {
 	[myPlugin doLog:err];
-	[responseLabel setStringValue:[NSString stringWithFormat:@"Error!\n%@", err]];
+	[responseLabel setStringValue:[NSString stringWithFormat:@"Error!\n%@\n\nClick the button to download from the website", err]];
 	[responseLabel setTextColor:[NSColor redColor]];
 	
+	[downloadWebButton setEnabled:YES];
 }
 
 - (void)dealloc
 {
+	[theDownload release];
     [super dealloc];
 }
 

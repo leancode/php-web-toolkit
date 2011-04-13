@@ -65,6 +65,7 @@
 // updates
 - (void)showUpdateAvailable;
 - (void)checkForUpdateNow;
+- (void)downloadUpdateWeb;
 
 // helpers
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;

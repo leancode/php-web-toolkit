@@ -13,11 +13,13 @@
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>NSTextField</string>
-			<string>NSTextFieldCell</string>
-			<string>NSWindowTemplate</string>
 			<string>NSView</string>
+			<string>NSWindowTemplate</string>
 			<string>NSProgressIndicator</string>
 			<string>NSCustomObject</string>
+			<string>NSButtonCell</string>
+			<string>NSButton</string>
+			<string>NSTextFieldCell</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,7 +46,7 @@
 			<object class="NSWindowTemplate" id="825750484">
 				<int key="NSWindowStyleMask">67</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{185, 859}, {470, 119}}</string>
+				<string key="NSWindowRect">{{185, 859}, {470, 163}}</string>
 				<int key="NSWTFlags">-1539832832</int>
 				<string key="NSWindowTitle">Download Update</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -58,7 +60,7 @@
 							<reference key="NSNextResponder" ref="796541787"/>
 							<int key="NSvFlags">1292</int>
 							<object class="NSPSMatrix" key="NSDrawMatrix"/>
-							<string key="NSFrame">{{79, 78}, {373, 20}}</string>
+							<string key="NSFrame">{{79, 122}, {373, 20}}</string>
 							<reference key="NSSuperview" ref="796541787"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="763824308"/>
@@ -68,7 +70,7 @@
 						<object class="NSTextField" id="700186957">
 							<reference key="NSNextResponder" ref="796541787"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 82}, {59, 17}}</string>
+							<string key="NSFrame">{{17, 126}, {59, 17}}</string>
 							<reference key="NSSuperview" ref="796541787"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="281787636"/>
@@ -77,7 +79,7 @@
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents">Progress</string>
-								<object class="NSFont" key="NSSupport">
+								<object class="NSFont" key="NSSupport" id="781465791">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>
 									<int key="NSfFlags">1044</int>
@@ -106,10 +108,10 @@
 						<object class="NSTextField" id="763824308">
 							<reference key="NSNextResponder" ref="796541787"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 20}, {436, 54}}</string>
+							<string key="NSFrame">{{17, 60}, {436, 58}}</string>
 							<reference key="NSSuperview" ref="796541787"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="470137891"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="413325181">
 								<int key="NSCellFlags">69336577</int>
@@ -128,8 +130,30 @@
 								</object>
 							</object>
 						</object>
+						<object class="NSButton" id="470137891">
+							<reference key="NSNextResponder" ref="796541787"/>
+							<int key="NSvFlags">268</int>
+							<string key="NSFrame">{{265, 12}, {191, 32}}</string>
+							<reference key="NSSuperview" ref="796541787"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSButtonCell" key="NSCell" id="626955538">
+								<int key="NSCellFlags">67239424</int>
+								<int key="NSCellFlags2">134217728</int>
+								<string key="NSContents">Download from Website</string>
+								<reference key="NSSupport" ref="781465791"/>
+								<reference key="NSControlView" ref="470137891"/>
+								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags2">129</int>
+								<string key="NSAlternateContents"/>
+								<string type="base64-UTF8" key="NSKeyEquivalent">DQ</string>
+								<int key="NSPeriodicDelay">200</int>
+								<int key="NSPeriodicInterval">25</int>
+							</object>
+						</object>
 					</object>
-					<string key="NSFrame">{{7, 11}, {470, 119}}</string>
+					<string key="NSFrame">{{7, 11}, {470, 163}}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="700186957"/>
@@ -173,6 +197,22 @@
 						<reference key="destination" ref="763824308"/>
 					</object>
 					<int key="connectionID">19</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">downloadWebButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="470137891"/>
+					</object>
+					<int key="connectionID">22</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">downloadWebsite:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="470137891"/>
+					</object>
+					<int key="connectionID">23</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -219,6 +259,7 @@
 							<reference ref="281787636"/>
 							<reference ref="700186957"/>
 							<reference ref="763824308"/>
+							<reference ref="470137891"/>
 						</object>
 						<reference key="parent" ref="825750484"/>
 					</object>
@@ -255,6 +296,20 @@
 						<reference key="object" ref="413325181"/>
 						<reference key="parent" ref="763824308"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">20</int>
+						<reference key="object" ref="470137891"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="626955538"/>
+						</object>
+						<reference key="parent" ref="796541787"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">21</int>
+						<reference key="object" ref="626955538"/>
+						<reference key="parent" ref="470137891"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -272,6 +327,8 @@
 					<string>2.IBPluginDependency</string>
 					<string>2.IBWindowTemplateEditedContentRect</string>
 					<string>2.NSWindowTemplate.visibleAtLaunch</string>
+					<string>20.IBPluginDependency</string>
+					<string>21.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
@@ -294,6 +351,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -308,7 +367,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">19</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -317,14 +376,35 @@
 					<string key="className">DownloadController</string>
 					<string key="superclassName">NSWindowController</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">doneButtonPushed:</string>
-						<string key="NS.object.0">id</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>downloadWebsite:</string>
+							<string>extractAndInstall:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+						</object>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">doneButtonPushed:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">doneButtonPushed:</string>
-							<string key="candidateClassName">id</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>downloadWebsite:</string>
+							<string>extractAndInstall:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">downloadWebsite:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">extractAndInstall:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -332,12 +412,14 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>downloadPanel</string>
+							<string>downloadWebButton</string>
 							<string>progressIndicator</string>
 							<string>responseLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSPanel</string>
+							<string>NSButton</string>
 							<string>NSProgressIndicator</string>
 							<string>NSTextField</string>
 						</object>
@@ -347,6 +429,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>downloadPanel</string>
+							<string>downloadWebButton</string>
 							<string>progressIndicator</string>
 							<string>responseLabel</string>
 						</object>
@@ -355,6 +438,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">downloadPanel</string>
 								<string key="candidateClassName">NSPanel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">downloadWebButton</string>
+								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">progressIndicator</string>

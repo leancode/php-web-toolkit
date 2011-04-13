@@ -18,16 +18,19 @@ extern NSString* const DownloadUrl;
 {
 	PhpPlugin *myPlugin;
 	NSURLResponse *downloadResponse;
+	NSURLDownload *theDownload;
 	int64_t bytesReceived;
 	
 	IBOutlet NSPanel *downloadPanel;
 	IBOutlet NSTextField *responseLabel;
+	IBOutlet NSButton *downloadWebButton;
 	IBOutlet NSProgressIndicator *progressIndicator;
 }
 
 - (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
 - (void)startDownloadingURL:sender;
 - (void)reportError:(NSString*)err;
-- (IBAction)doneButtonPushed:(id)sender;
+- (IBAction)extractAndInstall:(id)sender;
+- (IBAction)downloadWebsite:(id)sender;
 
 @end

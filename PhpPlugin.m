@@ -745,13 +745,10 @@
 {
 	int avail = [updateController isUpdateAvailable];
 	if (avail == 1) {
-		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to download (restart Coda after installing)",@"")
+		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to update (restart Coda after installing)",@"")
 										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")
-										 thirdButton:@"Install now (beta)"];
+										 cancelButton:YES];
 		if (res == 1) {
-			[updateController downloadUpdate:nil];
-		}
-		else if (res == 3) {
 			[downloadController startDownloadingURL:self];
 		}
 	}
@@ -765,15 +762,17 @@
 	}
 }
 
+- (void)downloadUpdateWeb
+{
+	[updateController downloadUpdate:nil];
+}
+
 - (void)showUpdateAvailable
 {
-	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to download (restart Coda after installing)",@"")
+	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to update (restart Coda after installing)",@"")
 									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
-									 thirdButton:@"Install now (beta)"];
+									 cancelButton:YES];
 	if (res == 1) {
-		[updateController downloadUpdate:nil];
-	}
-	else if (res == 3) {
 		[downloadController startDownloadingURL:self];
 	}
 }
