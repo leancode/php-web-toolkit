@@ -42,10 +42,10 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSWindowTemplate" id="825750484">
-				<int key="NSWindowStyleMask">83</int>
+				<int key="NSWindowStyleMask">67</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{185, 859}, {470, 119}}</string>
-				<int key="NSWTFlags">-1539833856</int>
+				<int key="NSWTFlags">-1539832832</int>
 				<string key="NSWindowTitle">Download Update</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
@@ -92,13 +92,13 @@
 										<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 									</object>
 								</object>
-								<object class="NSColor" key="NSTextColor" id="798467260">
+								<object class="NSColor" key="NSTextColor">
 									<int key="NSColorSpace">6</int>
 									<string key="NSCatalogName">System</string>
-									<string key="NSColorName">controlTextColor</string>
+									<string key="NSColorName">controlShadowColor</string>
 									<object class="NSColor" key="NSColor">
 										<int key="NSColorSpace">3</int>
-										<bytes key="NSWhite">MAA</bytes>
+										<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 									</object>
 								</object>
 							</object>
@@ -112,17 +112,20 @@
 							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="413325181">
-								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">272629760</int>
+								<int key="NSCellFlags">69336577</int>
+								<int key="NSCellFlags2">272760832</int>
 								<string key="NSContents">Starting...</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
-									<double key="NSSize">13</double>
-									<int key="NSfFlags">16</int>
+									<double key="NSSize">11</double>
+									<int key="NSfFlags">3100</int>
 								</object>
 								<reference key="NSControlView" ref="763824308"/>
 								<reference key="NSBackgroundColor" ref="445960705"/>
-								<reference key="NSTextColor" ref="798467260"/>
+								<object class="NSColor" key="NSTextColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4zNzU2NjEzNzU3IDAuMzc1NjYxMzc1NyAwLjM3NTY2MTM3NTcAA</bytes>
+								</object>
 							</object>
 						</object>
 					</object>

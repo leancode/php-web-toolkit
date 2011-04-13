@@ -27,6 +27,7 @@ extern NSString* const DownloadUrl;
 
 - (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
 - (void)startDownloadingURL:sender;
-- (IBAction)doneButtonPushed: (id)sender;
+- (void)reportError:(NSString*)err;
+- (IBAction)doneButtonPushed:(id)sender;
 
 @end

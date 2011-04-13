@@ -11,7 +11,7 @@
 
 NSString* const TmpUpdateFile = @"/tmp/coda-plugin-update.zip";
 NSString* const TmpUnpackedFile = @"/tmp/PhpPlugin.codaplugin";
-NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugi-current.zip";
+NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugin-current.zip";
 
 @implementation DownloadController
 
@@ -36,13 +36,16 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugi-
 											timeoutInterval:60.0];
 	NSURLDownload  *theDownload = [[NSURLDownload alloc] initWithRequest:theRequest
 																delegate:self];
-    if (theDownload) {
-        [theDownload setDestination:TmpUpdateFile allowOverwrite:YES];
+    if (theDownload)
+	{
 		[[NSFileManager defaultManager] removeItemAtPath:TmpUnpackedFile error:NULL];
-		[downloadPanel orderFront:self];
-		[responseLabel setStringValue:@""];
-    } else {
-		[responseLabel setStringValue:@"Could not start download (no access to /tmp/ ?)"];
+        [theDownload setDestination:TmpUpdateFile allowOverwrite:YES];
+
+		[downloadPanel makeKeyAndOrderFront:self];
+		[responseLabel setStringValue:@"Download started."];
+    }
+	else {
+		[self reportError:@"Could not start download (no access to /tmp/ ?)"];
     }
 }
 
@@ -65,15 +68,14 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugi-
 	int64_t expectedLength = [downloadResponse expectedContentLength];
     bytesReceived += length;
 	
-    if (expectedLength != NSURLResponseUnknownLength) 
+    if (expectedLength != NSURLResponseUnknownLength)
 	{
 		double percentComplete = (bytesReceived * 100.0 / expectedLength);
 		unsigned percentInt = (int)(bytesReceived * 100.0 / expectedLength);
 		[progressIndicator setDoubleValue:percentComplete];
 		[responseLabel setStringValue:[NSString stringWithFormat:@"%u%% done", percentInt]];
     } 
-	else 
-	{
+	else {
 		[progressIndicator setIndeterminate:YES];
 		[responseLabel setStringValue:[NSString stringWithFormat:@"%lld bytes received", bytesReceived]];
     }
@@ -83,8 +85,7 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugi-
 {
     [download release];
 	[progressIndicator stopAnimation:self];
-	[responseLabel setStringValue:[error localizedDescription]];
-	[myPlugin doLog:[NSString stringWithFormat:@"Download failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey: NSErrorFailingURLStringKey]]]; // 10.6: NSURLErrorFailingURLStringErrorKey
+	[self reportError:[NSString stringWithFormat:@"Download failed: %@", [error localizedDescription]]];
 }
 
 - (void)downloadDidFinish:(NSURLDownload *)download
@@ -109,28 +110,32 @@ NSString* const DownloadUrl = @"http://www.chipwreck.de/downloads/php-codaplugi-
 		
 		[responseLabel setStringValue:@"Unpacking done."];
 		
-		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:TmpUnpackedFile]) {
+		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:TmpUnpackedFile])
+		{
 			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:TmpUnpackedFile] path] withApplication:@"Coda"]) {
 				[downloadPanel close];
 			}
 			else {
-				[responseLabel setStringValue:[NSString stringWithFormat:@"Could not open %@ with Coda", TmpUnpackedFile]];
-				[myPlugin doLog:[NSString stringWithFormat:@"Could not open %@ with Coda", TmpUnpackedFile]];
+				[self reportError:[NSString stringWithFormat:@"Could not open %@ with Coda", TmpUnpackedFile]];
 			}
 		}
 		else {
-			[responseLabel setStringValue:[NSString stringWithFormat:@"Could not find unpacked %@", TmpUnpackedFile]];
-			[myPlugin doLog:[NSString stringWithFormat:@"Could not find unpacked file %@", TmpUnpackedFile]];
+			[self reportError:[NSString stringWithFormat:@"Could find unpacked file %@", TmpUnpackedFile]];
 		}
 		
 		[unzipTask release];
 	}
 	@catch (NSException *e) {
-		[myPlugin doLog:[NSString stringWithFormat:@"Exception in doneButtonPushed: %@", 
-						 [[[e name] stringByAppendingString:NSLocalizedString(@"\n\nReason:\n",@"") ] stringByAppendingString:[e reason]]
-		]];
-		[responseLabel setStringValue:[NSString stringWithFormat:@"Exception:", [e name]]];
+		[self reportError:[NSString stringWithFormat:@"Exception: %@", [e reason]]];
 	}
+}
+
+- (void)reportError:(NSString*)err
+{
+	[myPlugin doLog:err];
+	[responseLabel setStringValue:[NSString stringWithFormat:@"Error!\n%@", err]];
+	[responseLabel setTextColor:[NSColor redColor]];
+	
 }
 
 - (void)dealloc
