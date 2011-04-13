@@ -15,4 +15,4 @@ while read -r line ; do
 done
 my="${my}${CR}${line}"
 
-/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc "$1" -- "$my" | iconv -s -f UTF-8 -t ISO8859-1 --
+/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc "$1" -- "$my" "$2" | iconv -s -f UTF-8 -t ISO8859-1 --

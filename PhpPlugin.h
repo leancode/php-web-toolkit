@@ -17,7 +17,7 @@
 #import "PhpTidyConfig.h"
 #import "JSON.h"
 
-@class CodaPlugInsController, PreferenceController, MessagingController, ValidationResult, UpdateController;
+@class CodaPlugInsController, PreferenceController, MessagingController, ValidationResult, UpdateController, DownloadController;
 
 @interface PhpPlugin : NSObject <CodaPlugIn>
 {
@@ -25,6 +25,7 @@
 	PreferenceController *preferenceController;
 	MessagingController *messageController;
 	UpdateController *updateController;
+	DownloadController *downloadController;
 	
 	NSBundle *myBundle;
 	NSString *versionNumber;

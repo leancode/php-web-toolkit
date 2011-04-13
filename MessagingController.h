@@ -39,7 +39,8 @@
 - (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
 - (void)setBundlePath: (NSString *)thePath;
 
-- (int)showAlert:(NSAlertStyle)alertStyle message:(NSString*)msg additional:(NSString*)addMsg secondButton:(NSString*)secondButton;
+- (int)showAlert:(NSAlertStyle)alertStyle message:(NSString*)msg additional:(NSString*)addMsg secondButton:(NSString*)secondButton thirdButton:(NSString*)thirdButton;
+- (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg thirdButton:(NSString*)thirdButton;
 - (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg cancelButton:(BOOL)yesorno;
 - (void)alertCriticalError:(NSString*)errMsg additional:(NSString*)addMsg;
 - (void)alertCriticalException:(NSException*)e;

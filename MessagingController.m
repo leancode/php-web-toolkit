@@ -40,11 +40,12 @@
 
 #pragma mark Alerting
 
-- (int)showAlert:(NSAlertStyle)alertStyle message:(NSString*)msg additional:(NSString*)addMsg secondButton:(NSString*)secondButton
+- (int)showAlert:(NSAlertStyle)alertStyle message:(NSString*)msg additional:(NSString*)addMsg secondButton:(NSString*)secondButton thirdButton:(NSString*)thirdButton 
 {
 	int ret = 0;
 	
 	NSAlert *alert = [[NSAlert alloc] init];
+	
 	[alert setAlertStyle: alertStyle];
 	[alert addButtonWithTitle: @"Ok"];
 	[alert setIcon: [[[NSImage alloc] initWithContentsOfFile:[myPlugin pluginIconPath]] autorelease]];
@@ -55,28 +56,40 @@
 	if (secondButton != nil) {
 		[alert addButtonWithTitle: secondButton];
 	}
-	
+	if (thirdButton != nil) {
+		[alert addButtonWithTitle: thirdButton];
+	}
 	int res = [alert runModal];
 	if (res == NSAlertFirstButtonReturn) {
 		ret = 1;
+	}
+	if (res == NSAlertThirdButtonReturn) {
+		ret = 3;
 	}
 	[alert release];
 	return ret;
 }
 
+
+- (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg thirdButton:(NSString*)thirdButton
+{
+	return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:@"Cancel" thirdButton:thirdButton];
+}
+
+
 - (int)alertInformation:(NSString*)errMsg additional:(NSString*)addMsg cancelButton:(BOOL)yesorno
 {
 	if (yesorno) {
-		return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:@"Cancel"];
+		return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:@"Cancel" thirdButton:nil];
 	}
 	else {
-		return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:nil];
+		return [self showAlert:NSInformationalAlertStyle message:errMsg additional:addMsg secondButton:nil thirdButton:nil];
 	}
 }
 
 - (void)alertCriticalError:(NSString*)errMsg additional:(NSString*)addMsg
 {
-	if ([self showAlert: NSCriticalAlertStyle message:errMsg additional:addMsg secondButton:@"Help"] != 1) {
+	if ([self showAlert: NSCriticalAlertStyle message:errMsg additional:addMsg secondButton:@"Help" thirdButton:nil] != 1) {
 		[myPlugin goToHelpWebsite];
 	}
 }

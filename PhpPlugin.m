@@ -6,7 +6,7 @@
 //  Copyright 2008-2011 chipwreck.de. All rights reserved.
 
 /*
-@later: jshint/lint configuration?:
+@later: jshint/lint configuration:
  
 	browser    : true, // if the standard browser globals should be predefined
 	cap        : true, // if upper case HTML should be allowed
@@ -38,6 +38,7 @@
 #import "CodaPlugInsController.h"
 #import "PreferenceController.h"
 #import "MessagingController.h"
+#import "DownloadController.h"
 #import "UpdateController.h"
 #import "ValidationResult.h"
 #import "HtmlValidationConfig.h"
@@ -62,6 +63,9 @@
 		
 		updateController = [[UpdateController alloc] init];
 		[updateController setMyPlugin:self];
+		
+		downloadController = [[DownloadController alloc] init];
+		[downloadController setMyPlugin:self];
 		
 		// init vars
 		controller = aController;
@@ -710,21 +714,14 @@
 			[options appendString:@"indent_char_space,"];
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
-		[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
-		/*
-		ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
-		
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
-			NSMutableArray *args = [NSMutableArray arrayWithObject:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"]];
+			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
 			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 		}
-		else {
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];
+		else {		
+			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
 			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
 		}
-		 */
-		
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
@@ -748,10 +745,14 @@
 {
 	int avail = [updateController isUpdateAvailable];
 	if (avail == 1) {
-		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download. (Restart Coda after installing)",@"")
-										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"") cancelButton:YES];
+		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download (restart Coda after installing)",@"")
+										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")
+										 thirdButton:@"Update (beta)"];
 		if (res == 1) {
 			[updateController downloadUpdate:nil];
+		}
+		else if (res == 3) {
+			[downloadController startDownloadingURL:self];
 		}
 	}
 	else if (avail == 0) {
@@ -766,11 +767,15 @@
 
 - (void)showUpdateAvailable
 {
-	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download in your browser.",@"")
-									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"") cancelButton:YES];
+	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\nClick OK to download (restart Coda after installing)",@"")
+									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
+									 thirdButton:@"Update (beta)"];
 	if (res == 1) {
 		[updateController downloadUpdate:nil];
-	}	
+	}
+	else if (res == 3) {
+		[downloadController startDownloadingURL:self];
+	}
 }
 
 #pragma mark Helper methods

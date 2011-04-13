@@ -1086,7 +1086,7 @@ if (typeof exports !== "undefined")
 // Start JSTidy for Coda PHP & Web Toolkit
 
 if (!arguments[0] || !arguments[1]) {
-    print('No input received:');
+    print('No input received');
 }
 else {
 	var options = {'preserve_newlines': false};

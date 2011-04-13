@@ -101,7 +101,7 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 
 - (id)init 
 { 
-	self = [super initWithWindowNibName:@"Preferences"]; 	
+	self = [super initWithWindowNibName:@"Preferences"];
 	//	[[NSUserDefaultsController sharedUserDefaultsController] setAppliesImmediately: NO];
 	[[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:[self getDefaults]];
 	[self setDefaults];
@@ -169,7 +169,7 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefAutoSave];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefResultWindow];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefPhpBeepOnly];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefTidyInternal];
+	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefTidyInternal];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefUpdateCheck];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssTidyConfig];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefHtmlTidyConfig];

@@ -25,6 +25,8 @@
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
 		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
+		AC42908C13550F5700B50A5F /* DownloadController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC42908B13550F5700B50A5F /* DownloadController.m */; };
+		AC42908E1355152400B50A5F /* DownloadPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC42908D1355152400B50A5F /* DownloadPanel.xib */; };
 		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
 		AC6209D812B6D4440080B995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC6209D712B6D4440080B995 /* Localizable.strings */; };
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
@@ -112,6 +114,9 @@
 		AC394B4C1323FEE100A9FC27 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InfoPanel.xib; sourceTree = "<group>"; };
 		AC3E522713298B9D00EFD884 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
 		AC3E522813298B9E00EFD884 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
+		AC42908A13550F5600B50A5F /* DownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadController.h; sourceTree = "<group>"; };
+		AC42908B13550F5700B50A5F /* DownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadController.m; sourceTree = "<group>"; };
+		AC42908D1355152400B50A5F /* DownloadPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadPanel.xib; sourceTree = "<group>"; };
 		AC46272B13304DC500B4B0AF /* plug-ins.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "plug-ins.icns"; sourceTree = "<group>"; };
 		AC5C56E1126A557700359B53 /* CssProcssor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssProcssor.h; sourceTree = "<group>"; };
 		AC5C56E2126A557700359B53 /* CssProcssor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssProcssor.m; sourceTree = "<group>"; };
@@ -189,6 +194,7 @@
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
+				AC42908D1355152400B50A5F /* DownloadPanel.xib */,
 				AC102CDE1326C4BA00F69278 /* InfoPanel.xib */,
 				ACEF739E132727E00025427D /* ResultPanel.xib */,
 				AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */,
@@ -305,6 +311,8 @@
 				ACF14D101328229E00749312 /* UpdateController.m */,
 				AC035B0E132AD58400FD06CC /* RequestController.h */,
 				AC035B0F132AD58400FD06CC /* RequestController.m */,
+				AC42908A13550F5600B50A5F /* DownloadController.h */,
+				AC42908B13550F5700B50A5F /* DownloadController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -394,6 +402,7 @@
 				AC102F171327047900F69278 /* growlnotify in Resources */,
 				ACA91D8D1264E4C10032639D /* tidy in Resources */,
 				ACB7A41A133177130051D672 /* js-call.sh in Resources */,
+				AC42908E1355152400B50A5F /* DownloadPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +476,7 @@
 				ACF14D111328229E00749312 /* UpdateController.m in Sources */,
 				AC3E522913298B9E00EFD884 /* InfoView.m in Sources */,
 				AC035B10132AD58500FD06CC /* RequestController.m in Sources */,
+				AC42908C13550F5700B50A5F /* DownloadController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
