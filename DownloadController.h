@@ -3,7 +3,6 @@
 //  PhpPlugin
 //
 //  Created by mario on 13.04.11.
-//  Copyright 2011 wysiwyg software design gmbh. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -19,6 +18,7 @@ extern NSString* const TmpUnpackedFile;
 	NSString *downloadUrl;
 	NSString *downloadFilename;
 	NSString *downloadPath;
+	NSBox *progressBox;
 	NSURLResponse *downloadResponse;
 	NSURLDownload *theDownload;
 	int64_t bytesReceived;
@@ -26,6 +26,7 @@ extern NSString* const TmpUnpackedFile;
 	IBOutlet NSPanel *downloadPanel;
 	IBOutlet NSTextField *responseLabel;
 	IBOutlet NSButton *downloadWebButton;
+	IBOutlet NSButton *updateButton;
 	IBOutlet NSProgressIndicator *progressIndicator;
 }
 
@@ -36,8 +37,10 @@ extern NSString* const TmpUnpackedFile;
 @property (copy) NSURLResponse *downloadResponse;
 
 - (void)setMyPlugin:(PhpPlugin *)myPluginInstance;
-- (void)startDownloadingURL:(NSString*)url;
-- (void)reportError:(NSString*)err;
+- (void)showPanelWithUrl:(NSString*)url;
+- (void)reportError:(NSString*)err additional:(NSString*)additional;
+- (IBAction)startDownload:(id)sender;
+- (IBAction)closePanel:(id)sender;
 - (IBAction)extractAndInstall:(id)sender;
 - (IBAction)downloadWebsite:(id)sender;
 
