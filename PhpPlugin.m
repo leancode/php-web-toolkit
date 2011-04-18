@@ -155,6 +155,10 @@
 									 target:self selector:@selector(checkForUpdateNow)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
+		[controller registerActionWithTitle:NSLocalizedString(@"[TEST] Update plugin", @"") underSubmenuWithTitle:nil
+									 target:self selector:@selector(testUpdatePlugin)
+						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		
 		[controller registerActionWithTitle:NSLocalizedString(@"Help!", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(goToHelpWebsite)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
@@ -189,7 +193,7 @@
 	SEL action = [aMenuItem action];
 	
 	if ( ![self editorTextPresent] ) {
-		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) ) {
+		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) && action != @selector(testUpdatePlugin) ) {
 			return NO;
 		}
 	}
@@ -742,16 +746,21 @@
 
 #pragma mark Updates
 
+- (void)testUpdatePlugin
+{
+	[downloadController showPanelWithUrl:@"http://www.chipwreck.de/downloads/php-codaplugin-3.1beta.zip"];
+}
+
 - (void)checkForUpdateNow
 {
 	int avail = [updateController isUpdateAvailable];
 	if (avail == 1) {
+		[downloadController showPanelWithUrl:[updateController directDownloadUrl]];
+		/*
 		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to update (restart Coda after installing)",@"")
 										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")
 										 cancelButton:YES];
-		if (res == 1) {
-			[downloadController startDownloadingURL:[updateController directDownloadUrl]];
-		}
+		*/
 	}
 	else if (avail == 0) {
 		[messageController showInfoMessage:NSLocalizedString(@"No update available",@"")
@@ -763,19 +772,22 @@
 	}
 }
 
-- (void)downloadUpdateWeb
-{
-	[updateController downloadUpdate:nil];
-}
-
 - (void)showUpdateAvailable
 {
+	[downloadController showPanelWithUrl:[updateController directDownloadUrl]];
+	/*
 	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to update (restart Coda after installing)",@"")
 									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
 									 cancelButton:YES];
 	if (res == 1) {
 		[downloadController startDownloadingURL:[updateController directDownloadUrl]];
 	}
+	 */
+}
+
+- (void)downloadUpdateWeb
+{
+	[updateController downloadUpdate:nil];
 }
 
 #pragma mark Helper methods
@@ -974,12 +986,7 @@
 
 - (NSString *)tidyExecutable
 {
-	if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefTidyInternal] == 1) {
-		return [[myBundle resourcePath] stringByAppendingString:@"/tidy"];
-	}
-	else {
-		return [[NSUserDefaults standardUserDefaults] stringForKey:PrefTidyLocal];		
-	};	
+	return [[myBundle resourcePath] stringByAppendingString:@"/tidy"];
 }
 
 - (NSString *)tidyVersion

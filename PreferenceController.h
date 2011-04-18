@@ -95,7 +95,6 @@ extern NSString* const PrefJSTidyIndentSize;
 
 	IBOutlet NSPanel *prefPanel;
 	IBOutlet NSTabView *tabView;
-	IBOutlet NSButton *useTidyInternal;
 	IBOutlet NSButton *procFailSafeBtn;
 	IBOutlet NSButton *procGroupBtn;
 	IBOutlet NSButton *procIndentBtn;
@@ -121,8 +120,6 @@ extern NSString* const PrefJSTidyIndentSize;
 	
 	IBOutlet NSTextField *labelPhpLocal;
 	IBOutlet NSTextField *fieldPhpLocal;
-	IBOutlet NSTextField *labelTidyLocal;
-	IBOutlet NSTextField *fieldTidyLocal;
 	IBOutlet NSTextField *labelProcSorting;
 	
 	IBOutlet NSTextField *htmlValidatorUrl;
@@ -130,7 +127,6 @@ extern NSString* const PrefJSTidyIndentSize;
 	
 	IBOutlet NSTextField *versionNumberField;
 	IBOutlet NSTextField *phpversionNumberField;
-	IBOutlet NSTextField *tidyversionNumberField;
 	
 	IBOutlet NSTextView *customTidyConfig;
 
@@ -143,10 +139,10 @@ extern NSString* const PrefJSTidyIndentSize;
 - (IBAction)resetPressed: (id)sender;
 - (BOOL)windowShouldClose:(id)sender;
 
-- (NSArray*)cssTidyConfigs;
-- (NSArray*)cssLevels;
-- (NSArray*)phpTidyBraces;
-- (NSArray*)htmlTidyConfigs;
+- (NSArray *)cssTidyConfigs;
+- (NSArray *)cssLevels;
+- (NSArray *)phpTidyBraces;
+- (NSArray *)htmlTidyConfigs;
 - (NSArray *)procConfigsBraces;
 - (NSArray *)procConfigsIndentSize;
 - (NSArray *)procConfigsFormatting;
@@ -157,7 +153,6 @@ extern NSString* const PrefJSTidyIndentSize;
 - (IBAction)procFailSafeModified: (id)sender;
 - (IBAction)procColumnizeModified: (id)sender;
 - (IBAction)procIndentModified: (id)sender;
-- (IBAction)tidyInternalConfigModified: (id)sender;
 - (IBAction)htmlConfigModified: (id)sender;
 - (void)enableTextView:(NSTextView*)textView As:(BOOL)enableIt;
 - (IBAction)selectHTMLValidator:(id)sender;

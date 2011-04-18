@@ -31,6 +31,7 @@
 		AC6209D812B6D4440080B995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC6209D712B6D4440080B995 /* Localizable.strings */; };
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
 		AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209EF12B6D5E50080B995 /* Preferences.xib */; };
+		AC7127A313566FDB00471500 /* ValidationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7127A213566FDB00471500 /* ValidationController.m */; };
 		AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7B768810F8F70F00089B11 /* CssTidyConfig.m */; };
 		AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */; };
 		AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */; };
@@ -121,6 +122,8 @@
 		AC5C56E1126A557700359B53 /* CssProcssor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssProcssor.h; sourceTree = "<group>"; };
 		AC5C56E2126A557700359B53 /* CssProcssor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssProcssor.m; sourceTree = "<group>"; };
 		AC6209CC12B6D3340080B995 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AC7127A113566FDB00471500 /* ValidationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValidationController.h; sourceTree = "<group>"; };
+		AC7127A213566FDB00471500 /* ValidationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValidationController.m; sourceTree = "<group>"; };
 		AC7B768710F8F70F00089B11 /* CssTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssTidyConfig.h; sourceTree = "<group>"; };
 		AC7B768810F8F70F00089B11 /* CssTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssTidyConfig.m; sourceTree = "<group>"; };
 		AC7BC118127B512400C58EB4 /* jstidy.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = jstidy.js; sourceTree = "<group>"; };
@@ -169,8 +172,8 @@
 			children = (
 				AC3E522A13298CE300EFD884 /* Controller */,
 				AC7908601329904D00CADF8C /* Views */,
-				AC388E2313557D6D00B50448 /* Interface */,
 				08FB77AFFE84173DC02AAC07 /* Validation */,
+				AC388E2313557D6D00B50448 /* Interface */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				AC13AE26126F5BE400B5B8FF /* JSON */,
 				32C88E010371C26100C91783 /* Other Sources */,
@@ -232,6 +235,8 @@
 				ACEF7402132738D40025427D /* HtmlValidationConfig.m */,
 				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
 				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
+				AC7127A113566FDB00471500 /* ValidationController.h */,
+				AC7127A213566FDB00471500 /* ValidationController.m */,
 			);
 			name = Validation;
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				AC3E522913298B9E00EFD884 /* InfoView.m in Sources */,
 				AC035B10132AD58500FD06CC /* RequestController.m in Sources */,
 				AC42908C13550F5700B50A5F /* DownloadController.m in Sources */,
+				AC7127A313566FDB00471500 /* ValidationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

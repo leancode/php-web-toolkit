@@ -141,7 +141,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	else {
 		[self loadHtmlTidyCustomConfig];		
 	}
-	[self tidyInternalConfigModified:self];
 	[self htmlConfigModified:self];
 	[self procFailSafeModified:self];
 	[self procIndentModified:self];
@@ -149,7 +148,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	
 	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
 	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
-	[tidyversionNumberField setStringValue: [myPlugin tidyVersion]];
 }
 
 - (NSMutableDictionary *)getDefaults
@@ -161,7 +159,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
 	[defaultValues setObject:@"file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
-	[defaultValues setObject:@"/usr/bin/tidy" forKey: PrefTidyLocal];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefJsViaShell];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseGrowl];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
@@ -189,7 +186,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 - (IBAction)resetPressed: (id)sender
 {
 	[[NSUserDefaultsController sharedUserDefaultsController] revertToInitialValues:sender];
-	[self tidyInternalConfigModified:self];
 	[self htmlConfigModified:self];
 	[self procFailSafeModified:self];
 }
@@ -204,13 +200,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	}
 	else {		
 		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
-	}
-	if (! [self fileExists:[fieldTidyLocal stringValue]] ) {
-		canClose = false;
-		[labelTidyLocal setTextColor:[NSColor redColor]];
-	}
-	else {
-		[labelTidyLocal setTextColor:[NSColor controlTextColor]];		
 	}
 	
 	if (canClose) {
@@ -228,7 +217,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 		// [[NSUserDefaultsController sharedUserDefaultsController] save:sender];
 		
 		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
-		[labelTidyLocal setTextColor:[NSColor controlTextColor]];
 		
 		[self saveHtmlTidyCustomConfig:[customTidyConfig string]];
 		
@@ -236,7 +224,7 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	}
 	else {
 		NSBeep();
-		[tabView selectTabViewItemAtIndex:4];
+		[tabView selectTabViewItemAtIndex:([tabView numberOfTabViewItems] - 1)];
 		return NO;
 	}	
 }
@@ -340,16 +328,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	}
 }
 
-- (IBAction)tidyInternalConfigModified:(id)sender
-{
-	if ([useTidyInternal state] == 1) {
-		[fieldTidyLocal setEnabled:false];
-	}
-	else {
-		[fieldTidyLocal setEnabled:true];		
-	}
-	[tidyversionNumberField setStringValue: [myPlugin tidyVersion]];
-}
 
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
 {

@@ -41,6 +41,8 @@
 - (NSString*)name;
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem;
 
+- (void)testUpdatePlugin;
+
 // actions: local validation
 - (void)doValidateHtml;
 - (void)doValidatePhp;

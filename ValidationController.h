@@ -10,8 +10,12 @@
 
 
 @interface ValidationController : NSObject {
-@private
+
     
 }
+
+-(NSStringEncoding)encoding;
+-(NSString*)input;
+-(NSMutableString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout;
 
 @end
