@@ -62,7 +62,7 @@
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-							 timeoutInterval:10];
+							 timeoutInterval:timeoutInterval];
 	NSError *error;
 	NSURLResponse *response;
 	NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
