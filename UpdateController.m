@@ -19,20 +19,22 @@
 
 - (NSString *)versioncheckUrl
 {
-	return [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=229&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=" stringByAppendingString: 
-			[myPlugin pluginVersionNumber]];
+	return [UrlVersionCheck stringByAppendingString: [myPlugin pluginVersionNumber]];
 }
 
 - (NSString *)downloadUrl
 {
-	return [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
-									[myPlugin pluginVersionNumber]];
+	return [UrlDownload stringByAppendingString: [myPlugin pluginVersionNumber]];
 }
 
 - (NSString *)directDownloadUrl
 {
-	return [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&direct=1&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
-								 [myPlugin pluginVersionNumber]];
+	return [UrlDownloadDirect stringByAppendingString: [myPlugin pluginVersionNumber]];
+}
+
+- (NSString *)testDownloadUrl
+{
+	return UrlDownloadTest;
 }
 
 - (void)checkForUpdateAuto
@@ -41,7 +43,7 @@
 		long lastupdate = [[NSUserDefaults standardUserDefaults] integerForKey:PrefLastUpdateCheck];
 		long now = (long)[[NSDate date] timeIntervalSince1970];
 		long timediff = (now - lastupdate);
-		if (lastupdate == 0 || timediff > 259200) { // never or after three days
+		if (lastupdate == 0 || timediff > delayUpdateCheck) { // never or after three days
 			[self isUpdateAvailableAsync];
 			[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
 			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate empty or expired, is now %u and did check", now]];
@@ -100,7 +102,7 @@
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-							 timeoutInterval:10];
+							 timeoutInterval:timeoutInterval];
 	theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {

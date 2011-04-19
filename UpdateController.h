@@ -10,10 +10,14 @@
 
 @class PhpPlugin;
 
+static double timeoutInterval = 20;
+static long delayUpdateCheck = 259200;
+
 @interface UpdateController : NSObject
 {
-	NSURLConnection *theConnection;
+	
 	PhpPlugin *myPlugin;
+	NSURLConnection *theConnection;	
 	NSMutableData *receivedData;
 }
 - (void)setMyPlugin:(PhpPlugin*)myPluginInstance;
@@ -22,6 +26,7 @@
 - (NSString*)versioncheckUrl;
 - (NSString*)downloadUrl;
 - (NSString*)directDownloadUrl;
+- (NSString*)testDownloadUrl;
 - (IBAction)downloadUpdate:(id)sender;
 - (int)isUpdateAvailable;
 - (void)isUpdateAvailableAsync;

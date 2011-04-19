@@ -11,6 +11,9 @@
 
 @class PhpPlugin;
 
+static double fadeOutDuration = 0.6;
+static unsigned int defaultNotificationDelay = 4;
+
 @interface MessagingController : NSWindowController // <GrowlApplicationBridgeDelegate>
 {
 	PhpPlugin *myPlugin;

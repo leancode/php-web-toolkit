@@ -88,6 +88,16 @@ extern NSString* const PrefJSTidySpaceAfterAnonFunction;
 extern NSString* const PrefJSTidyBracesOnOwnLine;
 extern NSString* const PrefJSTidyIndentSize;
 
+extern NSString* const UrlHomepage;
+extern NSString* const UrlDonationpage;
+extern NSString* const UrlHelp;
+extern NSString* const UrlProCSSor;
+extern NSString* const UrlTidyHelp;
+extern NSString* const UrlVersionCheck;
+extern NSString* const UrlDownload;
+extern NSString* const UrlDownloadDirect;
+extern NSString* const UrlDownloadTest;
+
 @interface PreferenceController : NSWindowController
 {	
 	PhpPlugin *myPlugin;

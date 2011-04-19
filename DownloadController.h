@@ -12,6 +12,8 @@
 extern NSString* const TmpUpdateFile;
 extern NSString* const TmpUnpackedFile;
 
+static double timeoutInterval = 20;
+
 @interface DownloadController : NSWindowController
 {
 	PhpPlugin *myPlugin;

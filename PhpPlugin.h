@@ -17,6 +17,8 @@
 #import "PhpTidyConfig.h"
 #import "JSON.h"
 
+static unsigned int maxLogLen = 2048;
+
 @class CodaPlugInsController, PreferenceController, MessagingController, ValidationResult, UpdateController, DownloadController;
 
 @interface PhpPlugin : NSObject <CodaPlugIn>
@@ -40,8 +42,6 @@
 - (id)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle;
 - (NSString*)name;
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem;
-
-- (void)testUpdatePlugin;
 
 // actions: local validation
 - (void)doValidateHtml;
@@ -68,6 +68,7 @@
 - (void)showUpdateAvailable;
 - (void)checkForUpdateNow;
 - (void)downloadUpdateWeb;
+- (void)testUpdatePlugin;
 
 // helpers
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
@@ -88,14 +89,13 @@
 
 // info getters
 - (NSString*)pluginVersionNumber;
-- (NSString *)pluginIconPath;
+- (NSString*)pluginIconPath;
 - (NSString*)phpVersion;
 - (NSString*)tidyExecutable;
-- (NSString*)tidyVersion;
 - (NSString*)jscInterpreter;
 
 // growl
-- (NSString *)growlNotify;
+- (NSString*)growlNotify;
 
 // filter
 - (void)reformatWith:(NSString*)command arguments:(NSMutableArray*)args called:(NSString*)name;

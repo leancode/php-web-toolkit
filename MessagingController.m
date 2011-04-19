@@ -21,7 +21,7 @@
 		[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
 		durationInfoPanel = [[NSUserDefaults standardUserDefaults] integerForKey:PrefInfoPanelAfter];
 		if (!durationInfoPanel) {
-			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:4] forKey: PrefInfoPanelAfter];
+			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:defaultNotificationDelay] forKey: PrefInfoPanelAfter];
 		}
 	}
 
@@ -141,7 +141,7 @@
 
 		NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: [NSArray arrayWithObjects:myFadeOut, nil]];
 		[animation setAnimationBlockingMode: NSAnimationBlocking];
-		[animation setDuration: 0.6];
+		[animation setDuration: fadeOutDuration];
 		[animation startAnimation];
 		[animation release];
 	}

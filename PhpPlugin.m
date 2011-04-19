@@ -71,32 +71,7 @@
 		controller = aController;
 		myBundle = yourBundle;
 
-		
 		NSLog(@"Starting Coda PHPPlugin, version: %@ - report bugs at http://www.chipwreck.de", [self pluginVersionNumber]);
-				
-		// check sbjson
-		if (![[NSUserDefaults standardUserDefaults] integerForKey:PrefMsgShown]) {
-			@try {
-				SBJsonParser *json = [SBJsonParser alloc];
-				if (![json respondsToSelector:@selector(objectWithString:error:)]) {
-					int lesscssresp = [messageController alertInformation:
-									   NSLocalizedString(@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead.",@"")
-								additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once, but proCSSor is disabled until the conflict is resolved.",@"")
-							  cancelButton:YES];
-
-					if (lesscssresp == 1) {
-						NSString *lesscsspath = [@"~/Library/Application Support/Coda/Plug-Ins" stringByExpandingTildeInPath];
-						[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/LessCSS.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
-						[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/MojoPlugin.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
-					}
-					
-					[[NSUserDefaults standardUserDefaults] setInteger:1 forKey: PrefMsgShown];
-				}
-			}
-			@catch (NSException *e) {
-				[messageController alertCriticalException:e];
-			}
-		}	
 		
 		// PHP >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate PHP", @"") underSubmenuWithTitle:@"PHP"
@@ -155,7 +130,7 @@
 									 target:self selector:@selector(checkForUpdateNow)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
-		[controller registerActionWithTitle:NSLocalizedString(@"[TEST] Update plugin", @"") underSubmenuWithTitle:nil
+		[controller registerActionWithTitle:NSLocalizedString(@"[TEST] Plugin update selftest", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(testUpdatePlugin)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
@@ -166,6 +141,30 @@
 		[controller registerActionWithTitle:NSLocalizedString(@"Preferences/About...", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(showPreferencesWindow)
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
+		
+		// check sbjson
+		if (![[NSUserDefaults standardUserDefaults] integerForKey:PrefMsgShown]) {
+			@try {
+				SBJsonParser *json = [SBJsonParser alloc];
+				if (![json respondsToSelector:@selector(objectWithString:error:)]) {
+					int lesscssresp = [messageController alertInformation:
+									   NSLocalizedString(@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead.",@"")
+															   additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once, but proCSSor is disabled until the conflict is resolved.",@"")
+															 cancelButton:YES];
+					
+					if (lesscssresp == 1) {
+						NSString *lesscsspath = [@"~/Library/Application Support/Coda/Plug-Ins" stringByExpandingTildeInPath];
+						[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/LessCSS.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
+						[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/MojoPlugin.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
+					}
+					
+					[[NSUserDefaults standardUserDefaults] setInteger:1 forKey: PrefMsgShown];
+				}
+			}
+			@catch (NSException *e) {
+				[messageController alertCriticalException:e];
+			}
+		}
 		
 		// startup msg
 		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
@@ -179,7 +178,7 @@
 		// check for updates (autocheck)
 		[updateController checkForUpdateAuto];
 	}
-	
+		
 	return self;
 }
 
@@ -748,7 +747,7 @@
 
 - (void)testUpdatePlugin
 {
-	[downloadController showPanelWithUrl:@"http://www.chipwreck.de/downloads/php-codaplugin-3.1beta.zip"];
+	[downloadController showPanelWithUrl:[updateController testDownloadUrl]];
 }
 
 - (void)checkForUpdateNow
@@ -756,11 +755,6 @@
 	int avail = [updateController isUpdateAvailable];
 	if (avail == 1) {
 		[downloadController showPanelWithUrl:[updateController directDownloadUrl]];
-		/*
-		int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to update (restart Coda after installing)",@"")
-										   additional:NSLocalizedString(@"You can enable automatic checking for updates in Preferences.",@"")
-										 cancelButton:YES];
-		*/
 	}
 	else if (avail == 0) {
 		[messageController showInfoMessage:NSLocalizedString(@"No update available",@"")
@@ -775,14 +769,6 @@
 - (void)showUpdateAvailable
 {
 	[downloadController showPanelWithUrl:[updateController directDownloadUrl]];
-	/*
-	int res = [messageController alertInformation:NSLocalizedString(@"An update for PHP & Web Toolkit is available!\n\nClick OK to update (restart Coda after installing)",@"")
-									   additional:NSLocalizedString(@"You can disable automatic checking for updates in Preferences.",@"")
-									 cancelButton:YES];
-	if (res == 1) {
-		[downloadController startDownloadingURL:[updateController directDownloadUrl]];
-	}
-	 */
 }
 
 - (void)downloadUpdateWeb
@@ -819,8 +805,8 @@
 - (void)doLog:(NSString *)loggable
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefDebugMode])  {
-		if ([loggable length] > 2048) {
-			NSLog(@"[Coda PHP Toolkit] %@ [...]", [loggable substringToIndex:2040]);
+		if ([loggable length] > maxLogLen) {
+			NSLog(@"[Coda PHP Toolkit] %@ [...]", [loggable substringToIndex:maxLogLen]);
 		}
 		else {
 			NSLog(@"[Coda PHP Toolkit] %@", loggable);
@@ -854,7 +840,7 @@
 		while (true) {
 			currLineNumber = [textView currentLineNumber];
 			if (prevLineNumber == currLineNumber && numIterations > 10) {
-				[messageController alertCriticalError:NSLocalizedString(@"Could not execute goToLine()",@"") additional:NSLocalizedString(@"Please use Mac or Unix line endings if possible",@"")];
+				[messageController alertCriticalError:NSLocalizedString(@"Could not execute goToLine()",@"") additional:NSLocalizedString(@"Please report this error",@"")];
 				break;
 			}
 			if (currLineNumber >= lineNumber || numIterations > 65536) {
@@ -987,19 +973,6 @@
 - (NSString *)tidyExecutable
 {
 	return [[myBundle resourcePath] stringByAppendingString:@"/tidy"];
-}
-
-- (NSString *)tidyVersion
-{
-	NSMutableArray *args = [NSMutableArray arrayWithObject:@"-v"];
-	
-	NSString *result = [self filterTextInput:@"" with: [self tidyExecutable] options:args encoding:NSUTF8StringEncoding useStdout:YES];
-	if (result != nil) {
-		return result;
-	}
-	else {
-		return @"ERROR - HTMLTidy not found";
-	}
 }
 
 - (NSString *)jscInterpreter

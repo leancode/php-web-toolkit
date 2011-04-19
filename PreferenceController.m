@@ -93,6 +93,16 @@ NSString* const PrefJSTidyPreserveNewlines = @"dechipwreckPrefJSTidyPreserveNewl
 NSString* const PrefJSTidySpaceAfterAnonFunction = @"dechipwreckPrefJSTidySpaceAfterAnonFunction";
 NSString* const PrefJSTidyBracesOnOwnLine = @"dechipwreckPrefJSTidyBracesOnOwnLine";
 NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
+
+NSString* const UrlHomepage =  @"http://www.chipwreck.de/blog/software/coda-php/?utm_source=prefs&utm_medium=plugin&utm_campaign=homelink";
+NSString* const UrlDonationpage = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink";
+NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink";
+NSString* const UrlProCSSor = @"http://procssor.com";
+NSString* const UrlTidyHelp = @"http://tidy.sourceforge.net/docs/quickref.html";
+NSString* const UrlVersionCheck = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=483&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=";
+NSString* const UrlDownload = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";
+NSString* const UrlDownloadDirect = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&direct=1&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";
+NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codaplugin-3.1beta.zip";
 	
 @implementation PreferenceController
 
@@ -328,7 +338,6 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 	}
 }
 
-
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
 {
 	[textView setSelectable: enableIt];
@@ -346,30 +355,27 @@ NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 
 - (IBAction)goToTidyDocumentationWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://tidy.sourceforge.net/docs/quickref.html" ]];	
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlTidyHelp]];	
 }
 
 - (IBAction)goToHelpWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink"]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlHelp]];
 }
 
 - (IBAction)goToProcssor:(id)sender
 {
-	NSString *baseurl = @"http://procssor.com";
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlProCSSor]];
 }
 
 - (IBAction)goToDonationPage:(id)sender
 {
-	NSString *baseurl = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink";
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlDonationpage]];
 }
 
 - (IBAction)goToPluginHomepage:(id)sender
 {
-	NSString *baseurl = @"http://www.chipwreck.de/blog/software/coda-php/?utm_source=prefs&utm_medium=plugin&utm_campaign=homelink";
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlHomepage]];
 }
 
 - (IBAction)selectHTMLValidator:(id)sender
