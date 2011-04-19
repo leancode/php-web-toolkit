@@ -19,10 +19,6 @@
 		[NSBundle loadNibNamed:@"InfoPanel" owner:self];
 		[NSBundle loadNibNamed:@"ResultPanel" owner:self];
 		[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
-		durationInfoPanel = [[NSUserDefaults standardUserDefaults] integerForKey:PrefInfoPanelAfter];
-		if (!durationInfoPanel) {
-			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:defaultNotificationDelay] forKey: PrefInfoPanelAfter];
-		}
 	}
 
 	return self;
@@ -118,7 +114,7 @@
 		[[infoPanel standardWindowButton:NSWindowCloseButton] setHidden:!isSticky];
 		
 		if (!isSticky) {
-			panelTimer = [NSTimer scheduledTimerWithTimeInterval:durationInfoPanel target:self selector:@selector(hideInfoMessage:) userInfo:nil repeats:NO];
+			panelTimer = [NSTimer scheduledTimerWithTimeInterval:PrefInfoPanelAfter target:self selector:@selector(hideInfoMessage:) userInfo:nil repeats:NO];
 		}
 		[infoPanel orderFront:self];
 	}
@@ -141,7 +137,7 @@
 
 		NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: [NSArray arrayWithObjects:myFadeOut, nil]];
 		[animation setAnimationBlockingMode: NSAnimationBlocking];
-		[animation setDuration: fadeOutDuration];
+		[animation setDuration: PrefInfoPanelFadeout];
 		[animation startAnimation];
 		[animation release];
 	}

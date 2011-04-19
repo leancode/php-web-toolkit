@@ -266,7 +266,7 @@
 {
 	@try {
 		[messageController clearResult:self];
-		if ([[self getEditorText] length] > 65535) {
+		if ([[self getEditorText] length] > maxLengthJs) {
 			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
@@ -695,7 +695,7 @@
 
 - (void)doJsTidy
 {
-	if ([[self getEditorText] length] > 65535) {
+	if ([[self getEditorText] length] > maxLengthJs) {
 		[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 		return;
 	}
@@ -805,8 +805,8 @@
 - (void)doLog:(NSString *)loggable
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefDebugMode])  {
-		if ([loggable length] > maxLogLen) {
-			NSLog(@"[Coda PHP Toolkit] %@ [...]", [loggable substringToIndex:maxLogLen]);
+		if ([loggable length] > PrefMaxLogLen) {
+			NSLog(@"[Coda PHP Toolkit] %@ [...]", [loggable substringToIndex:PrefMaxLogLen]);
 		}
 		else {
 			NSLog(@"[Coda PHP Toolkit] %@", loggable);
@@ -875,7 +875,7 @@
 - (BOOL)editorSelectionPresent /* Selection desired and present? */
 {
 	CodaTextView *textView = [controller focusedTextView:self];
-	return ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseSelection] && [textView selectedText] != nil && [[textView selectedText] length] > 5);
+	return ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseSelection] && [textView selectedText] != nil && [[textView selectedText] length] > PrefMinSelectionLen);
 }
 
 - (BOOL)editorTextPresent /* Is a textview present and does it contain text? */

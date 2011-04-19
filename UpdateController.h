@@ -10,12 +10,8 @@
 
 @class PhpPlugin;
 
-static double timeoutInterval = 20;
-static long delayUpdateCheck = 259200;
-
 @interface UpdateController : NSObject
-{
-	
+{	
 	PhpPlugin *myPlugin;
 	NSURLConnection *theConnection;	
 	NSMutableData *receivedData;

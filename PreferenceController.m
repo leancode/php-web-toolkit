@@ -15,19 +15,25 @@
 #import "PhpTidyConfig.h"
 #import "HtmlValidationConfig.h"
 
-NSString* const PrefPhpLocal = @"dechipwreckPHPLocal";
-NSString* const PrefTidyLocal = @"dechipwreckTidyLocal";
-NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
-NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
-NSString* const PrefInfoPanelAfter = @"dechipwreckInfoPanelFadeOutAfter";
-NSString* const PrefResultWindow = @"dechipwreckResultWindow";
-NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
+double const PrefInfoPanelAfter = 4;
+float const PrefInfoPanelFadeout = 0.4;
+double const PrefTimeoutNS = 20;
+double const PrefMaxLogLen = 4096;
+double const PrefMinSelectionLen = 5;
+double const PrefDelayUpdateCheck = 29400;
 
 NSString* const PrefHtmlValidatorUrl = @"dechipwreckHtmlValidatorUrl";
 NSString* const PrefCssValidatorUrl = @"dechipwreckCssValidatorUrl";
 NSString* const PrefProCSSorUrl = @"dechipwreckProCSSorUrl";
 NSString* const PrefHtmlValidatorParamFile = @"dechipwreckHtmlValidatorParamFile";
 NSString* const PrefCssValidatorParamFile = @"dechipwreckCssValidatorParamFile";
+
+NSString* const PrefPhpLocal = @"dechipwreckPHPLocal";
+NSString* const PrefTidyLocal = @"dechipwreckTidyLocal";
+NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
+NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
+NSString* const PrefResultWindow = @"dechipwreckResultWindow";
+NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
 
 NSString* const PrefProcFormatting = @"dechipwreckProcFormatting"; // property_formatting - newline>1, newline, same_line
 NSString* const PrefProcBraces = @"dechipwreckProcBraces"; // braces - default, aligned_braces, pico, pico_extra, gnu, gnu_saver, banner, horstmann
@@ -183,7 +189,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefProcSafe];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssLevel];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefPhpTidyReplacePhpTags];
-	[defaultValues setObject:[NSNumber numberWithInt:4] forKey: PrefInfoPanelAfter];
 	
 	return defaultValues;
 }

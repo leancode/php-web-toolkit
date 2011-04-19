@@ -43,7 +43,7 @@
 		long lastupdate = [[NSUserDefaults standardUserDefaults] integerForKey:PrefLastUpdateCheck];
 		long now = (long)[[NSDate date] timeIntervalSince1970];
 		long timediff = (now - lastupdate);
-		if (lastupdate == 0 || timediff > delayUpdateCheck) { // never or after three days
+		if (lastupdate == 0 || timediff > PrefDelayUpdateCheck ) { // never or after three days
 			[self isUpdateAvailableAsync];
 			[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
 			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate empty or expired, is now %u and did check", now]];
@@ -62,7 +62,7 @@
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-							 timeoutInterval:timeoutInterval];
+							 timeoutInterval:PrefTimeoutNS];
 	NSError *error;
 	NSURLResponse *response;
 	NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
@@ -102,7 +102,7 @@
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-							 timeoutInterval:timeoutInterval];
+							 timeoutInterval:PrefTimeoutNS];
 	theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {

@@ -10,19 +10,25 @@
 
 @class PhpPlugin;
 
-extern NSString* const PrefPhpLocal;
-extern NSString* const PrefTidyLocal;
-extern NSString* const PrefTidyInternal;
-extern NSString* const PrefUseGrowl;
-extern NSString* const PrefInfoPanelAfter;
-extern NSString* const PrefResultWindow;
-extern NSString* const PrefJsViaShell;
+extern double const PrefInfoPanelAfter;
+extern float const PrefInfoPanelFadeout;
+extern double const PrefTimeoutNS;
+extern double const PrefMaxLogLen;
+extern double const PrefMinSelectionLen;
+extern double const PrefDelayUpdateCheck;
 
 extern NSString* const PrefHtmlValidatorUrl;
 extern NSString* const PrefCssValidatorUrl;
 extern NSString* const PrefProCSSorUrl;
 extern NSString* const PrefHtmlValidatorParamFile;
 extern NSString* const PrefCssValidatorParamFile;
+
+extern NSString* const PrefPhpLocal;
+extern NSString* const PrefTidyLocal;
+extern NSString* const PrefTidyInternal;
+extern NSString* const PrefUseGrowl;
+extern NSString* const PrefResultWindow;
+extern NSString* const PrefJsViaShell;
 
 extern NSString* const PrefProcFormatting;
 extern NSString* const PrefProcBraces;

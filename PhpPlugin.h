@@ -17,7 +17,7 @@
 #import "PhpTidyConfig.h"
 #import "JSON.h"
 
-static unsigned int maxLogLen = 2048;
+static unsigned int maxLengthJs = 65535;
 
 @class CodaPlugInsController, PreferenceController, MessagingController, ValidationResult, UpdateController, DownloadController;
 

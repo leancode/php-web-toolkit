@@ -6,6 +6,7 @@
 //
 
 #import "DownloadController.h"
+#import "PreferenceController.h"
 #import "PhpPlugin.h"
 
 NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
@@ -69,7 +70,7 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 	// Create request
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:downloadUrl]
 												cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData //NSURLRequestUseProtocolCachePolicy
-											timeoutInterval:timeoutInterval];
+											timeoutInterval:PrefTimeoutNS];
 	theDownload = [[NSURLDownload alloc] initWithRequest:theRequest delegate:self];
 	if (theDownload) {
 		[responseLabel setStringValue:@"Download initialized."];
