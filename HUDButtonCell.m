@@ -5,9 +5,9 @@
 //  Created by mario on 23.04.11.
 //
 
-#import "HUDButton.h"
+#import "HUDButtonCell.h"
 
-@implementation HUDButton
+@implementation HUDButtonCell
 
 -(void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView 
 {
