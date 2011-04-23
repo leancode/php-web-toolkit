@@ -29,6 +29,9 @@
 	
 	IBOutlet NSPanel *resultPanel;
 	IBOutlet WebView *resultView;
+	IBOutlet NSButton *resultPrintButton;
+	IBOutlet NSButton *resultFontPlusButton;
+	IBOutlet NSButton *resultFontMinusButton;
 	IBOutlet NSTextField *resultLabel;
 
 	NSTimer *panelTimer;

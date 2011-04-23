@@ -113,6 +113,16 @@
 		[infoTextAdditional setStringValue:additionalText];
 		[[infoPanel standardWindowButton:NSWindowCloseButton] setHidden:!isSticky];
 		
+		// Calc text height
+		NSTextView *utilityTextView = [[NSTextView alloc] initWithFrame:[infoTextAdditional frame]];
+		[utilityTextView setString:additionalText];
+		[[utilityTextView layoutManager] glyphRangeForTextContainer:[utilityTextView textContainer]]; // force layout
+		CGFloat newHeight = NSHeight([[utilityTextView layoutManager] usedRectForTextContainer:[utilityTextView textContainer]]);
+		[utilityTextView release];
+		
+		NSRect r = NSMakeRect([infoPanel frame].origin.x , [infoPanel frame].origin.y , [infoPanel frame].size.width, newHeight + [infoPanel contentMinSize].height);
+		[infoPanel setFrame:r display:YES animate:YES];
+
 		if (!isSticky) {
 			panelTimer = [NSTimer scheduledTimerWithTimeInterval:PrefInfoPanelAfter target:self selector:@selector(hideInfoMessage:) userInfo:nil repeats:NO];
 		}
