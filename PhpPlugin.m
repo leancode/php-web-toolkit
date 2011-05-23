@@ -125,14 +125,35 @@
 									 target:self selector:@selector(doJsTidy)
 						  representedObject:nil keyEquivalent:@"$~^j" pluginName:[self name]]; // cmd+alt+ctrl+j
 		
+
+		// [ß] >>
+		/*
+		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Open plugin resources", @"") underSubmenuWithTitle:@"[BETA TEST]"
+									 target:self selector:@selector(showPluginResources)
+						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		
+		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Test notifications", @"") underSubmenuWithTitle:@"[BETA TEST]"
+									 target:self selector:@selector(testNotifications)
+						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		*/
+		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Plugin update selftest", @"") underSubmenuWithTitle:nil
+									 target:self selector:@selector(testUpdatePlugin)
+						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		/*
+		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Tidy all", @"") underSubmenuWithTitle:@"[BETA TEST]"
+									 target:self selector:@selector(testTidyAll)
+						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		
+		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Validate all", @"") underSubmenuWithTitle:@"[BETA TEST]"
+									 target:self selector:@selector(testValidateAll)
+						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		 */
+
 		// root >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Check for updates", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(checkForUpdateNow)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
-		[controller registerActionWithTitle:NSLocalizedString(@"[TEST] Plugin update selftest", @"") underSubmenuWithTitle:nil
-									 target:self selector:@selector(testUpdatePlugin)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Help!", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(goToHelpWebsite)
@@ -192,7 +213,10 @@
 	SEL action = [aMenuItem action];
 	
 	if ( ![self editorTextPresent] ) {
-		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) && action != @selector(testUpdatePlugin) ) {
+		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite)
+			&& action != @selector(testUpdatePlugin) && action != @selector(showPluginResources) && action != @selector(testNotifications)
+			&& action != @selector(testTidyAll) && action != @selector(testValidateAll)
+			) {
 			return NO;
 		}
 	}
@@ -329,22 +353,18 @@
 			[options appendString:@"sub,"];
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
-		ValidationResult *myresult = [self validateWith:[self jscInterpreter] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
-		if ([myresult hasFailResult]) {
-			NSString *res = [[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
-			if (res != nil) {
-				[messageController showResult:
-				 [[MessagingController getCssForJsLint] stringByAppendingString:res]
-									   forUrl:@""
-									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
-			}
-			else {
-				[messageController showResult:
-				 [[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
-									   forUrl:@""
-									withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];
-			}
+		//	NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
+		
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, nil];
+		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
+	
+		 if ([myresult hasFailResult]) {
+			 // NSString *res = [[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
+
+			[messageController showResult:
+			 [[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
+									forUrl:@""
+								withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];			
 		}
 	}
 	@catch (NSException *e) {	
@@ -718,14 +738,19 @@
 			[options appendString:@"indent_char_space,"];
 		}
 		
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) {
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
+		
+		/*
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
 			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
 			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 		}
-		else {		
+		else {
 			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
 			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
 		}
+		 */
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
@@ -801,6 +826,49 @@
 {
 	[preferenceController showWindow:self];
 }
+
+- (void)showPluginResources
+{
+	NSString *respath = [@"~/Library/Application Support/Coda/Plug-Ins/PhpPlugin.codaplugin/Contents/Resources/" stringByExpandingTildeInPath];
+	[[NSWorkspace sharedWorkspace] selectFile:[respath stringByAppendingPathComponent:@"tidy"] inFileViewerRootedAtPath:respath];
+}
+
+- (void)testNotifications
+{
+	NSString *addText = @"Words may be considered inherently funny, for reasons ranging from onomatopoeia to phonosemantics.\nSuch words have been used by a range of influential comedians, including W. C. Fields, to enhance the humor of their routines.";
+	NSString *addTextHtml = @"<h1>H1 headline</h1><p>Words may be considered inherently funny, for reasons ranging from onomatopoeia to phonosemantics.</p><h3>Lorem ipsum h3</h3><p>Such words have been used by a range of influential comedians, including W. C. Fields, to enhance the humor of their routines.</p>";
+	
+	[messageController alertCriticalError:@"Critical Error (not really)" additional:addText];
+	[messageController alertInformation:@"Information only, has cancel button" additional:addText cancelButton:YES];
+	[messageController alertInformation:@"Information only, without a cancel button" additional:addText cancelButton:NO];
+	[messageController showResult:addTextHtml forUrl:@"http://www.google.com" withTitle:@"Just testing"];
+	[messageController showInfoMessage:@"Info Message, disappearing" additional:addText];
+	[messageController alertCriticalError:@"Critical Error (just to let the info-layer not disappear)" additional:addText];
+	[messageController showInfoMessage:@"Info Message, sticky" additional:addText sticky:YES];
+	[messageController alertCriticalError:@"Critical Error (just to let the info-layer not disappear)" additional:@"Here we got less text"];
+	[messageController showInfoMessage:@"Info Message, sticky" additional:@"Here we got less text" sticky:YES];
+}
+
+- (void)testTidyAll
+{
+	[self doStripPhp];
+	[self doJsMinify];
+	[self doJsTidy];
+	[self doTidyCss];
+	[self doTidyHtml];
+	[self doTidyPhp];
+	[self doProcssorRemote];
+}
+
+- (void)testValidateAll
+{
+	[self doValidateHtml];
+	[self doValidatePhp];
+	[self doValidateRemoteCss];
+	[self doValidateRemoteHtml];
+	[self doJsLint];
+}
+
 
 - (void)doLog:(NSString *)loggable
 {
@@ -990,7 +1058,6 @@
 - (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout
 {
 	NSMutableString *resultText = [self filterTextInput:[self getEditorText] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:usesstdout];
-	
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 	
 	if (resultText == nil || [resultText length] == 0) {
@@ -1030,13 +1097,15 @@
 		[messageController alertCriticalError:[name stringByAppendingFormat:@": %@",[resultText substringFromIndex:1]] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
+		/*
 		if ([name isEqualToString:@"JSTidy"] && (![[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell])) { // @todo not so cool
 			[self replaceEditorTextWith:[[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:NSUTF8StringEncoding]];
 		}
 		else {
 			[self replaceEditorTextWith:resultText];
 		}		
-		
+		*/
+		[self replaceEditorTextWith:resultText];
 		[messageController showInfoMessage:[name stringByAppendingString:@" done"] additional:[@"File: " stringByAppendingString:[self currentFilename]]];
 	}	
 }

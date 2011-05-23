@@ -1258,7 +1258,7 @@ warningAt("Mixed spaces and tabs.", line, at + 1);
 s = s.replace(/\t/g, tab);
 at = s.search(cx);
 if (at >= 0) {
-warningAt("Unsafe character.", line, at);
+//warningAt("Unsafe character.", line, at);
 }
 if (option.maxlen && option.maxlen < s.length) {
 warningAt("Line too long.", line, s.length);

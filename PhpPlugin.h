@@ -69,11 +69,15 @@ static unsigned int maxLengthJs = 65535;
 - (void)checkForUpdateNow;
 - (void)downloadUpdateWeb;
 - (void)testUpdatePlugin;
+- (void)testTidyAll;
+- (void)testValidateAll;
 
 // helpers
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
+- (void)showPluginResources;
+- (void)testNotifications;
 - (void)doLog:(NSString*)loggable;
 
 // editor actions
