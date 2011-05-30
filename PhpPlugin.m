@@ -6,31 +6,37 @@
 //  Copyright 2008-2011 chipwreck.de. All rights reserved.
 
 /*
-@later: jshint/lint configuration:
- 
-	browser    : true, // if the standard browser globals should be predefined
-	cap        : true, // if upper case HTML should be allowed
-	css        : true, // if CSS workarounds should be tolerated
-	debug      : true, // if debugger statements should be allowed
-	devel      : true, // if logging should be allowed (console, alert, etc.)
-	fragment   : true, // if HTML fragments should be allowed
-	laxbreak   : true, // if line breaks should not be checked
-	on         : true, // if HTML event handlers should be allowed
-	passfail   : true, // if the scan should stop on first error
+jshint setting defaults:
 
-
- boss       : true, // if advanced usage of assignments and == should be allowed	
- noarg      : true, // if arguments.caller and arguments.callee should be disallowed
- nonew      : true, // if using `new` for side-effects should be disallowed 
++ browser    : true, // if the standard browser globals should be predefined
++ debug      : true, // if debugger statements should be allowed
++ devel      : true, // if logging should be allowed (console, alert, etc.)
++ jquery     : true, // if jQuery globals should be predefined
++ laxbreak   : true, // if line breaks should not be checked
++ mootools    : true, // if MooTools globals should be predefined 
++ node        : true, // if the Node.js environment globals should be predefined
++ prototypejs : true, // if Prototype and Scriptaculous globals shoudl be predefined
  
- adsafe     : true, // if ADsafe should be enforced 
- es5        : true, // if ES5 syntax should be allowed
- couch      : true, // if CouchDB globals should be predefined
- jquery     : true, // if jQuery globals should be predefined
- node       : true, // if the Node.js environment globals should be predefined
- rhino      : true, // if the Rhino environment globals should be predefined
- windows    : true, // if MS Windows-specific globals should be predefined
- widget     : true  // if the Yahoo Widgets globals should be predefined
+jshint settings not used:
+
+- passfail   : true, // if the scan should stop on first error
+
+jshint no idea yet...
+ 
+? couch       : true, // if CouchDB globals should be predefined
+? es5         : true, // if ES5 syntax should be allowed
+? rhino       : true, // if the Rhino environment globals should be predefined
+? expr        : true, // if ExpressionStatement should be allowed as Programs
+? supernew    : true, // if `new function () { ... };` and `new Object;` should be tolerated
+
+NEXT:
+ eqnull      : true, // if == null comparisons should be tolerated
+ nonew       : true, // if using `new` for side-effects should be disallowed
+ boss        : true, // if advanced usage of assignments and == should be allowed	
+ noarg       : true, // if arguments.caller and arguments.callee should be disallowed 
+ shadow      : true, // if variable shadowing should be tolerated
+ latedef     : true, // if the use before definition should not be tolerated
+ globalstrict: true, // if global "use strict"; should be allowed (also enables 'strict')
  
  */
 
@@ -113,7 +119,7 @@
 						  representedObject:nil keyEquivalent:@"$~@p" pluginName:[self name]]; // cmd+alt+shift+p
 		
 		// JS >>
-		[controller registerActionWithTitle:NSLocalizedString(@"JS Lint", @"") underSubmenuWithTitle:@"JS"
+		[controller registerActionWithTitle:NSLocalizedString(@"JS Hint", @"") underSubmenuWithTitle:@"JS"
 									 target:self selector:@selector(doJsLint)
 						  representedObject:nil keyEquivalent:@"$~@j" pluginName:[self name]]; // cmd+alt+shift+j
 		
@@ -135,11 +141,11 @@
 		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Test notifications", @"") underSubmenuWithTitle:@"[BETA TEST]"
 									 target:self selector:@selector(testNotifications)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		*/
+
 		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Plugin update selftest", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(testUpdatePlugin)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		/*
+
 		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Tidy all", @"") underSubmenuWithTitle:@"[BETA TEST]"
 									 target:self selector:@selector(testTidyAll)
 						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
@@ -294,7 +300,7 @@
 			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
-		NSMutableString* options = [NSMutableString stringWithString:@"browser,cap,css,debug,devel,fragment,on,laxbreak,jquery,"];
+		NSMutableString* options = [NSMutableString stringWithString:@"browser,debug,devel,jquery,laxbreak,mootools,node,prototypejs,"];
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintBitwise]) {
 			[options appendString:@"bitwise,"];
 		}
@@ -352,10 +358,31 @@
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSub]) {
 			[options appendString:@"sub,"];
 		}
-		
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEqnull]) {
+			[options appendString:@"eqnull,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNoarg]) {
+			[options appendString:@"noarg,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNonew]) {
+			[options appendString:@"nonew,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintBoss]) {
+			[options appendString:@"boss,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintShadow]) {
+			[options appendString:@"shadow,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLatedef]) {
+			[options appendString:@"latedef,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSGlobalstrict]) {
+			[options appendString:@"globalstrict,"];
+		}
+
 		//	NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, nil];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];
 		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
 	
 		 if ([myresult hasFailResult]) {
@@ -523,6 +550,20 @@
 - (void)doTidyPhp
 {
 	@try {	
+		NSMutableArray	*vargs = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
+		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:vargs called:@"PHP" showResult:NO useStdOut:YES];
+		
+		if ([myresult hasFailResult]) {
+			NSBeep();
+			int lineOfError = 0;
+			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
+			[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
+			[scanner scanInt: &lineOfError];
+			
+			[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
+			return;
+		}
+		
 		NSMutableArray *args = [NSMutableArray array];
 		
 		[args addObject:@"-l"];
@@ -738,7 +779,7 @@
 			[options appendString:@"indent_char_space,"];
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, [self currentLineEnding], nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
 		
 		/*
@@ -1117,6 +1158,7 @@
 	
 	@try {
 		dataIn = [textInput dataUsingEncoding: anEncoding];
+		//[self doLog: [NSString stringWithFormat:@"in goes %@", textInput] ];
 	
 		NSPipe *toPipe = [NSPipe pipe];
 		NSPipe *fromPipe = [NSPipe pipe];

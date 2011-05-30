@@ -42,7 +42,11 @@
 		ACA67CD41343AC6200B705B5 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */; };
 		ACA91D8D1264E4C10032639D /* tidy in Resources */ = {isa = PBXBuildFile; fileRef = ACA91D8C1264E4C10032639D /* tidy */; };
 		ACB7A41A133177130051D672 /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = AC09ABDF1151A8B400E7E40F /* js-call.sh */; };
+		ACBB163B138B3A85002AB0C2 /* facebook-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBB1639138B3A85002AB0C2 /* facebook-24.png */; };
+		ACBB1644138B3EAF002AB0C2 /* flattr-paypal-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */; };
+		ACBB164C138B42B2002AB0C2 /* twitter_newbird_blue-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */; };
 		ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC89E2510A4092F0075B1A0 /* Encoding.m */; };
+		ACCDC33313625ABC003EBECF /* HUDButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCDC33213625ABC003EBECF /* HUDButtonCell.m */; };
 		ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */ = {isa = PBXBuildFile; fileRef = ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */; };
 		ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */; };
 		ACEF739F132727E00025427D /* ResultPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF739E132727E00025427D /* ResultPanel.xib */; };
@@ -59,6 +63,15 @@
 			buildActionMask = 2147483647;
 			dstPath = PhpPlugin.help;
 			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC51920F136256D5001FD8C7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,9 +149,14 @@
 		AC9E07C51118DC4E00AB0A91 /* tidy_config_format_bodyonly.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_bodyonly.txt; sourceTree = "<group>"; };
 		ACA91D8C1264E4C10032639D /* tidy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = tidy; sourceTree = "<group>"; };
 		ACB3ADD20EFDC150007830D2 /* CodaPlugInsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodaPlugInsController.h; sourceTree = "<group>"; };
+		ACBB1639138B3A85002AB0C2 /* facebook-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-24.png"; sourceTree = "<group>"; };
+		ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flattr-paypal-24.png"; sourceTree = "<group>"; };
+		ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter_newbird_blue-24.png"; sourceTree = "<group>"; };
 		ACC4EE40127CD012004DD845 /* jstidy-min.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = "jstidy-min.js"; sourceTree = "<group>"; };
 		ACC89E2410A4092F0075B1A0 /* Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encoding.h; sourceTree = "<group>"; };
 		ACC89E2510A4092F0075B1A0 /* Encoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Encoding.m; sourceTree = "<group>"; };
+		ACCDC33113625ABC003EBECF /* HUDButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDButtonCell.h; sourceTree = "<group>"; };
+		ACCDC33213625ABC003EBECF /* HUDButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDButtonCell.m; sourceTree = "<group>"; };
 		ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_check.txt; sourceTree = "<group>"; };
 		ACD6CCDC100012FC007E94B1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SheetPHPError.xib; sourceTree = "<group>"; };
 		ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "codaphp-plugin-icon.png"; sourceTree = "<group>"; };
@@ -195,6 +213,9 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */,
+				ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */,
+				ACBB1639138B3A85002AB0C2 /* facebook-24.png */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
@@ -335,6 +356,8 @@
 			children = (
 				AC3E522713298B9D00EFD884 /* InfoView.h */,
 				AC3E522813298B9E00EFD884 /* InfoView.m */,
+				ACCDC33113625ABC003EBECF /* HUDButtonCell.h */,
+				ACCDC33213625ABC003EBECF /* HUDButtonCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -352,6 +375,7 @@
 				AC29FF2A13303611005E5150 /* CopyFiles */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
+				AC51920F136256D5001FD8C7 /* CopyFiles */,
 				AC8353AE0FFFC8110063890D /* CopyFiles */,
 				AC24F90D0FFFD36F0077A062 /* ShellScript */,
 			);
@@ -416,6 +440,9 @@
 				ACA91D8D1264E4C10032639D /* tidy in Resources */,
 				ACB7A41A133177130051D672 /* js-call.sh in Resources */,
 				AC388E0B13557A9400B50448 /* DownloadPanel.xib in Resources */,
+				ACBB163B138B3A85002AB0C2 /* facebook-24.png in Resources */,
+				ACBB1644138B3EAF002AB0C2 /* flattr-paypal-24.png in Resources */,
+				ACBB164C138B42B2002AB0C2 /* twitter_newbird_blue-24.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +518,7 @@
 				AC035B10132AD58500FD06CC /* RequestController.m in Sources */,
 				AC42908C13550F5700B50A5F /* DownloadController.m in Sources */,
 				AC7127A313566FDB00471500 /* ValidationController.m in Sources */,
+				ACCDC33313625ABC003EBECF /* HUDButtonCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,6 +583,8 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+					"\"$(SRCROOT)/../../../_resources/Frameworks/binarygod-BGHUDAppKit-6eaee43/build/Release\"",
+					"\"$(SRCROOT)/../../../_resources/Frameworks\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -572,7 +602,7 @@
 					ppc,
 					"$(ARCHS_STANDARD_32_64_BIT)",
 				);
-				CURRENT_PROJECT_VERSION = 3.0;
+				CURRENT_PROJECT_VERSION = 3.1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -645,6 +675,8 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+					"\"$(SRCROOT)/../../../_resources/Frameworks/binarygod-BGHUDAppKit-6eaee43/build/Release\"",
+					"\"$(SRCROOT)/../../../_resources/Frameworks\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

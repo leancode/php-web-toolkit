@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1305</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1305</string>
+			<string key="NS.object.0">1306</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -43,15 +43,14 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSWindowTemplate" id="46651316">
-				<int key="NSWindowStyleMask">8211</int>
+				<int key="NSWindowStyleMask">8219</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{1413, 866}, {404, 125}}</string>
+				<string key="NSWindowRect">{{1413, 866}, {405, 95}}</string>
 				<int key="NSWTFlags">1685586944</int>
 				<string key="NSWindowTitle">Coda PHP &amp; Web Toolkit</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
-				<string key="NSWindowContentMaxSize">{600, 200}</string>
-				<string key="NSWindowContentMinSize">{360, 80}</string>
+				<string key="NSWindowContentMinSize">{360, 95}</string>
 				<object class="NSView" key="NSWindowView" id="227864950">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -59,8 +58,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSTextField" id="196049197">
 							<reference key="NSNextResponder" ref="227864950"/>
-							<int key="NSvFlags">270</int>
-							<string key="NSFrame">{{80, 87}, {307, 18}}</string>
+							<int key="NSvFlags">266</int>
+							<string key="NSFrame">{{80, 57}, {308, 18}}</string>
 							<reference key="NSSuperview" ref="227864950"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="315627067"/>
@@ -93,16 +92,15 @@
 						<object class="NSTextField" id="315627067">
 							<reference key="NSNextResponder" ref="227864950"/>
 							<int key="NSvFlags">274</int>
-							<string key="NSFrame">{{80, 20}, {307, 59}}</string>
+							<string key="NSFrame">{{80, 20}, {308, 19}}</string>
 							<reference key="NSSuperview" ref="227864950"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="789387779">
-								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">272760832</int>
-								<string type="base64-UTF8" key="NSContents">TXVsdGlsaW5lIExhYmVsCk11bHRpbGluZSBMYWJlbApNdWx0aWxpbmUgTGFiZWwKRnJhbnogcXVlciBn
-dXRlIElkZWU</string>
+								<int key="NSCellFlags">69336577</int>
+								<int key="NSCellFlags2">4325376</int>
+								<string key="NSContents">Multiline Label</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">11</double>
@@ -136,7 +134,7 @@ dXRlIElkZWU</string>
 									<string>NeXT TIFF v4.0 pasteboard type</string>
 								</object>
 							</object>
-							<string key="NSFrame">{{11, 46}, {62, 68}}</string>
+							<string key="NSFrame">{{11, 16}, {62, 68}}</string>
 							<reference key="NSSuperview" ref="227864950"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="196049197"/>
@@ -156,14 +154,14 @@ dXRlIElkZWU</string>
 							<bool key="NSEditable">YES</bool>
 						</object>
 					</object>
-					<string key="NSFrame">{{7, 11}, {404, 125}}</string>
+					<string key="NSFrame">{{7, 11}, {405, 95}}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="188959224"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
-				<string key="NSMinSize">{360, 99}</string>
-				<string key="NSMaxSize">{600, 219}</string>
+				<string key="NSMinSize">{360, 114}</string>
+				<string key="NSMaxSize">{1e+13, 1e+13}</string>
 				<string key="NSFrameAutosaveName">de.chipwreck.codaplugin.info</string>
 			</object>
 		</object>
@@ -237,9 +235,9 @@ dXRlIElkZWU</string>
 						<reference key="object" ref="227864950"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="196049197"/>
 							<reference ref="188959224"/>
 							<reference ref="315627067"/>
+							<reference ref="196049197"/>
 						</object>
 						<reference key="parent" ref="46651316"/>
 					</object>

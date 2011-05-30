@@ -101,7 +101,9 @@ NSString* const PrefJSTidyBracesOnOwnLine = @"dechipwreckPrefJSTidyBracesOnOwnLi
 NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
 
 NSString* const UrlHomepage =  @"http://www.chipwreck.de/blog/software/coda-php/?utm_source=prefs&utm_medium=plugin&utm_campaign=homelink";
-NSString* const UrlDonationpage = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink";
+NSString* const UrlDonationpage = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink#donate";
+NSString* const UrlTwitter = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=twitterlink#twitter";
+NSString* const UrlFacebook = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=facebooklink#facebook";
 NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink";
 NSString* const UrlProCSSor = @"http://procssor.com";
 NSString* const UrlTidyHelp = @"http://tidy.sourceforge.net/docs/quickref.html";
@@ -381,6 +383,16 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 - (IBAction)goToPluginHomepage:(id)sender
 {
 	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlHomepage]];
+}
+
+- (IBAction)goToFacebook:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlFacebook]];
+}
+
+- (IBAction)goToTwitter:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlTwitter]];	
 }
 
 - (IBAction)selectHTMLValidator:(id)sender

@@ -96,6 +96,8 @@ extern NSString* const PrefJSTidyIndentSize;
 
 extern NSString* const UrlHomepage;
 extern NSString* const UrlDonationpage;
+extern NSString* const UrlTwitter;
+extern NSString* const UrlFacebook;
 extern NSString* const UrlHelp;
 extern NSString* const UrlProCSSor;
 extern NSString* const UrlTidyHelp;
@@ -177,6 +179,8 @@ extern NSString* const UrlDownloadTest;
 - (IBAction)goToTidyDocumentationWebsite:(id)sender;
 - (IBAction)goToProcssor:(id)sender;
 - (IBAction)goToDonationPage:(id)sender;
+- (IBAction)goToFacebook:(id)sender;
+- (IBAction)goToTwitter:(id)sender;
 - (IBAction)goToPluginHomepage:(id)sender;
 
 - (BOOL)fileExists: (NSString*)filePath;
