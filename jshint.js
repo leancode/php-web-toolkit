@@ -3853,7 +3853,7 @@ loop:   for (;;) {
 if (typeof exports == 'object' && exports)
     exports.JSHINT = JSHINT;
 
-// END JSHINT
+// END JSHINT (version: 2011-04-16)
 	   
 var JSHINTWRAP = function (input, prefs) {
    prefs = prefs.split(',');
