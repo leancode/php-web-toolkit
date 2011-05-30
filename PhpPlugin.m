@@ -367,7 +367,7 @@ jshint no idea yet...
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLatedef]) {
 			[options appendString:@"latedef,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSGlobalstrict]) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintGlobalstrict]) {
 			[options appendString:@"globalstrict,"];
 		}
 

@@ -3627,7 +3627,6 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{13, 12}, {414, 14}}</string>
 																<reference key="NSSuperview" ref="167439502"/>
-																<reference key="NSNextKeyView" ref="880107628"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="548156588">
 																	<int key="NSCellFlags">67239424</int>
