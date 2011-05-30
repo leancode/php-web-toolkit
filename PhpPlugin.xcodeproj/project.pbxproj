@@ -213,11 +213,11 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */,
 				ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */,
 				ACBB1639138B3A85002AB0C2 /* facebook-24.png */,
-				8D5B49B7048680CD000E48DA /* Info.plist */,
-				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
 				AC102F161327047900F69278 /* growlnotify */,
 				ACA91D8C1264E4C10032639D /* tidy */,
