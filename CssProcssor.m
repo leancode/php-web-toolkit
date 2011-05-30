@@ -25,7 +25,7 @@ x  alignment - left,right - Set selector alignment. Only works with ‘tabbing' 
 
 ! indent_type - tab,space 
  
-Example Query: http://procssor.com/api?source=uri&css=http://graphics8.nytimes.com/css/0.1/screen/build/homepage/styles.css&indent_rules=1&indent_size=default
+Example Query: procssor.com/api?source=uri&css=http:\\graphics8.nytimes.com/css/0.1/screen/build/homepage/styles.css&indent_rules=1&indent_size=default
 */
 
 #import "CssProcssor.h"

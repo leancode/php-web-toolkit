@@ -3,13 +3,12 @@
 //  PhpPlugin
 //
 //  Created by mario on 11.03.11.
-//  Copyright 2011 wysiwyg software design gmbh. All rights reserved.
 //
 
 #import "RequestController.h"
 #import "PhpPlugin.h"
 
-static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
+static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 
 @interface RequestController(private)
 
@@ -114,7 +113,7 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		errorSelector = NULL;
 	}
 	@catch (NSException *e) {
-		NSLog(@"Exception in dealloc: %@",e);
+		[myPlugin doLog:[@"Exception in RequestController:dealloc:" stringByAppendingFormat:@"%@", e]];
 	}
 	
 	[super dealloc];
@@ -186,7 +185,6 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		[urlRequest setHTTPMethod:@"POST"];	
 		[urlRequest setValue: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", BOUNDRY] forHTTPHeaderField:@"Content-Type"];
 
-		
 		for (unsigned i = 0; i < [keys count]; i++) 
 		{
 			[postData appendData:[[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -209,7 +207,8 @@ static NSString * const BOUNDRY = @"0xKhTmLbOuNdArY";
 		return urlRequest;
 	}
 	@catch (NSException *e) {
-		NSLog(@"Exception in postRequest: %@",e);
+		[myPlugin doLog:[@"Exception in RequestController:postRequest:" stringByAppendingFormat:@"%@", e]];
+		
 	}
 	return nil;
 }

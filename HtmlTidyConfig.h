@@ -7,9 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "Parser.h"
 
-@interface HtmlTidyConfig : NSObject<NSCoding,ResultParser>
+@interface HtmlTidyConfig : NSObject<NSCoding>
 {
 @public
     int intvalue;

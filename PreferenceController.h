@@ -10,19 +10,25 @@
 
 @class PhpPlugin;
 
-extern NSString* const PrefPhpLocal;
-extern NSString* const PrefTidyLocal;
-extern NSString* const PrefTidyInternal;
-extern NSString* const PrefUseGrowl;
-extern NSString* const PrefInfoPanelAfter;
-extern NSString* const PrefResultWindow;
-extern NSString* const PrefJsViaShell;
+extern double const PrefInfoPanelAfter;
+extern float const PrefInfoPanelFadeout;
+extern double const PrefTimeoutNS;
+extern double const PrefMaxLogLen;
+extern double const PrefMinSelectionLen;
+extern double const PrefDelayUpdateCheck;
 
 extern NSString* const PrefHtmlValidatorUrl;
 extern NSString* const PrefCssValidatorUrl;
 extern NSString* const PrefProCSSorUrl;
 extern NSString* const PrefHtmlValidatorParamFile;
 extern NSString* const PrefCssValidatorParamFile;
+
+extern NSString* const PrefPhpLocal;
+extern NSString* const PrefTidyLocal;
+extern NSString* const PrefTidyInternal;
+extern NSString* const PrefUseGrowl;
+extern NSString* const PrefResultWindow;
+extern NSString* const PrefJsViaShell;
 
 extern NSString* const PrefProcFormatting;
 extern NSString* const PrefProcBraces;
@@ -60,6 +66,45 @@ extern NSString* const PrefPhpTidyBlankLines;
 extern NSString* const PrefPhpTidyComma;
 extern NSString* const PrefPhpTidyWhitespace;
 extern NSString* const PrefPhpTidyFixBrackets;
+extern NSString* const PrefPhpTidyReplacePhpTags;
+extern NSString* const PrefPhpTidyReplaceShellComments;
+
+extern NSString* const PrefJSHintAsi;
+extern NSString* const PrefJSHintBitwise;
+extern NSString* const PrefJSHintCurly;
+extern NSString* const PrefJSHintEqeqeq;
+extern NSString* const PrefJSHintEvil;
+extern NSString* const PrefJSHintForin;
+extern NSString* const PrefJSHintImmed;
+extern NSString* const PrefJSHintLoopfunc;
+extern NSString* const PrefJSHintNewcap;
+extern NSString* const PrefJSHintNoempty; 
+extern NSString* const PrefJSHintNomen;
+extern NSString* const PrefJSHintOnevar;
+extern NSString* const PrefJSHintPlusplus;
+extern NSString* const PrefJSHintRegexp;
+extern NSString* const PrefJSHintSafe;
+extern NSString* const PrefJSHintStrict;
+extern NSString* const PrefJSHintSub;
+extern NSString* const PrefJSHintUndef;
+extern NSString* const PrefJSHintWhite;
+
+extern NSString* const PrefJSTidyPreserveNewlines;
+extern NSString* const PrefJSTidySpaceAfterAnonFunction;
+extern NSString* const PrefJSTidyBracesOnOwnLine;
+extern NSString* const PrefJSTidyIndentSize;
+
+extern NSString* const UrlHomepage;
+extern NSString* const UrlDonationpage;
+extern NSString* const UrlTwitter;
+extern NSString* const UrlFacebook;
+extern NSString* const UrlHelp;
+extern NSString* const UrlProCSSor;
+extern NSString* const UrlTidyHelp;
+extern NSString* const UrlVersionCheck;
+extern NSString* const UrlDownload;
+extern NSString* const UrlDownloadDirect;
+extern NSString* const UrlDownloadTest;
 
 @interface PreferenceController : NSWindowController
 {	
@@ -68,7 +113,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 
 	IBOutlet NSPanel *prefPanel;
 	IBOutlet NSTabView *tabView;
-	IBOutlet NSButton *useTidyInternal;
 	IBOutlet NSButton *procFailSafeBtn;
 	IBOutlet NSButton *procGroupBtn;
 	IBOutlet NSButton *procIndentBtn;
@@ -94,8 +138,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 	
 	IBOutlet NSTextField *labelPhpLocal;
 	IBOutlet NSTextField *fieldPhpLocal;
-	IBOutlet NSTextField *labelTidyLocal;
-	IBOutlet NSTextField *fieldTidyLocal;
 	IBOutlet NSTextField *labelProcSorting;
 	
 	IBOutlet NSTextField *htmlValidatorUrl;
@@ -103,7 +145,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 	
 	IBOutlet NSTextField *versionNumberField;
 	IBOutlet NSTextField *phpversionNumberField;
-	IBOutlet NSTextField *tidyversionNumberField;
 	
 	IBOutlet NSTextView *customTidyConfig;
 
@@ -116,10 +157,10 @@ extern NSString* const PrefPhpTidyFixBrackets;
 - (IBAction)resetPressed: (id)sender;
 - (BOOL)windowShouldClose:(id)sender;
 
-- (NSArray*)cssTidyConfigs;
-- (NSArray*)cssLevels;
-- (NSArray*)phpTidyBraces;
-- (NSArray*)htmlTidyConfigs;
+- (NSArray *)cssTidyConfigs;
+- (NSArray *)cssLevels;
+- (NSArray *)phpTidyBraces;
+- (NSArray *)htmlTidyConfigs;
 - (NSArray *)procConfigsBraces;
 - (NSArray *)procConfigsIndentSize;
 - (NSArray *)procConfigsFormatting;
@@ -130,7 +171,6 @@ extern NSString* const PrefPhpTidyFixBrackets;
 - (IBAction)procFailSafeModified: (id)sender;
 - (IBAction)procColumnizeModified: (id)sender;
 - (IBAction)procIndentModified: (id)sender;
-- (IBAction)tidyInternalConfigModified: (id)sender;
 - (IBAction)htmlConfigModified: (id)sender;
 - (void)enableTextView:(NSTextView*)textView As:(BOOL)enableIt;
 - (IBAction)selectHTMLValidator:(id)sender;
@@ -139,11 +179,12 @@ extern NSString* const PrefPhpTidyFixBrackets;
 - (IBAction)goToTidyDocumentationWebsite:(id)sender;
 - (IBAction)goToProcssor:(id)sender;
 - (IBAction)goToDonationPage:(id)sender;
+- (IBAction)goToFacebook:(id)sender;
+- (IBAction)goToTwitter:(id)sender;
 - (IBAction)goToPluginHomepage:(id)sender;
 
 - (BOOL)fileExists: (NSString*)filePath;
 - (void)loadHtmlTidyCustomConfig;
 - (void)saveHtmlTidyCustomConfig:(NSString*)contents;
-
 
 @end

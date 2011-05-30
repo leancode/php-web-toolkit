@@ -11,15 +11,18 @@
 @class PhpPlugin;
 
 @interface UpdateController : NSObject
-{
-	NSURLConnection *theConnection;
+{	
 	PhpPlugin *myPlugin;
+	NSURLConnection *theConnection;	
 	NSMutableData *receivedData;
 }
 - (void)setMyPlugin:(PhpPlugin*)myPluginInstance;
 
 - (void)checkForUpdateAuto;
 - (NSString*)versioncheckUrl;
+- (NSString*)downloadUrl;
+- (NSString*)directDownloadUrl;
+- (NSString*)testDownloadUrl;
 - (IBAction)downloadUpdate:(id)sender;
 - (int)isUpdateAvailable;
 - (void)isUpdateAvailableAsync;

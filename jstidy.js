@@ -21,7 +21,6 @@
     indent_char (default space)      — character to indent with,
     preserve_newlines (default true) — whether existing line breaks should be preserved,
     indent_level (default 0)         — initial indentation level, you probably won't need this ever,
-
     space_after_anon_function (default false) — if true, then space is added between "function ()"
             (jslint is happy about this); if false, then the common "function()" output is used.
     braces_on_own_line (default false) - ANSI / Allman brace style, each opening/closing brace gets its own line.
@@ -29,7 +28,6 @@
     e.g
 
     js_beautify(js_source_text, {indent_size: 1, indent_char: '\t'});
-
 
 */
 
@@ -183,7 +181,6 @@ function js_beautify(js_source_text, options) {
     // or a '{' (colon is part of a class literal).  Along the way, keep track of
     // the blocks and expressions we pass so we only trigger on those chars in our
     // own level, and keep track of the colons so we only trigger on the matching '?'.
-
 
     function is_ternary_op() {
         var level = 0,
@@ -381,7 +378,7 @@ function js_beautify(js_source_text, options) {
             if (input.charAt(parser_pos) === '*') {
                 parser_pos += 1;
                 if (parser_pos < input_length) {
-                    while (! (input.charAt(parser_pos) === '*' && input.charAt(parser_pos + 1) && input.charAt(parser_pos + 1) === '/') && parser_pos < input_length) {
+                    while (!(input.charAt(parser_pos) === '*' && input.charAt(parser_pos + 1) && input.charAt(parser_pos + 1) === '/') && parser_pos < input_length) {
                         c = input.charAt(parser_pos);
                         comment += c;
                         if (c === '\x0d' || c === '\x0a') {
@@ -908,7 +905,7 @@ function js_beautify(js_source_text, options) {
                     } else {
                         flags.var_line_tainted = false;
                     }
-                // } else if (token_text === ':') {
+                    // } else if (token_text === ':') {
                     // hmm, when does this happen? tests don't catch this
                     // flags.var_line = false;
                 }
@@ -962,10 +959,9 @@ function js_beautify(js_source_text, options) {
                     }
                 }
                 break;
-            // } else if (in_array(token_text, ['--', '++', '!']) || (in_array(token_text, ['-', '+']) && (in_array(last_type, ['TK_START_BLOCK', 'TK_START_EXPR', 'TK_EQUALS']) || in_array(last_text, line_starters) || in_array(last_text, ['==', '!=', '+=', '-=', '*=', '/=', '+', '-'])))) {
+                // } else if (in_array(token_text, ['--', '++', '!']) || (in_array(token_text, ['-', '+']) && (in_array(last_type, ['TK_START_BLOCK', 'TK_START_EXPR', 'TK_EQUALS']) || in_array(last_text, line_starters) || in_array(last_text, ['==', '!=', '+=', '-=', '*=', '/=', '+', '-'])))) {
             } else if (in_array(token_text, ['--', '++', '!']) || (in_array(token_text, ['-', '+']) && (in_array(last_type, ['TK_START_BLOCK', 'TK_START_EXPR', 'TK_EQUALS', 'TK_OPERATOR']) || in_array(last_text, line_starters)))) {
                 // unary operators (and binary +/- pretending to be unary) special cases
-
                 space_before = false;
                 space_after = false;
 
@@ -1085,11 +1081,31 @@ function js_beautify(js_source_text, options) {
 if (typeof exports !== "undefined")
     exports.js_beautify = js_beautify;
 */
-   
 
-if (!arguments[0]) {
-    print('No input received...');
+
+// Start JSTidy for Coda PHP & Web Toolkit
+
+if (!arguments[0] || !arguments[1]) {
+    print('No input received');
 }
 else {
-	return js_beautify(arguments[0]);
+	var options = {'preserve_newlines': false};
+	prefs = arguments[1].split(',');
+	for (var i = 0; i < prefs.length; i++) {
+		if (prefs[i] != '') {
+			if (prefs[i] == 'indent_char_space') {
+				options['indent_char'] = ' ';
+				options['indent_size'] = 4;
+			}
+			else if (prefs[i] == 'indent_char_tab') {
+				options['indent_char'] = "\t";
+				options['indent_size'] = 1;
+			}
+			else {
+				options[prefs[i]] = true;
+			}
+		}
+	}
+
+	print(js_beautify(arguments[0], options));
 }

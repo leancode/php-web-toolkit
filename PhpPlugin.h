@@ -17,7 +17,9 @@
 #import "PhpTidyConfig.h"
 #import "JSON.h"
 
-@class CodaPlugInsController, PreferenceController, MessagingController, ValidationResult, UpdateController;
+static unsigned int maxLengthJs = 65535;
+
+@class CodaPlugInsController, PreferenceController, MessagingController, ValidationResult, UpdateController, DownloadController;
 
 @interface PhpPlugin : NSObject <CodaPlugIn>
 {
@@ -25,6 +27,7 @@
 	PreferenceController *preferenceController;
 	MessagingController *messageController;
 	UpdateController *updateController;
+	DownloadController *downloadController;
 	
 	NSBundle *myBundle;
 	NSString *versionNumber;
@@ -64,11 +67,17 @@
 // updates
 - (void)showUpdateAvailable;
 - (void)checkForUpdateNow;
+- (void)downloadUpdateWeb;
+- (void)testUpdatePlugin;
+- (void)testTidyAll;
+- (void)testValidateAll;
 
 // helpers
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
+- (void)showPluginResources;
+- (void)testNotifications;
 - (void)doLog:(NSString*)loggable;
 
 // editor actions
@@ -84,14 +93,13 @@
 
 // info getters
 - (NSString*)pluginVersionNumber;
-- (NSString *)pluginIconPath;
+- (NSString*)pluginIconPath;
 - (NSString*)phpVersion;
 - (NSString*)tidyExecutable;
-- (NSString*)tidyVersion;
 - (NSString*)jscInterpreter;
 
 // growl
-- (NSString *)growlNotify;
+- (NSString*)growlNotify;
 
 // filter
 - (void)reformatWith:(NSString*)command arguments:(NSMutableArray*)args called:(NSString*)name;

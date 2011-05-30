@@ -15,19 +15,25 @@
 #import "PhpTidyConfig.h"
 #import "HtmlValidationConfig.h"
 
-NSString* const PrefPhpLocal = @"dechipwreckPHPLocal";
-NSString* const PrefTidyLocal = @"dechipwreckTidyLocal";
-NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
-NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
-NSString* const PrefInfoPanelAfter = @"dechipwreckInfoPanelFadeOutAfter";
-NSString* const PrefResultWindow = @"dechipwreckResultWindow";
-NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
+double const PrefInfoPanelAfter = 4;
+float const PrefInfoPanelFadeout = 0.4;
+double const PrefTimeoutNS = 20;
+double const PrefMaxLogLen = 4096;
+double const PrefMinSelectionLen = 5;
+double const PrefDelayUpdateCheck = 29400;
 
 NSString* const PrefHtmlValidatorUrl = @"dechipwreckHtmlValidatorUrl";
 NSString* const PrefCssValidatorUrl = @"dechipwreckCssValidatorUrl";
 NSString* const PrefProCSSorUrl = @"dechipwreckProCSSorUrl";
 NSString* const PrefHtmlValidatorParamFile = @"dechipwreckHtmlValidatorParamFile";
 NSString* const PrefCssValidatorParamFile = @"dechipwreckCssValidatorParamFile";
+
+NSString* const PrefPhpLocal = @"dechipwreckPHPLocal";
+NSString* const PrefTidyLocal = @"dechipwreckTidyLocal";
+NSString* const PrefTidyInternal = @"dechipwreckTidyInternal";
+NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
+NSString* const PrefResultWindow = @"dechipwreckResultWindow";
+NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
 
 NSString* const PrefProcFormatting = @"dechipwreckProcFormatting"; // property_formatting - newline>1, newline, same_line
 NSString* const PrefProcBraces = @"dechipwreckProcBraces"; // braces - default, aligned_braces, pico, pico_extra, gnu, gnu_saver, banner, horstmann
@@ -65,7 +71,47 @@ NSString* const PrefPhpTidyBlankLines = @"dechipwreckPrefPhpTidyBlankLines";
 NSString* const PrefPhpTidyComma = @"dechipwreckPrefPhpTidyComma";
 NSString* const PrefPhpTidyWhitespace = @"dechipwreckPrefPhpTidyWhitespace";
 NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
+NSString* const PrefPhpTidyReplacePhpTags = @"dechipwreckPrefPhpTidyReplacePhpTags";
+NSString* const PrefPhpTidyReplaceShellComments = @"dechipwreckPrefPhpTidyReplaceShellComments";
 
+NSString* const PrefJSHintAsi = @"dechipwreckPrefJSHintAsi";
+NSString* const PrefJSHintCurly = @"dechipwreckPrefJSHintCurly";
+NSString* const PrefJSHintEqeqeq = @"dechipwreckPrefJSHintEqeqeq";
+NSString* const PrefJSHintEvil = @"dechipwreckPrefJSHintEvil";
+NSString* const PrefJSHintForin = @"dechipwreckPrefJSHintForin";
+NSString* const PrefJSHintImmed = @"dechipwreckPrefJSHintImmed";
+NSString* const PrefJSHintLoopfunc = @"dechipwreckPrefJSHintLoopfunc";
+NSString* const PrefJSHintSafe = @"dechipwreckPrefJSHintSafe";
+NSString* const PrefJSHintStrict = @"dechipwreckPrefJSHintStrict";
+NSString* const PrefJSHintSub = @"dechipwreckPrefJSHintSub";
+
+NSString* const PrefJSHintBitwise = @"dechipwreckPrefJSHintBitwise";
+NSString* const PrefJSHintNewcap = @"dechipwreckPrefJSHintNewcap";
+NSString* const PrefJSHintNoempty = @"dechipwreckPrefJSHintNoempty";
+NSString* const PrefJSHintNomen = @"dechipwreckPrefJSHintNomen";
+NSString* const PrefJSHintOnevar = @"dechipwreckPrefJSHintOnevar";
+NSString* const PrefJSHintPlusplus = @"dechipwreckPrefJSHintPlusplus";
+NSString* const PrefJSHintRegexp = @"dechipwreckPrefJSHintRegexp";
+NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";
+NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite";
+
+NSString* const PrefJSTidyPreserveNewlines = @"dechipwreckPrefJSTidyPreserveNewlines";
+NSString* const PrefJSTidySpaceAfterAnonFunction = @"dechipwreckPrefJSTidySpaceAfterAnonFunction";
+NSString* const PrefJSTidyBracesOnOwnLine = @"dechipwreckPrefJSTidyBracesOnOwnLine";
+NSString* const PrefJSTidyIndentSize = @"dechipwreckPrefJSTidyIndentSize";
+
+NSString* const UrlHomepage =  @"http://www.chipwreck.de/blog/software/coda-php/?utm_source=prefs&utm_medium=plugin&utm_campaign=homelink";
+NSString* const UrlDonationpage = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink#donate";
+NSString* const UrlTwitter = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=twitterlink#twitter";
+NSString* const UrlFacebook = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=facebooklink#facebook";
+NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink";
+NSString* const UrlProCSSor = @"http://procssor.com";
+NSString* const UrlTidyHelp = @"http://tidy.sourceforge.net/docs/quickref.html";
+NSString* const UrlVersionCheck = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=483&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=";
+NSString* const UrlDownload = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";
+NSString* const UrlDownloadDirect = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&direct=1&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";
+NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codaplugin-3.1beta.zip";
+	
 @implementation PreferenceController
 
 # pragma mark -
@@ -73,7 +119,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 
 - (id)init 
 { 
-	self = [super initWithWindowNibName:@"Preferences"]; 	
+	self = [super initWithWindowNibName:@"Preferences"];
 	//	[[NSUserDefaultsController sharedUserDefaultsController] setAppliesImmediately: NO];
 	[[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:[self getDefaults]];
 	[self setDefaults];
@@ -113,7 +159,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	else {
 		[self loadHtmlTidyCustomConfig];		
 	}
-	[self tidyInternalConfigModified:self];
 	[self htmlConfigModified:self];
 	[self procFailSafeModified:self];
 	[self procIndentModified:self];
@@ -121,7 +166,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	
 	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
 	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
-	[tidyversionNumberField setStringValue: [myPlugin tidyVersion]];
 }
 
 - (NSMutableDictionary *)getDefaults
@@ -133,7 +177,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
 	[defaultValues setObject:@"file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
-	[defaultValues setObject:@"/usr/bin/tidy" forKey: PrefTidyLocal];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefJsViaShell];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseGrowl];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
@@ -141,13 +184,13 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefAutoSave];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefResultWindow];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefPhpBeepOnly];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefTidyInternal];
+	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefTidyInternal];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefUpdateCheck];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssTidyConfig];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefHtmlTidyConfig];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefProcSafe];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssLevel];
-	[defaultValues setObject:[NSNumber numberWithInt:4] forKey: PrefInfoPanelAfter];
+	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefPhpTidyReplacePhpTags];
 	
 	return defaultValues;
 }
@@ -160,7 +203,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 - (IBAction)resetPressed: (id)sender
 {
 	[[NSUserDefaultsController sharedUserDefaultsController] revertToInitialValues:sender];
-	[self tidyInternalConfigModified:self];
 	[self htmlConfigModified:self];
 	[self procFailSafeModified:self];
 }
@@ -175,13 +217,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	}
 	else {		
 		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
-	}
-	if (! [self fileExists:[fieldTidyLocal stringValue]] ) {
-		canClose = false;
-		[labelTidyLocal setTextColor:[NSColor redColor]];
-	}
-	else {
-		[labelTidyLocal setTextColor:[NSColor controlTextColor]];		
 	}
 	
 	if (canClose) {
@@ -199,7 +234,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 		// [[NSUserDefaultsController sharedUserDefaultsController] save:sender];
 		
 		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
-		[labelTidyLocal setTextColor:[NSColor controlTextColor]];
 		
 		[self saveHtmlTidyCustomConfig:[customTidyConfig string]];
 		
@@ -207,7 +241,7 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	}
 	else {
 		NSBeep();
-		[tabView selectTabViewItemAtIndex:4];
+		[tabView selectTabViewItemAtIndex:([tabView numberOfTabViewItems] - 1)];
 		return NO;
 	}	
 }
@@ -311,17 +345,6 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 	}
 }
 
-- (IBAction)tidyInternalConfigModified:(id)sender
-{
-	if ([useTidyInternal state] == 1) {
-		[fieldTidyLocal setEnabled:false];
-	}
-	else {
-		[fieldTidyLocal setEnabled:true];		
-	}
-	[tidyversionNumberField setStringValue: [myPlugin tidyVersion]];
-}
-
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
 {
 	[textView setSelectable: enableIt];
@@ -339,30 +362,37 @@ NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
 
 - (IBAction)goToTidyDocumentationWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://tidy.sourceforge.net/docs/quickref.html" ]];	
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlTidyHelp]];	
 }
 
 - (IBAction)goToHelpWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink"]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlHelp]];
 }
 
 - (IBAction)goToProcssor:(id)sender
 {
-	NSString *baseurl = @"http://procssor.com";
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlProCSSor]];
 }
 
 - (IBAction)goToDonationPage:(id)sender
 {
-	NSString *baseurl = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink";
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlDonationpage]];
 }
 
 - (IBAction)goToPluginHomepage:(id)sender
 {
-	NSString *baseurl = @"http://www.chipwreck.de/blog/software/coda-php/?utm_source=prefs&utm_medium=plugin&utm_campaign=homelink";
-	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: baseurl ]];
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlHomepage]];
+}
+
+- (IBAction)goToFacebook:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlFacebook]];
+}
+
+- (IBAction)goToTwitter:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[ NSURL URLWithString: UrlTwitter]];	
 }
 
 - (IBAction)selectHTMLValidator:(id)sender

@@ -19,8 +19,22 @@
 
 - (NSString *)versioncheckUrl
 {
-	return [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=229&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=" stringByAppendingString: 
-			[myPlugin pluginVersionNumber]];
+	return [UrlVersionCheck stringByAppendingString: [myPlugin pluginVersionNumber]];
+}
+
+- (NSString *)downloadUrl
+{
+	return [UrlDownload stringByAppendingString: [myPlugin pluginVersionNumber]];
+}
+
+- (NSString *)directDownloadUrl
+{
+	return [UrlDownloadDirect stringByAppendingString: [myPlugin pluginVersionNumber]];
+}
+
+- (NSString *)testDownloadUrl
+{
+	return UrlDownloadTest;
 }
 
 - (void)checkForUpdateAuto
@@ -28,26 +42,18 @@
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUpdateCheck]) {
 		long lastupdate = [[NSUserDefaults standardUserDefaults] integerForKey:PrefLastUpdateCheck];
 		long now = (long)[[NSDate date] timeIntervalSince1970];
-		if (lastupdate == 0) {
+		long timediff = (now - lastupdate);
+		if (lastupdate == 0 || timediff > PrefDelayUpdateCheck ) { // never or after three days
 			[self isUpdateAvailableAsync];
 			[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
-			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate not set, is now %u and did check", now]];
-		}
-		else {
-			long timediff = (now - lastupdate);
-			if (timediff > 86400) {
-				[self isUpdateAvailableAsync];
-				[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
-				[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Did check and set last update to %u", now]];
-			}
+			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate empty or expired, is now %u and did check", now]];
 		}
 	}
 }
 
 - (IBAction)downloadUpdate:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL: [ NSURL URLWithString: [@"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=" stringByAppendingString:
-																			 [myPlugin pluginVersionNumber]] ] ];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self downloadUrl]]];
 }
 
 - (int)isUpdateAvailable
@@ -56,7 +62,7 @@
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-							 timeoutInterval:10];
+							 timeoutInterval:PrefTimeoutNS];
 	NSError *error;
 	NSURLResponse *response;
 	NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
@@ -96,7 +102,7 @@
 	NSURLRequest *request = [NSURLRequest
 							 requestWithURL:[NSURL URLWithString:[self versioncheckUrl]]
 							 cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-							 timeoutInterval:10];
+							 timeoutInterval:PrefTimeoutNS];
 	theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {

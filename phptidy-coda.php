@@ -66,7 +66,7 @@ $indent_char = "\t";
 // Examples: false                      always on the same line
 //           true                       always on a new line
 //           array(T_CLASS, T_FUNCTION) for PEAR Coding Standards
-$curly_brace_newline = array(T_CLASS, T_FUNCTION);
+$curly_brace_newline = array(T_CLASS, T_FUNCTION); // ok
 
 // PHP open tag
 // All php open tags will be replaced by the here defined kind of open tag.
@@ -87,22 +87,27 @@ $encoding = "";
 // Example: array('DOCROOT', '$docroot', '$GLOBALS[\'docroot\']');
 $docrootvars = array();
 
-// Enable the single cleanup functions
+// These are configurable via coda plugin
+$replace_phptags = true;  // ok
+$fix_statement_brackets = true; // ok
+$fix_separation_whitespace = true; // ok
+$fix_comma_space = true; // ok
+$add_blank_lines = false; // ok
+$replace_shell_comments = true;	// ok
+
+// Won't use (broken)
+$fix_docblock_format = false; //! ERRORS!!
+$fix_docblock_space = false;	
+
+// Won't change
+$indent = true;	
 $fix_token_case = true;
 $fix_builtin_functions_case = true;
-$replace_inline_tabs = true;
-$replace_phptags = true;
-$replace_shell_comments = true;
-	$fix_statement_brackets = true; // ok
-	$fix_separation_whitespace = true; // ok
-	$fix_comma_space = true; // ok
-$add_file_docblock = false;
-$add_function_docblocks = false;
-$add_doctags = false;
-$fix_docblock_format = true;
-$fix_docblock_space = false;
-	$add_blank_lines = false; // ok
-$indent = true;
+
+$add_file_docblock = false; // default author etc. needed
+$add_function_docblocks = false; // default author etc. needed
+$add_doctags = false; // doctags with @return @var etc.
+$replace_inline_tabs = true; // tabs -> spaces	
 
 ///////////// END OF DEFAULT CONFIGURATION ////////////////
 
@@ -174,6 +179,33 @@ if (isset($argv[11]) && $argv[11] == '-f' && isset($argv[12]) && strlen($argv[12
 	}
 	else {
 		$fix_statement_brackets = false;
+	}
+}
+
+if (isset($argv[13]) && $argv[13] == '-p' && isset($argv[14]) && strlen($argv[14]) > 0) {
+	if ($argv[14] == '1') {
+		$replace_phptags = true;
+	}
+	else {
+		$replace_phptags = false;
+	}
+}
+
+if (isset($argv[15]) && $argv[15] == '-i' && isset($argv[16]) && strlen($argv[16]) > 0) {
+	if ($argv[16] == 't') {
+		$indent_char = "\t";
+	}
+	else {
+		$indent_char = "    ";
+	}
+}
+
+if (isset($argv[17]) && $argv[17] == '-r' && isset($argv[18]) && strlen($argv[18]) > 0) {
+	if ($argv[18] == '1') {
+		$replace_shell_comments = true;
+	}
+	else {
+		$replace_shell_comments = false;
 	}
 }
 	
