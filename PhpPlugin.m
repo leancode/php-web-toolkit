@@ -28,15 +28,6 @@ jshint no idea yet...
 ? rhino       : true, // if the Rhino environment globals should be predefined
 ? expr        : true, // if ExpressionStatement should be allowed as Programs
 ? supernew    : true, // if `new function () { ... };` and `new Object;` should be tolerated
-
-NEXT:
- eqnull      : true, // if == null comparisons should be tolerated
- nonew       : true, // if using `new` for side-effects should be disallowed
- boss        : true, // if advanced usage of assignments and == should be allowed	
- noarg       : true, // if arguments.caller and arguments.callee should be disallowed 
- shadow      : true, // if variable shadowing should be tolerated
- latedef     : true, // if the use before definition should not be tolerated
- globalstrict: true, // if global "use strict"; should be allowed (also enables 'strict')
  
  */
 
