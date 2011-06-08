@@ -100,7 +100,7 @@ jshint no idea yet...
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate CSS online", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doValidateRemoteCss)
 						  representedObject:nil keyEquivalent:@"$~^p" pluginName:[self name]]; // cmd+alt+ctrl+p
-		
+
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doTidyCss)
 						  representedObject:nil keyEquivalent:@"~@t" pluginName:[self name]]; // alt+shift+t
@@ -108,6 +108,10 @@ jshint no idea yet...
 		[controller registerActionWithTitle:NSLocalizedString(@"Format with ProCSSor", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doProcssorRemote)
 						  representedObject:nil keyEquivalent:@"$~@p" pluginName:[self name]]; // cmd+alt+shift+p
+		
+		[controller registerActionWithTitle:NSLocalizedString(@"Minify CSS", @"") underSubmenuWithTitle:@"CSS"
+									 target:self selector:@selector(doJsMinify)
+						  representedObject:nil keyEquivalent:@"$^@m" pluginName:[self name]]; // alt+shift+t
 		
 		// JS >>
 		[controller registerActionWithTitle:NSLocalizedString(@"JS Hint", @"") underSubmenuWithTitle:@"JS"
