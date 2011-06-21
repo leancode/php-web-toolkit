@@ -518,7 +518,7 @@
 											<object class="NSButton" id="146837002">
 												<reference key="NSNextResponder" ref="724430647"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{287, 47}, {178, 32}}</string>
+												<string key="NSFrame">{{279, 47}, {187, 32}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="880107628"/>
@@ -526,7 +526,7 @@
 												<object class="NSButtonCell" key="NSCell" id="414110448">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">67239936</int>
-													<string key="NSContents">flattr or donate PayPal</string>
+													<string key="NSContents">Donate via paypal/flattr</string>
 													<reference key="NSSupport" ref="26"/>
 													<reference key="NSControlView" ref="146837002"/>
 													<int key="NSButtonFlags">-2034482945</int>
@@ -544,7 +544,7 @@
 											<object class="NSButton" id="282835751">
 												<reference key="NSNextResponder" ref="724430647"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{17, 47}, {130, 32}}</string>
+												<string key="NSFrame">{{9, 47}, {130, 32}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="196289953"/>
@@ -570,7 +570,7 @@
 											<object class="NSButton" id="196289953">
 												<reference key="NSNextResponder" ref="724430647"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{155, 47}, {124, 32}}</string>
+												<string key="NSFrame">{{147, 47}, {124, 32}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="146837002"/>
@@ -3627,6 +3627,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{13, 12}, {414, 14}}</string>
 																<reference key="NSSuperview" ref="167439502"/>
+																<reference key="NSNextKeyView" ref="880107628"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="548156588">
 																	<int key="NSCellFlags">67239424</int>
@@ -6724,8 +6725,8 @@
 							<reference ref="628832122"/>
 							<reference ref="837639623"/>
 							<reference ref="196289953"/>
-							<reference ref="146837002"/>
 							<reference ref="282835751"/>
+							<reference ref="146837002"/>
 						</object>
 						<reference key="parent" ref="301170930"/>
 					</object>

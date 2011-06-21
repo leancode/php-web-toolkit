@@ -1178,7 +1178,10 @@ jshint no idea yet...
 		[aTask launch];
 		[writing writeData:dataIn];
 		[writing closeFile];
-		
+
+		if (anEncoding == NSUnicodeStringEncoding && [launchPath isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal]]) {
+			anEncoding = NSUTF8StringEncoding; // php binary never returns utf16..
+		}
 		NSMutableString *resultData = [[NSMutableString alloc] initWithData: [reading readDataToEndOfFile] encoding: anEncoding];
 		
 		[aTask terminate];

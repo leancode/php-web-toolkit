@@ -130,7 +130,7 @@
 						<object class="NSTextField" id="780640703">
 							<reference key="NSNextResponder" ref="796541787"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 192}, {169, 18}}</string>
+							<string key="NSFrame">{{17, 192}, {164, 18}}</string>
 							<reference key="NSSuperview" ref="796541787"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="458753275"/>
@@ -138,7 +138,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="695299681">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">An update is available!</string>
+								<string key="NSContents">New Update available!</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande-Bold</string>
 									<double key="NSSize">14</double>
