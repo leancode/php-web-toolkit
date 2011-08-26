@@ -6,6 +6,10 @@
 //  Copyright 2008-2011 chipwreck.de. All rights reserved.
 
 /*
+csslint:
+ https://github.com/stubbornella/csslint
+ http://www.nczonline.net/blog/2011/08/18/css-lint-updated-to-0-5-0/?
+ 
 jshint setting defaults:
 
 + browser    : true, // if the standard browser globals should be predefined
@@ -190,7 +194,7 @@ jshint no idea yet...
 		
 		// startup msg
 		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
-			[messageController showInfoMessage:[NSLocalizedString(@"PHP & Web Toolkit updated to ",@"") stringByAppendingString: [self pluginVersionNumber]] 
+			[messageController showInfoMessage:[NSLocalizedString(@"PHP & Web Toolkit\nupdated to ",@"") stringByAppendingString: [self pluginVersionNumber]] 
 									additional:NSLocalizedString(@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)",@"")
 										sticky:YES
 			 ];
@@ -614,7 +618,8 @@ jshint no idea yet...
 			[args addObject:@"t"];
 		}
 		else {
-			[args addObject:@"s"]; 		 
+			int tw = [[controller focusedTextView:self] tabWidth];
+			[args addObject:[@"s" stringByAppendingString:[NSString stringWithFormat:@"%i", tw]]];
 		}
 		
 		[args addObject:@"-r"];
@@ -1164,7 +1169,7 @@ jshint no idea yet...
 			reading = [fromPipe fileHandleForReading];
 		}
 		else {
-			reading = [errPipe fileHandleForReading];		
+			reading = [errPipe fileHandleForReading];
 		}
 
 		[aTask setStandardInput:toPipe];

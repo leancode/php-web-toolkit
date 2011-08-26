@@ -195,8 +195,12 @@ if (isset($argv[15]) && $argv[15] == '-i' && isset($argv[16]) && strlen($argv[16
 	if ($argv[16] == 't') {
 		$indent_char = "\t";
 	}
-	else {
-		$indent_char = "    ";
+	else { // s1, s4, ...
+		$indent_length = intval(substr($argv[16], 1));
+		if ($indent_length <= 0) {
+			$indent_length = 4;
+		}
+		$indent_char = str_repeat(' ', $indent_length);
 	}
 }
 
