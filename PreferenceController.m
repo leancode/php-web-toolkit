@@ -10,7 +10,7 @@
 #import "PhpPlugin.h"
 #import "CssTidyConfig.h"
 #import "HtmlTidyConfig.h"
-#import "CssProcssor.h"
+// #import "CssProcssor.h"
 #import "CssLevel.h"
 #import "PhpTidyConfig.h"
 #import "HtmlValidationConfig.h"
@@ -113,7 +113,7 @@ NSString* const UrlDonationpage = @"http://www.chipwreck.de/blog/about/donate/?u
 NSString* const UrlTwitter = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=twitterlink#twitter";
 NSString* const UrlFacebook = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=facebooklink#facebook";
 NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink";
-NSString* const UrlProCSSor = @"http://procssor.com";
+NSString* const UrlProCSSor = @"http://procssorapp.com/?q=coda";
 NSString* const UrlTidyHelp = @"http://tidy.sourceforge.net/docs/quickref.html";
 NSString* const UrlVersionCheck = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=483&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=";
 NSString* const UrlDownload = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";
@@ -168,12 +168,13 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		[self loadHtmlTidyCustomConfig];		
 	}
 	[self htmlConfigModified:self];
-	[self procFailSafeModified:self];
-	[self procIndentModified:self];
-	[self procColumnizeModified:self];
+	//	[self procFailSafeModified:self];
+	//	[self procIndentModified:self];
+	//	[self procColumnizeModified:self];
 	
 	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
 	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
+	[useResultWindowBtn setEnabled:NO];
 }
 
 - (NSMutableDictionary *)getDefaults
@@ -212,7 +213,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
 	[[NSUserDefaultsController sharedUserDefaultsController] revertToInitialValues:sender];
 	[self htmlConfigModified:self];
-	[self procFailSafeModified:self];
+	//	[self procFailSafeModified:self];
 }
 
 - (BOOL)windowShouldClose:(id)sender
@@ -273,6 +274,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
     return [HtmlTidyConfig configArray];
 }
+/*
 - (NSArray *)procConfigsBraces
 {
     return [CssProcssor configArrayBraces];
@@ -297,6 +299,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
     return [CssProcssor configArrayIndentLevels];
 }
+ */
 
 # pragma mark -
 # pragma mark Actions
@@ -310,7 +313,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		[self enableTextView:customTidyConfig As:NO];
 	}
 }
-
+/*
 - (IBAction)procIndentModified: (id)sender
 {
 	if ([procIndentBtn state] == 1) {
@@ -352,6 +355,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		[labelProcSorting setTextColor: [NSColor controlTextColor]];
 	}
 }
+ */
 
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
 {
