@@ -19,12 +19,11 @@
 		@try {
 			[NSBundle loadNibNamed:@"InfoPanel" owner:self];
 			[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
-			//[NSBundle loadNibNamed:@"ResultPanel" owner:self];
+			
 		}
 		@catch (NSException *e) {
 			[self alertCriticalException:e];
 		}
-		
 	}
 
 	return self;
@@ -113,6 +112,14 @@
 		[self growlNotify:msg description:additionalText sticky:isSticky];
 	}
 	else {
+		@try {
+			[NSBundle loadNibNamed:@"ResultPanel" owner:self];
+		}
+		@catch (NSException *exception) {
+			[self alertCriticalException:exception];
+			return;
+		}
+	
 		[self hideInfoMessage:NO];
 		[infoPanel setAlphaValue:1.0];
 		[infoText setStringValue:msg];
@@ -197,7 +204,7 @@
 
 - (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title
 {
-	if (false /* [[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow] */ ) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
 		[resultLabel setStringValue:title];
 		[[resultView mainFrame] loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
 		[resultPanel makeKeyAndOrderFront:self];
