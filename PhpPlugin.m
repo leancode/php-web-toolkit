@@ -109,9 +109,11 @@ jshint no idea yet...
 									 target:self selector:@selector(doTidyCss)
 						  representedObject:nil keyEquivalent:@"~@t" pluginName:[self name]]; // alt+shift+t
 		
+		/*
 		[controller registerActionWithTitle:NSLocalizedString(@"Format with ProCSSor", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doProcssorRemote)
 						  representedObject:nil keyEquivalent:@"$~@p" pluginName:[self name]]; // cmd+alt+shift+p
+		 */
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Minify CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doJsMinify)
@@ -639,6 +641,7 @@ jshint no idea yet...
 
 - (void)doProcssorRemote
 {
+	/*
 	@try {
 		NSMutableDictionary *args = [NSMutableDictionary dictionary];
 
@@ -709,10 +712,12 @@ jshint no idea yet...
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
+	 */
 }
 
 - (void)doProcssorRemoteDone:(id)sender
 {
+	/*
 	@try {
 		NSString *resultText = [sender serverReply];
 		if (resultText == nil || [resultText length] == 0) {
@@ -752,6 +757,7 @@ jshint no idea yet...
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
+	 */
 }
 
 - (void)doJsTidy
@@ -898,7 +904,7 @@ jshint no idea yet...
 	[self doTidyCss];
 	[self doTidyHtml];
 	[self doTidyPhp];
-	[self doProcssorRemote];
+	//	[self doProcssorRemote];
 }
 
 - (void)testValidateAll
@@ -1194,6 +1200,7 @@ jshint no idea yet...
 		return resultData;
 	}
 	@catch (NSException *e) {	
+		[self doLog: [NSString stringWithFormat:@"Exception %@ %@ %@", [e name], [e description], [e reason]]];
 		[messageController alertCriticalException:e];
 		return nil;
 	}
