@@ -49,8 +49,14 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 
 - (IBAction)closePanel:(id)sender
 {
-	if (theDownload) {
-		[theDownload cancel];
+	@try {
+		
+		if (theDownload != nil) {
+			[theDownload cancel];
+		}
+	}
+	@catch (NSException *e) {
+		[self reportError:[NSString stringWithFormat:@"Exception: %@", [e reason]] additional:[e name]];
 	}
 	[downloadPanel close];
 }
