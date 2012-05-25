@@ -150,7 +150,7 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 		[errorReply setString: @"Connection could not be initialized"];
 		return NO;
 	}
-	[myPlugin doLog:[@"Init Connection to " stringByAppendingString:[serverURL absoluteString]]];
+	//[myPlugin doLog:[@"Init Connection to " stringByAppendingString:[serverURL absoluteString]]];
 	
 	NSError *error;
 	NSURLResponse *response;
@@ -160,7 +160,8 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 		errorReply = [NSMutableString stringWithString:[error localizedDescription]];
 		return NO;
 	}
-	serverReply = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+	serverReply = [[NSMutableString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+	// [myPlugin doLog:[@"Server replied: " stringByAppendingString:serverReply]];
 	return YES;
 }
 
