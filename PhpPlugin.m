@@ -49,17 +49,34 @@ jshint no idea yet...
 
 #pragma mark Required Coda Plugin Methods
 
-- (id)initWithPlugInController:(CodaPlugInsController *)aController bundle:(NSBundle *)yourBundle
+
+// Support for Coda 2.0 and lower
+
+- (id)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle
 {
-	if ( (self = [super init]) != nil ) {
-		
+    return [self initWithController:aController plugInBundle:(NSObject <CodaPlugInBundle> *)yourBundle];
+}
+
+// Support for Coda 2.0.1 and higher
+// NOTE: must set the CodaPlugInSupportedAPIVersion key to 6 or above to use this init method
+
+- (id)initWithPlugInController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
+{
+	return [self initWithController:aController plugInBundle:plugInBundle];
+}
+
+
+- (id)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
+{
+    if ( (self = [super init]) != nil )
+    {
 		// init controllers
 		preferenceController = [[PreferenceController alloc] init];
-		[preferenceController setBundlePath:[yourBundle resourcePath]];
+		[preferenceController setBundlePath:[plugInBundle resourcePath]];
 		[preferenceController setMyPlugin:self];
 		
 		messageController = [[MessagingController alloc] init];
-		[messageController setBundlePath:[yourBundle resourcePath]];
+		[messageController setBundlePath:[plugInBundle resourcePath]];
 		[messageController setMyPlugin:self];
 		
 		updateController = [[UpdateController alloc] init];
@@ -70,8 +87,8 @@ jshint no idea yet...
 		
 		// init vars
 		controller = aController;
-		myBundle = yourBundle;
-
+		myBundle = plugInBundle;
+		
 		NSLog(@"Starting Coda PHPPlugin, version: %@ - report bugs at http://www.chipwreck.de", [self pluginVersionNumber]);
 		
 		// PHP >>
@@ -104,15 +121,15 @@ jshint no idea yet...
 		[controller registerActionWithTitle:NSLocalizedString(@"Validate CSS online", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doValidateRemoteCss)
 						  representedObject:nil keyEquivalent:@"$~^p" pluginName:[self name]]; // cmd+alt+ctrl+p
-
+		
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doTidyCss)
 						  representedObject:nil keyEquivalent:@"~@t" pluginName:[self name]]; // alt+shift+t
 		
 		/*
-		[controller registerActionWithTitle:NSLocalizedString(@"Format with ProCSSor", @"") underSubmenuWithTitle:@"CSS"
-									 target:self selector:@selector(doProcssorRemote)
-						  representedObject:nil keyEquivalent:@"$~@p" pluginName:[self name]]; // cmd+alt+shift+p
+		 [controller registerActionWithTitle:NSLocalizedString(@"Format with ProCSSor", @"") underSubmenuWithTitle:@"CSS"
+		 target:self selector:@selector(doProcssorRemote)
+		 representedObject:nil keyEquivalent:@"$~@p" pluginName:[self name]]; // cmd+alt+shift+p
 		 */
 		
 		[controller registerActionWithTitle:NSLocalizedString(@"Minify CSS", @"") underSubmenuWithTitle:@"CSS"
@@ -132,30 +149,30 @@ jshint no idea yet...
 									 target:self selector:@selector(doJsTidy)
 						  representedObject:nil keyEquivalent:@"$~^j" pluginName:[self name]]; // cmd+alt+ctrl+j
 		
-
+		
 		// [ß] >>
 		/*
-		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Open plugin resources", @"") underSubmenuWithTitle:@"[BETA TEST]"
-									 target:self selector:@selector(showPluginResources)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		
-		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Test notifications", @"") underSubmenuWithTitle:@"[BETA TEST]"
-									 target:self selector:@selector(testNotifications)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-
-		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Plugin update selftest", @"") underSubmenuWithTitle:nil
-									 target:self selector:@selector(testUpdatePlugin)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-
-		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Tidy all", @"") underSubmenuWithTitle:@"[BETA TEST]"
-									 target:self selector:@selector(testTidyAll)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		
-		[controller registerActionWithTitle:NSLocalizedString(@"[BETA] Validate all", @"") underSubmenuWithTitle:@"[BETA TEST]"
-									 target:self selector:@selector(testValidateAll)
-						  representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Open plugin resources", @"") underSubmenuWithTitle:@"[BETA TEST]"
+		 target:self selector:@selector(showPluginResources)
+		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		 
+		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Test notifications", @"") underSubmenuWithTitle:@"[BETA TEST]"
+		 target:self selector:@selector(testNotifications)
+		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		 
+		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Plugin update selftest", @"") underSubmenuWithTitle:nil
+		 target:self selector:@selector(testUpdatePlugin)
+		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		 
+		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Tidy all", @"") underSubmenuWithTitle:@"[BETA TEST]"
+		 target:self selector:@selector(testTidyAll)
+		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
+		 
+		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Validate all", @"") underSubmenuWithTitle:@"[BETA TEST]"
+		 target:self selector:@selector(testValidateAll)
+		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		 */
-
+		
 		// root >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Check for updates", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(checkForUpdateNow)
@@ -206,8 +223,8 @@ jshint no idea yet...
 		// check for updates (autocheck)
 		[updateController checkForUpdateAuto];
 	}
-		
-	return self;
+	
+    return self;
 }
 
 - (NSString *)name
@@ -938,6 +955,13 @@ jshint no idea yet...
 
 - (void)goToLine:(int)lineNumber
 {
+	CodaTextView *textView = [controller focusedTextView:self];
+	
+	if ([controller apiVersion] >= 6) {
+		[textView goToLine:lineNumber column:0];
+		return;
+	}	
+	
 	unsigned numCharsInLine = 0;
 	unsigned pos = 0;
 	unsigned numIterations = 0;
@@ -945,7 +969,6 @@ jshint no idea yet...
 	int prevLineNumber = -1;
 	int charsForLE = 1;
 	
-	CodaTextView *textView = [controller focusedTextView:self];
 	[textView setSelectedRange: NSMakeRange(0, 0)];
 	if ([[textView lineEnding] isEqualToString:@"\r\n"]) {
 		charsForLE = 2;

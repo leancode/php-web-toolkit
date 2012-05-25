@@ -12,7 +12,6 @@
 #import "CssTidyConfig.h"
 #import "HtmlTidyConfig.h"
 #import "CssLevel.h"
-// #import "CssProcssor.h"
 #import "PhpPlugin.h"
 #import "PhpTidyConfig.h"
 #import "JSON.h"
@@ -29,7 +28,7 @@ static unsigned int maxLengthJs = 65535;
 	UpdateController *updateController;
 	DownloadController *downloadController;
 	
-	NSBundle *myBundle;
+	NSObject <CodaPlugInBundle> *myBundle;
 	NSString *versionNumber;
 	NSString *checkUpdateUrl;
 
@@ -39,9 +38,15 @@ static unsigned int maxLengthJs = 65535;
 }
 
 // required coda plugin methods
+
+//for Coda 2.0.1 and higher
+- (id)initWithPlugInController:(CodaPlugInsController *)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
+//for Coda 2.0 and lower
 - (id)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle;
 - (NSString*)name;
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem;
+
+- (id)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
 
 // actions: local validation
 - (void)doValidateHtml;
