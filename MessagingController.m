@@ -16,9 +16,15 @@
 {
 	self = [super init];
 	if (self != nil) {
-		[NSBundle loadNibNamed:@"InfoPanel" owner:self];
-		[NSBundle loadNibNamed:@"ResultPanel" owner:self];
-		[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
+		@try {
+			[NSBundle loadNibNamed:@"InfoPanel" owner:self];
+			[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
+			//[NSBundle loadNibNamed:@"ResultPanel" owner:self];
+		}
+		@catch (NSException *e) {
+			[self alertCriticalException:e];
+		}
+		
 	}
 
 	return self;
@@ -191,7 +197,7 @@
 
 - (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title
 {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
+	if (false /* [[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow] */ ) {
 		[resultLabel setStringValue:title];
 		[[resultView mainFrame] loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
 		[resultPanel makeKeyAndOrderFront:self];
