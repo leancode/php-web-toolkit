@@ -29,19 +29,7 @@ extern NSString* const PrefTidyInternal;
 extern NSString* const PrefUseGrowl;
 extern NSString* const PrefResultWindow;
 extern NSString* const PrefJsViaShell;
-/*
-extern NSString* const PrefProcFormatting;
-extern NSString* const PrefProcBraces;
-extern NSString* const PrefProcSelectorsSame;
-extern NSString* const PrefProcIndentSize;
-extern NSString* const PrefProcSort;
-extern NSString* const PrefProcBlankLine;
-extern NSString* const PrefProcDocblock;
-extern NSString* const PrefProcIndentRules;
-extern NSString* const PrefProcIndentLevel;
-extern NSString* const PrefProcGrouping;
-extern NSString* const PrefProcSafe;
-*/
+
 extern NSString* const PrefProcIndentType;
 extern NSString* const PrefProcColumnize;
 extern NSString* const PrefProcAlignment;
@@ -171,18 +159,7 @@ extern NSString* const UrlDownloadTest;
 - (NSArray *)cssLevels;
 - (NSArray *)phpTidyBraces;
 - (NSArray *)htmlTidyConfigs;
-/*
-- (NSArray *)procConfigsBraces;
-- (NSArray *)procConfigsIndentSize;
-- (NSArray *)procConfigsFormatting;
-- (NSArray *)procConfigsAlignment;
-- (NSArray *)procConfigsSorting;
-- (NSArray *)procConfigsIndentLevels;
 
-- (IBAction)procFailSafeModified: (id)sender;
-- (IBAction)procColumnizeModified: (id)sender;
-- (IBAction)procIndentModified: (id)sender;
- */
 - (IBAction)htmlConfigModified: (id)sender;
 - (void)enableTextView:(NSTextView*)textView As:(BOOL)enableIt;
 - (IBAction)selectHTMLValidator:(id)sender;

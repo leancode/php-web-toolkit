@@ -168,13 +168,9 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		[self loadHtmlTidyCustomConfig];		
 	}
 	[self htmlConfigModified:self];
-	//	[self procFailSafeModified:self];
-	//	[self procIndentModified:self];
-	//	[self procColumnizeModified:self];
 	
 	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
 	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
-	[useResultWindowBtn setEnabled:NO];
 }
 
 - (NSMutableDictionary *)getDefaults
@@ -213,7 +209,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
 	[[NSUserDefaultsController sharedUserDefaultsController] revertToInitialValues:sender];
 	[self htmlConfigModified:self];
-	//	[self procFailSafeModified:self];
 }
 
 - (BOOL)windowShouldClose:(id)sender
@@ -274,32 +269,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
     return [HtmlTidyConfig configArray];
 }
-/*
-- (NSArray *)procConfigsBraces
-{
-    return [CssProcssor configArrayBraces];
-}
-- (NSArray *)procConfigsIndentSize
-{
-    return [CssProcssor configArrayIndentSize];
-}
-- (NSArray *)procConfigsFormatting
-{
-    return [CssProcssor configArrayFormatting];
-}
-- (NSArray *)procConfigsAlignment
-{
-    return [CssProcssor configArrayAlignment];
-}
-- (NSArray *)procConfigsSorting
-{
-    return [CssProcssor configArraySorting];
-}
-- (NSArray *)procConfigsIndentLevels
-{
-    return [CssProcssor configArrayIndentLevels];
-}
- */
+
 
 # pragma mark -
 # pragma mark Actions
@@ -313,49 +283,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		[self enableTextView:customTidyConfig As:NO];
 	}
 }
-/*
-- (IBAction)procIndentModified: (id)sender
-{
-	if ([procIndentBtn state] == 1) {
-		//		[procIndentLevelBtn setEnabled:true];
-		//		[procAlignmentBtn setEnabled:false];
-		[procColumnizeBtn setEnabled:false];
-	}
-	else {
-		//		[procIndentLevelBtn setEnabled:false];
-		//		[procAlignmentBtn setEnabled:true];
-		[procColumnizeBtn setEnabled:true];
-	}
-}
-
-- (IBAction)procColumnizeModified: (id)sender
-{
-	if ([procColumnizeBtn state] == 1 && [procIndentBtn state] != 1) {
-		[procAlignmentBtn setEnabled:true];
-		//		[procIndentLevelBtn setEnabled:false];
-		[procIndentBtn setEnabled:false];
-	}
-	else {
-		[procAlignmentBtn setEnabled:false];		
-		//		[procIndentLevelBtn setEnabled:true];
-		[procIndentBtn setEnabled:true];
-	}
-}
-
-- (IBAction)procFailSafeModified: (id)sender
-{
-	if ([procFailSafeBtn state] == 1) {
-		[procGroupBtn setEnabled:false];
-		[procSortingBtn setEnabled:false];
-		[labelProcSorting setTextColor: [NSColor disabledControlTextColor]];
-	}
-	else {
-		[procGroupBtn setEnabled:true];
-		[procSortingBtn setEnabled:true];
-		[labelProcSorting setTextColor: [NSColor controlTextColor]];
-	}
-}
- */
 
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
 {
