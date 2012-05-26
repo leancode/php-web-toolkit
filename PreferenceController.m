@@ -10,7 +10,6 @@
 #import "PhpPlugin.h"
 #import "CssTidyConfig.h"
 #import "HtmlTidyConfig.h"
-// #import "CssProcssor.h"
 #import "CssLevel.h"
 #import "PhpTidyConfig.h"
 #import "HtmlValidationConfig.h"
@@ -178,7 +177,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	[defaultValues setObject:@"http://jigsaw.w3.org/css-validator/validator" forKey: PrefCssValidatorUrl];
 	[defaultValues setObject:@"http://html5.validator.nu" forKey: PrefHtmlValidatorUrl];
-	[defaultValues setObject:@"http://procssor.com/api" forKey: PrefProCSSorUrl];
 	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
 	[defaultValues setObject:@"file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
