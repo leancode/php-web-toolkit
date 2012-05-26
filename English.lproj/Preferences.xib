@@ -462,7 +462,7 @@
 											</object>
 											<object class="NSTextField" id="837639623">
 												<reference key="NSNextResponder" ref="724430647"/>
-												<int key="NSvFlags">265</int>
+												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{14, 86}, {107, 17}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
@@ -515,8 +515,8 @@
 											</object>
 											<object class="NSButton" id="146837002">
 												<reference key="NSNextResponder" ref="724430647"/>
-												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{279, 47}, {155, 32}}</string>
+												<int key="NSvFlags">268</int>
+												<string key="NSFrame">{{279, 47}, {131, 32}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="880107628"/>
@@ -531,7 +531,7 @@
 													<int key="NSButtonFlags2">162</int>
 													<object class="NSCustomResource" key="NSNormalImage">
 														<string key="NSClassName">NSImage</string>
-														<string key="NSResourceName">flattr-paypal-24</string>
+														<string key="NSResourceName">paypal-24</string>
 													</object>
 													<string key="NSAlternateContents"/>
 													<string key="NSKeyEquivalent"/>
@@ -541,7 +541,7 @@
 											</object>
 											<object class="NSButton" id="282835751">
 												<reference key="NSNextResponder" ref="724430647"/>
-												<int key="NSvFlags">265</int>
+												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{9, 47}, {130, 32}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
@@ -567,7 +567,7 @@
 											</object>
 											<object class="NSButton" id="196289953">
 												<reference key="NSNextResponder" ref="724430647"/>
-												<int key="NSvFlags">265</int>
+												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{147, 47}, {124, 32}}</string>
 												<reference key="NSSuperview" ref="724430647"/>
 												<reference key="NSWindow"/>
@@ -1199,7 +1199,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 																<int key="NSvFlags">289</int>
 																<string key="NSFrame">{{251, 10}, {190, 19}}</string>
 																<reference key="NSSuperview" ref="728553235"/>
-																<reference key="NSNextKeyView" ref="880107628"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="424015387">
 																	<int key="NSCellFlags">-2080244224</int>
@@ -7709,7 +7708,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<string>NSSwitch</string>
 				<string>codaphp-plugin-icon</string>
 				<string>facebook-24</string>
-				<string>flattr-paypal-24</string>
+				<string>paypal-24</string>
 				<string>twitter_newbird_blue-24</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
@@ -7720,7 +7719,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<string>{15, 15}</string>
 				<string>{128, 128}</string>
 				<string>{24, 24}</string>
-				<string>{48, 24}</string>
+				<string>{24, 24}</string>
 				<string>{32, 24}</string>
 			</object>
 		</object>
