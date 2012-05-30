@@ -19,7 +19,7 @@ jshint setting defaults:
 + laxbreak   : true, // if line breaks should not be checked
 + mootools    : true, // if MooTools globals should be predefined 
 + node        : true, // if the Node.js environment globals should be predefined
-+ prototypejs : true, // if Prototype and Scriptaculous globals shoudl be predefined
++ prototypejs : true, // if Prototype and Scriptaculous globals should be predefined
  
 jshint settings not used:
 
@@ -125,13 +125,7 @@ jshint no idea yet...
 		[controller registerActionWithTitle:NSLocalizedString(@"Tidy CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doTidyCss)
 						  representedObject:nil keyEquivalent:@"~@t" pluginName:[self name]]; // alt+shift+t
-		
-		/*
-		 [controller registerActionWithTitle:NSLocalizedString(@"Format with ProCSSor", @"") underSubmenuWithTitle:@"CSS"
-		 target:self selector:@selector(doProcssorRemote)
-		 representedObject:nil keyEquivalent:@"$~@p" pluginName:[self name]]; // cmd+alt+shift+p
-		 */
-		
+	
 		[controller registerActionWithTitle:NSLocalizedString(@"Minify CSS", @"") underSubmenuWithTitle:@"CSS"
 									 target:self selector:@selector(doJsMinify)
 						  representedObject:nil keyEquivalent:@"$^@m" pluginName:[self name]]; // alt+shift+t
@@ -154,22 +148,6 @@ jshint no idea yet...
 		/*
 		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Open plugin resources", @"") underSubmenuWithTitle:@"[BETA TEST]"
 		 target:self selector:@selector(showPluginResources)
-		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		 
-		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Test notifications", @"") underSubmenuWithTitle:@"[BETA TEST]"
-		 target:self selector:@selector(testNotifications)
-		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		 
-		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Plugin update selftest", @"") underSubmenuWithTitle:nil
-		 target:self selector:@selector(testUpdatePlugin)
-		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		 
-		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Tidy all", @"") underSubmenuWithTitle:@"[BETA TEST]"
-		 target:self selector:@selector(testTidyAll)
-		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		 
-		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Validate all", @"") underSubmenuWithTitle:@"[BETA TEST]"
-		 target:self selector:@selector(testValidateAll)
 		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
 		 */
 		
@@ -194,7 +172,7 @@ jshint no idea yet...
 				if (![json respondsToSelector:@selector(objectWithString:error:)]) {
 					int lesscssresp = [messageController alertInformation:
 									   NSLocalizedString(@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead.",@"")
-															   additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once, but proCSSor is disabled until the conflict is resolved.",@"")
+															   additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once.",@"")
 															 cancelButton:YES];
 					
 					if (lesscssresp == 1) {
@@ -210,10 +188,10 @@ jshint no idea yet...
 				[messageController alertCriticalException:e];
 			}
 		}
-		
+				
 		// startup msg
 		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
-			[messageController showInfoMessage:[NSLocalizedString(@"PHP & Web Toolkit\nupdated to ",@"") stringByAppendingString: [self pluginVersionNumber]] 
+			[messageController showInfoMessage:[NSLocalizedString(@"PHP & Web Toolkit updated to ",@"") stringByAppendingString: [self pluginVersionNumber]] 
 									additional:NSLocalizedString(@"If you have problems:\nMenu: Plug-Ins > PHP & Web Toolkit > Help\n\n(This message appears only once for each update.)",@"")
 										sticky:YES
 			 ];
@@ -234,18 +212,38 @@ jshint no idea yet...
 
 - (BOOL)validateMenuItem:(NSMenuItem *)aMenuItem
 {
-	SEL action = [aMenuItem action];
-	
-	if ( ![self editorTextPresent] ) {
-		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite)
-			&& action != @selector(testUpdatePlugin) && action != @selector(showPluginResources) && action != @selector(testNotifications)
-			&& action != @selector(testTidyAll) && action != @selector(testValidateAll)
-			) {
-			return NO;
+	@try {
+		SEL action = [aMenuItem action];
+		
+		if ( ![self editorTextPresent] ) {
+			if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite)
+				&& action != @selector(testUpdatePlugin) && action != @selector(showPluginResources) && action != @selector(testNotifications)
+				&& action != @selector(testTidyAll) && action != @selector(testValidateAll)
+				) {
+				return NO;
+			}
 		}
+		return YES;
 	}
-	return YES;
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
+		return NO;
+	}
 }
+
+/*
+- (void)textViewWillSave:(CodaTextView*)textView
+{
+	[self doLog:@"about to save"];
+}
+- (void)textViewDidFocus:(CodaTextView*)textView
+{
+	[self doLog:@"did focus"];	
+}
+- (NSString*)willPublishFileAtPath:(NSString*)inputPath
+{	
+}
+*/
 
 #pragma mark Local Validation
 
@@ -396,6 +394,9 @@ jshint no idea yet...
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintGlobalstrict]) {
 			[options appendString:@"globalstrict,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSmartTabs]) {
+			[options appendString:@"smarttabs,"];
 		}
 
 		//	NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
@@ -656,134 +657,8 @@ jshint no idea yet...
 	}
 }
 
-- (void)doProcssorRemote
-{
-	/*
-	@try {
-		NSMutableDictionary *args = [NSMutableDictionary dictionary];
-
-		[args setObject:@"file" forKey:@"source"];
-		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] isEqualToString:@"1"] ) {
-			[args setObject:[[CssProcssor configForIntvalueSorting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcSort]] cmdLineParam]
-					 forKey:@"sort_declarations"];
-			
-			if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcGrouping] != nil) {
-				[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcGrouping] forKey:@"grouping"];
-			}
-		}
-		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSafe] != nil) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSafe] forKey:@"safe"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] != nil) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] forKey:@"indent_rules"];
-		}
-		
-		if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcIndentRules] isEqualToString:@"1"] ) {
-			//	[args setObject:[[CssProcssor configForIntvalueIndentLevels:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentLevel]] cmdLineParam] forKey:@"indent_level"];
-			if ([[controller focusedTextView:self] usesTabs]) {
-				[args setObject:@"tab" forKey:@"indent_type"];
-			}
-			else {
-				[args setObject:@"space" forKey:@"indent_type"];
-			}
-			
-		}
-		else if ([[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] forKey:@"tabbing"];
-			[args setObject:[[CssProcssor configForIntvalueAlignment:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcAlignment]] cmdLineParam]
-					 forKey:@"alignment"];
-		}
-		if (![ [[NSUserDefaults standardUserDefaults] stringForKey: PrefProcColumnize] isEqualToString:@"1"] ) {
-			[args setObject:@"0" forKey:@"tabbing"];
-		}
-		
-		[args setObject:[[CssProcssor configForIntvalueFormatting:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcFormatting]] cmdLineParam]
-				 forKey:@"property_formatting"];
-		[args setObject:[[CssProcssor configForIntvalueBraces:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcBraces]] cmdLineParam]
-				 forKey:@"braces"];
-		[args setObject:[[CssProcssor configForIntvalueIndentSize:[[NSUserDefaults standardUserDefaults] integerForKey:PrefProcIndentSize]] cmdLineParam]
-				 forKey:@"indent_size"];
-		
-		if ([[NSUserDefaults standardUserDefaults] stringForKey:PrefProcSelectorsSame] != nil) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcSelectorsSame] forKey:@"selectors_on_same_line"];
-		}
-		
-		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] != nil) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcBlankLine] forKey:@"blank_line_rules"];
-		}
-		
-		if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] != nil) {
-			[args setObject:[[NSUserDefaults standardUserDefaults] stringForKey: PrefProcDocblock] forKey:@"docblock"];
-		}
-		
-		RequestController *myreq = [[[RequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefProCSSorUrl]]
-						 contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
-						   fields:args
-					  uploadfield:@"css" 
-						 filename:@"my.css" 
-						 mimetype:@"text/css"
-						 delegate:self 
-					 doneSelector:@selector(doProcssorRemoteDone:) errorSelector:@selector(doProcssorRemoteDone:)]
-									autorelease];
-	}
-	@catch (NSException *e) {
-		[messageController alertCriticalException:e];
-	}
-	 */
-}
-
-- (void)doProcssorRemoteDone:(id)sender
-{
-	/*
-	@try {
-		NSString *resultText = [sender serverReply];
-		if (resultText == nil || [resultText length] == 0) {
-			[messageController alertCriticalError:NSLocalizedString(@"No response from proCSSor.com",@"")
-									   additional:[NSLocalizedString(@"Make sure you're online, check the Preferences.\n\nError:\n",@"") stringByAppendingString:[sender errorReply]]];
-		}
-		else {
-			NSError *error;
-			SBJsonParser *json = [SBJsonParser alloc];
-			
-			if (![json respondsToSelector:@selector(objectWithString:error:)] ) {
-				[messageController alertCriticalError:NSLocalizedString(@"Sorry - an incompatible plug-in was found.\n\nPlease remove this plugin first." ,@"")
-										   additional:NSLocalizedString(@"Remove the LessCSS-plugin or WebMojo-plugin if present or report a bug on www.chipwreck.de",@"")];
-			}
-			else {
-				NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
-				if (jsonResult == nil) {
-					[json release];
-					[messageController alertCriticalError:NSLocalizedString(@"Invalid response from proCSSor received.",@"") 
-											   additional:[error localizedDescription]];
-					return;
-				}
-				NSString *cssResult = [jsonResult objectForKey:@"css"];
-				if (cssResult == nil || [cssResult length] == 0) {
-					[json release];
-					[messageController alertInformation:NSLocalizedString(@"No CSS received, make sure the CSS file is valid" ,@"")
-														additional:NSLocalizedString(@"Error: No JSON object called 'css' from proCSSor received",@"") cancelButton:NO];
-					return;
-				}		
-				
-				[self replaceEditorTextWith:cssResult];
-				[messageController showInfoMessage:@"proCSSor done" additional:[@"File: " stringByAppendingString:[self currentFilename]]];
-			}
-			[json release];
-		}
-	}
-	@catch (NSException *e) {
-		[messageController alertCriticalException:e];
-	}
-	 */
-}
-
 - (void)doJsTidy
 {
-	if ([[self getEditorText] length] > maxLengthJs) {
-		[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
-		return;
-	}
-	
 	@try {
 		NSMutableString* options = [NSMutableString stringWithString:@""];
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyBracesOnOwnLine]) {
@@ -802,9 +677,81 @@ jshint no idea yet...
 			[options appendString:@"indent_char_space,"];
 		}
 		
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:options, [self currentLineEnding], nil];
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"] arguments:args called:@"JSTidy"];
+		
+		/*
+		 NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, [self currentLineEnding], nil];
+		 [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"], options, [self currentLineEnding], nil];
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/php-call.sh"] arguments:args called:@"JSTidy"];	
+		 */
+		
+		/*
+		 if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
+		 NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
+		 [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
+		 }
+		 else {
+		 NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
+		 [self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
+		 }
+		 */
+	}
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
+	}
+	
+	return;
+	
+	@try {
+		
+		NSMutableArray *args = [NSMutableArray array];
+
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyBracesOnOwnLine]) {
+			[args addObject:@"braces_on_own_line"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyPreserveNewlines]) {
+			[args addObject:@"preserve_newlines"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidySpaceAfterAnonFunction]) {
+			[args addObject:@"space_after_anon_function"];
+		}
+		if ([[controller focusedTextView:self] usesTabs]) {
+			[args addObject:@"indent_char_tab"];
+		}
+		else {
+			[args addObject:@"indent_char_space"];
+		}
+		/*
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
+			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
+			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
+		}
+		else {
+			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
+			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
+		}
+		*/
+		
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"] arguments:args called:@"JSTidy"];
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
+	return;
+	
+	if ([[self getEditorText] length] > maxLengthJs) {
+		[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
+		return;
+	}
+	
+	@try {
+		
+		/*
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, [self currentLineEnding], nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-		
+		*/
 		/*
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
 			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
@@ -897,43 +844,6 @@ jshint no idea yet...
 	[[NSWorkspace sharedWorkspace] selectFile:[respath stringByAppendingPathComponent:@"tidy"] inFileViewerRootedAtPath:respath];
 }
 
-- (void)testNotifications
-{
-	NSString *addText = @"Words may be considered inherently funny, for reasons ranging from onomatopoeia to phonosemantics.\nSuch words have been used by a range of influential comedians, including W. C. Fields, to enhance the humor of their routines.";
-	NSString *addTextHtml = @"<h1>H1 headline</h1><p>Words may be considered inherently funny, for reasons ranging from onomatopoeia to phonosemantics.</p><h3>Lorem ipsum h3</h3><p>Such words have been used by a range of influential comedians, including W. C. Fields, to enhance the humor of their routines.</p>";
-	
-	[messageController alertCriticalError:@"Critical Error (not really)" additional:addText];
-	[messageController alertInformation:@"Information only, has cancel button" additional:addText cancelButton:YES];
-	[messageController alertInformation:@"Information only, without a cancel button" additional:addText cancelButton:NO];
-	[messageController showResult:addTextHtml forUrl:@"http://www.google.com" withTitle:@"Just testing"];
-	[messageController showInfoMessage:@"Info Message, disappearing" additional:addText];
-	[messageController alertCriticalError:@"Critical Error (just to let the info-layer not disappear)" additional:addText];
-	[messageController showInfoMessage:@"Info Message, sticky" additional:addText sticky:YES];
-	[messageController alertCriticalError:@"Critical Error (just to let the info-layer not disappear)" additional:@"Here we got less text"];
-	[messageController showInfoMessage:@"Info Message, sticky" additional:@"Here we got less text" sticky:YES];
-}
-
-- (void)testTidyAll
-{
-	[self doStripPhp];
-	[self doJsMinify];
-	[self doJsTidy];
-	[self doTidyCss];
-	[self doTidyHtml];
-	[self doTidyPhp];
-	//	[self doProcssorRemote];
-}
-
-- (void)testValidateAll
-{
-	[self doValidateHtml];
-	[self doValidatePhp];
-	[self doValidateRemoteCss];
-	[self doValidateRemoteHtml];
-	[self doJsLint];
-}
-
-
 - (void)doLog:(NSString *)loggable
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefDebugMode])  {
@@ -944,6 +854,11 @@ jshint no idea yet...
 			NSLog(@"[Coda PHP Toolkit] %@", loggable);
 		}
 	}	
+}
+
+- (BOOL)isCoda2
+{
+	return ([controller apiVersion] >= 6);
 }
 
 #pragma mark Editor actions
@@ -957,7 +872,7 @@ jshint no idea yet...
 {
 	CodaTextView *textView = [controller focusedTextView:self];
 	
-	if ([controller apiVersion] >= 6) {
+	if ([self isCoda2]) {
 		[textView goToLine:lineNumber column:0];
 		return;
 	}	
@@ -1167,14 +1082,6 @@ jshint no idea yet...
 		[messageController alertCriticalError:[name stringByAppendingFormat:@": %@",[resultText substringFromIndex:1]] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
 	}
 	else {
-		/*
-		if ([name isEqualToString:@"JSTidy"] && (![[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell])) { // @todo not so cool
-			[self replaceEditorTextWith:[[NSString alloc] initWithData:[resultText dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES] encoding:NSUTF8StringEncoding]];
-		}
-		else {
-			[self replaceEditorTextWith:resultText];
-		}		
-		*/
 		[self replaceEditorTextWith:resultText];
 		[messageController showInfoMessage:[name stringByAppendingString:@" done"] additional:[@"File: " stringByAppendingString:[self currentFilename]]];
 	}	
@@ -1187,7 +1094,7 @@ jshint no idea yet...
 	
 	@try {
 		dataIn = [textInput dataUsingEncoding: anEncoding];
-		//[self doLog: [NSString stringWithFormat:@"in goes %@", textInput] ];
+		[self doLog: [NSString stringWithFormat:@"in goes %@", textInput] ];
 	
 		NSPipe *toPipe = [NSPipe pipe];
 		NSPipe *fromPipe = [NSPipe pipe];
@@ -1219,7 +1126,7 @@ jshint no idea yet...
 		NSMutableString *resultData = [[NSMutableString alloc] initWithData: [reading readDataToEndOfFile] encoding: anEncoding];
 		
 		[aTask terminate];
-//		[self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
+		[self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
 		return resultData;
 	}
 	@catch (NSException *e) {	

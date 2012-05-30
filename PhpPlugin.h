@@ -64,8 +64,6 @@ static unsigned int maxLengthJs = 65535;
 - (void)doTidyCss;
 - (void)doTidyPhp;
 - (void)doStripPhp;
-- (void)doProcssorRemote;
-- (void)doProcssorRemoteDone:(id)sender;
 - (void)doJsTidy;
 - (void)doJsMinify;
 
@@ -84,6 +82,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)showPluginResources;
 - (void)testNotifications;
 - (void)doLog:(NSString*)loggable;
+- (BOOL)isCoda2;
 
 // editor actions
 - (void)displayHtmlString:(NSString*)data;
