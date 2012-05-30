@@ -112,14 +112,7 @@
 		[self growlNotify:msg description:additionalText sticky:isSticky];
 	}
 	else {
-		@try {
-			[NSBundle loadNibNamed:@"ResultPanel" owner:self];
-		}
-		@catch (NSException *exception) {
-			[self alertCriticalException:exception];
-			return;
-		}
-	
+			
 		[self hideInfoMessage:NO];
 		[infoPanel setAlphaValue:1.0];
 		[infoText setStringValue:msg];
@@ -205,6 +198,14 @@
 - (void)showResult:(NSString *)data forUrl:(NSString *)baseurl withTitle:(NSString *)title
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
+		@try {
+			[NSBundle loadNibNamed:@"ResultPanel" owner:self];
+		}
+		@catch (NSException *exception) {
+			[self alertCriticalException:exception];
+			return;
+		}
+
 		[resultLabel setStringValue:title];
 		[[resultView mainFrame] loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
 		[resultPanel makeKeyAndOrderFront:self];
