@@ -160,9 +160,16 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 		
 		NSString *unpackedFolder = [downloadPath stringByAppendingPathComponent:[downloadFilename stringByDeletingPathExtension]];
 		NSString *unpackedBundle = [unpackedFolder stringByAppendingPathComponent:TmpUnpackedFile];
-		
+		NSString *appName;
+		if ([myPlugin isCoda2]) {
+			 appName = @"Coda 2";
+		}
+		else {
+			appName = @"Coda"; 
+		}
+				
 		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:unpackedBundle]) {
-			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:unpackedBundle] path] withApplication:@"Coda"]) {
+			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:unpackedBundle] path] withApplication:appName]) {
 				[downloadPanel close]; // success!
 			}
 			else {
