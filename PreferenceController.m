@@ -23,7 +23,6 @@ double const PrefDelayUpdateCheck = 29400;
 
 NSString* const PrefHtmlValidatorUrl = @"dechipwreckHtmlValidatorUrl";
 NSString* const PrefCssValidatorUrl = @"dechipwreckCssValidatorUrl";
-NSString* const PrefProCSSorUrl = @"dechipwreckProCSSorUrl";
 NSString* const PrefHtmlValidatorParamFile = @"dechipwreckHtmlValidatorParamFile";
 NSString* const PrefCssValidatorParamFile = @"dechipwreckCssValidatorParamFile";
 
@@ -93,6 +92,7 @@ NSString* const PrefJSHintPlusplus = @"dechipwreckPrefJSHintPlusplus";
 NSString* const PrefJSHintRegexp = @"dechipwreckPrefJSHintRegexp";
 NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";
 NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite";
+NSString* const PrefJSHintSmartTabs = @"dechipwreckPrefJSHintSmartTabs";
 
 NSString* const PrefJSHintEqnull = @"dechipwreckPrefJSHintEqnull";
 NSString* const PrefJSHintNoarg = @"dechipwreckPrefJSHintNoarg";
@@ -267,7 +267,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
     return [HtmlTidyConfig configArray];
 }
-
 
 # pragma mark -
 # pragma mark Actions

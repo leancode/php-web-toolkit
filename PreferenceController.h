@@ -19,7 +19,6 @@ extern double const PrefDelayUpdateCheck;
 
 extern NSString* const PrefHtmlValidatorUrl;
 extern NSString* const PrefCssValidatorUrl;
-extern NSString* const PrefProCSSorUrl;
 extern NSString* const PrefHtmlValidatorParamFile;
 extern NSString* const PrefCssValidatorParamFile;
 
@@ -76,6 +75,7 @@ extern NSString* const PrefJSHintStrict;
 extern NSString* const PrefJSHintSub;
 extern NSString* const PrefJSHintUndef;
 extern NSString* const PrefJSHintWhite;
+extern NSString* const PrefJSHintSmartTabs;
 
 extern NSString* const PrefJSHintEqnull;
 extern NSString* const PrefJSHintNoarg;
