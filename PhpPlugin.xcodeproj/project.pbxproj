@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC0168FB1573A1BD004FEE07 /* jsbeautifier.php in Resources */ = {isa = PBXBuildFile; fileRef = AC0168F91573A100004FEE07 /* jsbeautifier.php */; };
 		AC035B10132AD58500FD06CC /* RequestController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC035B0F132AD58400FD06CC /* RequestController.m */; };
 		AC08B81312EE13FC00EC8CC1 /* PhpTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */; };
 		AC08F3D513133DCA0040EB0F /* csstidy.php in Resources */ = {isa = PBXBuildFile; fileRef = AC08F3D413133DCA0040EB0F /* csstidy.php */; };
@@ -25,13 +26,11 @@
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
 		AC388E0B13557A9400B50448 /* DownloadPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC388E0A13557A9400B50448 /* DownloadPanel.xib */; };
 		AC3E522913298B9E00EFD884 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3E522813298B9E00EFD884 /* InfoView.m */; };
-		AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */ = {isa = PBXBuildFile; fileRef = ACC4EE40127CD012004DD845 /* jstidy-min.js */; };
 		AC42908C13550F5700B50A5F /* DownloadController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC42908B13550F5700B50A5F /* DownloadController.m */; };
-		AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5C56E2126A557700359B53 /* CssProcssor.m */; };
 		AC6209D812B6D4440080B995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC6209D712B6D4440080B995 /* Localizable.strings */; };
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
 		AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209EF12B6D5E50080B995 /* Preferences.xib */; };
-		AC7127A313566FDB00471500 /* ValidationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7127A213566FDB00471500 /* ValidationController.m */; };
+		AC7127A313566FDB00471500 /* CwValidationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7127A213566FDB00471500 /* CwValidationController.m */; };
 		AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7B768810F8F70F00089B11 /* CssTidyConfig.m */; };
 		AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */; };
 		AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */; };
@@ -43,9 +42,10 @@
 		ACA91D8D1264E4C10032639D /* tidy in Resources */ = {isa = PBXBuildFile; fileRef = ACA91D8C1264E4C10032639D /* tidy */; };
 		ACB7A41A133177130051D672 /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = AC09ABDF1151A8B400E7E40F /* js-call.sh */; };
 		ACBB163B138B3A85002AB0C2 /* facebook-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBB1639138B3A85002AB0C2 /* facebook-24.png */; };
-		ACBB1644138B3EAF002AB0C2 /* flattr-paypal-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */; };
 		ACBB164C138B42B2002AB0C2 /* twitter_newbird_blue-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */; };
+		ACBBA81B15710A4E00425ECE /* paypal-24.png in Resources */ = {isa = PBXBuildFile; fileRef = ACBBA81A15710A4E00425ECE /* paypal-24.png */; };
 		ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC89E2510A4092F0075B1A0 /* Encoding.m */; };
+		ACCB0304157034D8002F2F37 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */; };
 		ACCDC33313625ABC003EBECF /* HUDButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCDC33213625ABC003EBECF /* HUDButtonCell.m */; };
 		ACD2ED110F0286F800E74B31 /* tidy_config_check.txt in Resources */ = {isa = PBXBuildFile; fileRef = ACD2ED0E0F0286F800E74B31 /* tidy_config_check.txt */; };
 		ACDB07F910D3B2E100DEE94F /* codaphp-plugin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */; };
@@ -67,22 +67,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AC51920F136256D5001FD8C7 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		AC8353AE0FFFC8110063890D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "~/Library/Application Support/Coda/Plug-Ins/";
+			dstPath = "~/Library/Application Support/Coda 2/Plug-Ins/";
 			dstSubfolderSpec = 0;
 			files = (
 				ACA67CD41343AC6200B705B5 /* PhpPlugin.codaplugin in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACCB0303157034A6002F2F37 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "~/Library/Application Support/Coda/Plug-ins/";
+			dstSubfolderSpec = 0;
+			files = (
+				ACCB0304157034D8002F2F37 /* PhpPlugin.codaplugin in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,12 +94,12 @@
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin_Prefix.pch; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC0168F91573A100004FEE07 /* jsbeautifier.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; path = jsbeautifier.php; sourceTree = "<group>"; };
 		AC035B0E132AD58400FD06CC /* RequestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestController.h; sourceTree = "<group>"; };
 		AC035B0F132AD58400FD06CC /* RequestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestController.m; sourceTree = "<group>"; };
 		AC08B81112EE13FC00EC8CC1 /* PhpTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpTidyConfig.h; sourceTree = "<group>"; };
 		AC08B81212EE13FC00EC8CC1 /* PhpTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpTidyConfig.m; sourceTree = "<group>"; };
 		AC08F3D413133DCA0040EB0F /* csstidy.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; path = csstidy.php; sourceTree = "<group>"; };
-		AC08F3E8131340280040EB0F /* jshint.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jshint.js; sourceTree = "<group>"; };
 		AC08F430131341C20040EB0F /* jshint-min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jshint-min.js"; sourceTree = "<group>"; };
 		AC09ABDF1151A8B400E7E40F /* js-call.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "js-call.sh"; sourceTree = "<group>"; };
 		AC0AF9B011A1D3000002B0EA /* jsminify.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; path = jsminify.php; sourceTree = "<group>"; };
@@ -132,11 +133,9 @@
 		AC42908B13550F5700B50A5F /* DownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadController.m; sourceTree = "<group>"; };
 		AC42908D1355152400B50A5F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = English; path = English.lproj/DownloadPanel.xib; sourceTree = "<group>"; };
 		AC46272B13304DC500B4B0AF /* plug-ins.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "plug-ins.icns"; sourceTree = "<group>"; };
-		AC5C56E1126A557700359B53 /* CssProcssor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssProcssor.h; sourceTree = "<group>"; };
-		AC5C56E2126A557700359B53 /* CssProcssor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssProcssor.m; sourceTree = "<group>"; };
 		AC6209CC12B6D3340080B995 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		AC7127A113566FDB00471500 /* ValidationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValidationController.h; sourceTree = "<group>"; };
-		AC7127A213566FDB00471500 /* ValidationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValidationController.m; sourceTree = "<group>"; };
+		AC7127A113566FDB00471500 /* CwValidationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwValidationController.h; sourceTree = "<group>"; };
+		AC7127A213566FDB00471500 /* CwValidationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwValidationController.m; sourceTree = "<group>"; };
 		AC7B768710F8F70F00089B11 /* CssTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssTidyConfig.h; sourceTree = "<group>"; };
 		AC7B768810F8F70F00089B11 /* CssTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssTidyConfig.m; sourceTree = "<group>"; };
 		AC7BC118127B512400C58EB4 /* jstidy.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = jstidy.js; sourceTree = "<group>"; };
@@ -150,9 +149,8 @@
 		ACA91D8C1264E4C10032639D /* tidy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = tidy; sourceTree = "<group>"; };
 		ACB3ADD20EFDC150007830D2 /* CodaPlugInsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodaPlugInsController.h; sourceTree = "<group>"; };
 		ACBB1639138B3A85002AB0C2 /* facebook-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-24.png"; sourceTree = "<group>"; };
-		ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flattr-paypal-24.png"; sourceTree = "<group>"; };
 		ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter_newbird_blue-24.png"; sourceTree = "<group>"; };
-		ACC4EE40127CD012004DD845 /* jstidy-min.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = "jstidy-min.js"; sourceTree = "<group>"; };
+		ACBBA81A15710A4E00425ECE /* paypal-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paypal-24.png"; sourceTree = "<group>"; };
 		ACC89E2410A4092F0075B1A0 /* Encoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encoding.h; sourceTree = "<group>"; };
 		ACC89E2510A4092F0075B1A0 /* Encoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Encoding.m; sourceTree = "<group>"; };
 		ACCDC33113625ABC003EBECF /* HUDButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDButtonCell.h; sourceTree = "<group>"; };
@@ -169,6 +167,7 @@
 		ACF56A2312D9175700F2D04D /* CssLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssLevel.h; sourceTree = "<group>"; };
 		ACF56A2412D9175700F2D04D /* CssLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssLevel.m; sourceTree = "<group>"; };
 		ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhpPlugin.codaplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACFE189C15715CB2002107D9 /* jshint.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jshint.js; sourceTree = "<group>"; };
 		BEAA0D320EB0F00F002630D0 /* PhpPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhpPlugin.m; sourceTree = "<group>"; };
 		BEAA0D330EB0F00F002630D0 /* PhpPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -213,18 +212,18 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ACBBA81A15710A4E00425ECE /* paypal-24.png */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				AC6209D712B6D4440080B995 /* Localizable.strings */,
 				ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */,
-				ACBB1643138B3EAF002AB0C2 /* flattr-paypal-24.png */,
 				ACBB1639138B3A85002AB0C2 /* facebook-24.png */,
 				ACDB07F810D3B2E100DEE94F /* codaphp-plugin-icon.png */,
 				AC102F161327047900F69278 /* growlnotify */,
 				ACA91D8C1264E4C10032639D /* tidy */,
 				AC09ABDF1151A8B400E7E40F /* js-call.sh */,
 				AC08F430131341C20040EB0F /* jshint-min.js */,
-				ACC4EE40127CD012004DD845 /* jstidy-min.js */,
 				AC0AF9B011A1D3000002B0EA /* jsminify.php */,
+				AC0168F91573A100004FEE07 /* jsbeautifier.php */,
 				ACF177B10F01638700CA7641 /* phptidy-coda.php */,
 				AC08F3D413133DCA0040EB0F /* csstidy.php */,
 				AC8C51BD110A63EF00EB784D /* tidy_config_format_default.txt */,
@@ -246,8 +245,6 @@
 				AC7B768810F8F70F00089B11 /* CssTidyConfig.m */,
 				AC8C518A110A5FA600EB784D /* HtmlTidyConfig.h */,
 				AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */,
-				AC5C56E1126A557700359B53 /* CssProcssor.h */,
-				AC5C56E2126A557700359B53 /* CssProcssor.m */,
 				ACF56A2312D9175700F2D04D /* CssLevel.h */,
 				ACF56A2412D9175700F2D04D /* CssLevel.m */,
 				AC08B81112EE13FC00EC8CC1 /* PhpTidyConfig.h */,
@@ -256,8 +253,8 @@
 				ACEF7402132738D40025427D /* HtmlValidationConfig.m */,
 				AC102E3A1326ECEF00F69278 /* ValidationResult.h */,
 				AC102E3B1326ECEF00F69278 /* ValidationResult.m */,
-				AC7127A113566FDB00471500 /* ValidationController.h */,
-				AC7127A213566FDB00471500 /* ValidationController.m */,
+				AC7127A113566FDB00471500 /* CwValidationController.h */,
+				AC7127A213566FDB00471500 /* CwValidationController.m */,
 			);
 			name = Validation;
 			sourceTree = "<group>";
@@ -296,7 +293,7 @@
 				AC1E93D81316D4290087D5C3 /* JSHelper.h */,
 				AC1E93D91316D4290087D5C3 /* JSHelper.m */,
 				AC7BC118127B512400C58EB4 /* jstidy.js */,
-				AC08F3E8131340280040EB0F /* jshint.js */,
+				ACFE189C15715CB2002107D9 /* jshint.js */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -375,9 +372,9 @@
 				AC29FF2A13303611005E5150 /* CopyFiles */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
-				AC51920F136256D5001FD8C7 /* CopyFiles */,
 				AC8353AE0FFFC8110063890D /* CopyFiles */,
 				AC24F90D0FFFD36F0077A062 /* ShellScript */,
+				ACCB0303157034A6002F2F37 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -394,6 +391,9 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "PhpPlugin" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -426,7 +426,6 @@
 				AC102CDF1326C4BA00F69278 /* InfoPanel.xib in Resources */,
 				ACEF739F132727E00025427D /* ResultPanel.xib in Resources */,
 				AC08F434131341D80040EB0F /* jshint-min.js in Resources */,
-				AC4146B7127CD04900F923C8 /* jstidy-min.js in Resources */,
 				ACF177B20F01638700CA7641 /* phptidy-coda.php in Resources */,
 				AC08F3D513133DCA0040EB0F /* csstidy.php in Resources */,
 				AC0AF9B111A1D3000002B0EA /* jsminify.php in Resources */,
@@ -441,8 +440,9 @@
 				ACB7A41A133177130051D672 /* js-call.sh in Resources */,
 				AC388E0B13557A9400B50448 /* DownloadPanel.xib in Resources */,
 				ACBB163B138B3A85002AB0C2 /* facebook-24.png in Resources */,
-				ACBB1644138B3EAF002AB0C2 /* flattr-paypal-24.png in Resources */,
 				ACBB164C138B42B2002AB0C2 /* twitter_newbird_blue-24.png in Resources */,
+				ACBBA81B15710A4E00425ECE /* paypal-24.png in Resources */,
+				AC0168FB1573A1BD004FEE07 /* jsbeautifier.php in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,7 +460,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "killall Coda\nopen -a Coda\n";
+			shellScript = "killall \"Coda 2\"\nopen -a \"Coda 2\"\n";
 		};
 		AC57EA0C134D0AD1005D1C5E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -502,7 +502,6 @@
 				ACC89E2610A4092F0075B1A0 /* Encoding.m in Sources */,
 				AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */,
 				AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */,
-				AC5C56E3126A557700359B53 /* CssProcssor.m in Sources */,
 				AC13AE17126F5BDF00B5B8FF /* NSObject+SBJSON.m in Sources */,
 				AC13AE18126F5BDF00B5B8FF /* NSString+SBJSON.m in Sources */,
 				AC13AE19126F5BDF00B5B8FF /* SBJsonBase.m in Sources */,
@@ -517,7 +516,7 @@
 				AC3E522913298B9E00EFD884 /* InfoView.m in Sources */,
 				AC035B10132AD58500FD06CC /* RequestController.m in Sources */,
 				AC42908C13550F5700B50A5F /* DownloadController.m in Sources */,
-				AC7127A313566FDB00471500 /* ValidationController.m in Sources */,
+				AC7127A313566FDB00471500 /* CwValidationController.m in Sources */,
 				ACCDC33313625ABC003EBECF /* HUDButtonCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -579,6 +578,7 @@
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -586,11 +586,11 @@
 					"\"$(SRCROOT)/../../../_resources/Frameworks/binarygod-BGHUDAppKit-6eaee43/build/Release\"",
 					"\"$(SRCROOT)/../../../_resources/Frameworks\"",
 				);
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = PhpPlugin;
+				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = codaplugin;
 			};
 			name = Release;
@@ -598,21 +598,18 @@
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					"$(ARCHS_STANDARD_32_64_BIT)",
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CURRENT_PROJECT_VERSION = 3.1;
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
@@ -625,9 +622,9 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = YES;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -639,16 +636,16 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 3.0;
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 1;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
@@ -661,8 +658,9 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = NO;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -678,11 +676,11 @@
 					"\"$(SRCROOT)/../../../_resources/Frameworks/binarygod-BGHUDAppKit-6eaee43/build/Release\"",
 					"\"$(SRCROOT)/../../../_resources/Frameworks\"",
 				);
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = PhpPlugin;
+				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = codaplugin;
 			};
 			name = Debug;
