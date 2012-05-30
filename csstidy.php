@@ -4,14 +4,14 @@
 /* ctype_space  Check for whitespace character(s) */
 if (!function_exists('ctype_space')) {
 	function ctype_space($text) {
-        return !preg_match("/[^\s\r\n\t\f]/", $text);
-    }
+		return!preg_match("/[^\s\r\n\t\f]/", $text);
+	}
 }
 /* ctype_alpha  Check for alphabetic character(s) */
 if (!function_exists('ctype_alpha')) {
 	function ctype_alpha($text) {
-        return preg_match("/[a-zA-Z]/", $text);
-    }
+		return preg_match("/[a-zA-Z]/", $text);
+	}
 }
 
 /**
@@ -77,9 +77,9 @@ $GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%
  * Available at-rules
  *
  * @global array $GLOBALS['csstidy']['at_rules']
- * @version 1.0
+ * @version 1.1
  */
-$GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'is','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at');
+$GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'atis','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at','keyframes' => 'at');
 
 /**
  * Properties that need a value with unit
@@ -89,11 +89,11 @@ $GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'is','char
  * @global array $GLOBALS['csstidy']['unit_values']
  * @version 1.2
  */
-$GLOBALS['csstidy']['unit_values'] = array ('background', 'background-position', 'border', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-width',
-											'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing',
+$GLOBALS['csstidy']['unit_values'] = array ('background', 'background-position', 'background-size', 'border', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-width',
+											'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing', 'column-gap', 'column-width',
 											'font-size', 'height', 'left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'max-height',
 											'max-width', 'min-height', 'min-width', 'outline', 'outline-width', 'padding', 'padding-top', 'padding-right', 
-											'padding-bottom', 'padding-left', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width');
+											'padding-bottom', 'padding-left', 'perspective', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width');
 
 /**
  * Properties that allow <color> as value
@@ -112,6 +112,7 @@ $GLOBALS['csstidy']['color_values'][] = 'border-bottom-color';
 $GLOBALS['csstidy']['color_values'][] = 'border-left-color';
 $GLOBALS['csstidy']['color_values'][] = 'color';
 $GLOBALS['csstidy']['color_values'][] = 'outline-color';
+$GLOBALS['csstidy']['color_values'][] = 'column-rule-color';
 
 /**
  * Default values for the background properties
@@ -303,134 +304,303 @@ $GLOBALS['csstidy']['shorthands']['-moz-border-radius'] = 0;
  * All CSS Properties. Needed for csstidy::property_is_next()
  *
  * @global array $GLOBALS['csstidy']['all_properties']
- * @todo Add CSS3 properties
- * @version 1.0
+ * @version 1.1
  * @see csstidy::property_is_next()
  */
-$GLOBALS['csstidy']['all_properties'] = array();
-$GLOBALS['csstidy']['all_properties']['background'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['background-color'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['background-image'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['background-repeat'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['background-attachment'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['background-position'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-top'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-right'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-bottom'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-left'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-color'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-top-color'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-bottom-color'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-left-color'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-right-color'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-style'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-top-style'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-right-style'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-left-style'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-bottom-style'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-top-width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-right-width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-left-width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-bottom-width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-collapse'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['border-spacing'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['bottom'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['caption-side'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['content'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['clear'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['clip'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['color'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['counter-reset'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['counter-increment'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['cursor'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['empty-cells'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['display'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['direction'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['float'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['font'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['font-family'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['font-style'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['font-variant'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['font-weight'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['font-stretch'] = 'CSS2.0';
-$GLOBALS['csstidy']['all_properties']['font-size-adjust'] = 'CSS2.0';
-$GLOBALS['csstidy']['all_properties']['font-size'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['height'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['left'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['line-height'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['list-style'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['list-style-type'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['list-style-image'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['list-style-position'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['margin'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['margin-top'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['margin-right'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['margin-bottom'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['margin-left'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['marks'] = 'CSS1.0,CSS2.0';
-$GLOBALS['csstidy']['all_properties']['marker-offset'] = 'CSS2.0';
-$GLOBALS['csstidy']['all_properties']['max-height'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['max-width'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['min-height'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['min-width'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['overflow'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['orphans'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['outline'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['outline-width'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['outline-style'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['outline-color'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['padding'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['padding-top'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['padding-right'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['padding-bottom'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['padding-left'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['page-break-before'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['page-break-after'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['page-break-inside'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['page'] = 'CSS2.0';
-$GLOBALS['csstidy']['all_properties']['position'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['quotes'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['right'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['size'] = 'CSS1.0,CSS2.0';
-$GLOBALS['csstidy']['all_properties']['speak-header'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['table-layout'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['top'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['text-indent'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['text-align'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['text-decoration'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['text-shadow'] = 'CSS2.0';
-$GLOBALS['csstidy']['all_properties']['letter-spacing'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['word-spacing'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['text-transform'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['white-space'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['unicode-bidi'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['vertical-align'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['visibility'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['widows'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['z-index'] = 'CSS1.0,CSS2.0,CSS2.1';
-/* Speech */
-$GLOBALS['csstidy']['all_properties']['volume'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['speak'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['pause'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['pause-before'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['pause-after'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['cue'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['cue-before'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['cue-after'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['play-during'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['azimuth'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['elevation'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['speech-rate'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['voice-family'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['pitch'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['pitch-range'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['stress'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['richness'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['speak-punctuation'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['speak-numeral'] = 'CSS2.0,CSS2.1';
+$GLOBALS['csstidy']['all_properties']['alignment-adjust'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['alignment-baseline'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-delay'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-direction'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-duration'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-iteration-count'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-name'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-play-state'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['animation-timing-function'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['appearance'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['azimuth'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['backface-visibility'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-attachment'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-clip'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-color'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-image'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-origin'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-position'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-repeat'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['background-size'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['baseline-shift'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['binding'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['bleed'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['bookmark-label'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['bookmark-level'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['bookmark-state'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['bookmark-target'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-bottom'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-bottom-color'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-bottom-left-radius'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-bottom-right-radius'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-bottom-style'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-bottom-width'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-collapse'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-color'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-image'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-image-outset'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-image-repeat'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-image-slice'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-image-source'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-image-width'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-left'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-left-color'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-left-style'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-left-width'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-radius'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-right'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-right-color'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-right-style'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-right-width'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-spacing'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-style'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-top'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-top-color'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-top-left-radius'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-top-right-radius'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-top-style'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-top-width'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['border-width'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['bottom'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['box-decoration-break'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['box-shadow'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['box-sizing'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['break-after'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['break-before'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['break-inside'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['caption-side'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['clear'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['clip'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['color'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['color-profile'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-count'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-fill'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-gap'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-rule'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-rule-color'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-rule-style'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-rule-width'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-span'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['column-width'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['columns'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['content'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['counter-increment'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['counter-reset'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['crop'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['cue'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['cue-after'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['cue-before'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['cursor'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['direction'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['display'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['dominant-baseline'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['drop-initial-after-adjust'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['drop-initial-after-align'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['drop-initial-before-adjust'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['drop-initial-before-align'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['drop-initial-size'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['drop-initial-value'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['elevation'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['empty-cells'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['fit'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['fit-position'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['flex-align'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['flex-flow'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['flex-line-pack'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['flex-order'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['flex-pack'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['float'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['float-offset'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-family'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-size'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-size-adjust'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-stretch'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-style'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-variant'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['font-weight'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['grid-columns'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['grid-rows'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hanging-punctuation'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['height'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hyphenate-after'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hyphenate-before'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hyphenate-character'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hyphenate-lines'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hyphenate-resource'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['hyphens'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['icon'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['image-orientation'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['image-rendering'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['image-resolution'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['inline-box-align'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['left'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['letter-spacing'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['line-break'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['line-height'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['line-stacking'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['line-stacking-ruby'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['line-stacking-shift'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['line-stacking-strategy'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['list-style'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['list-style-image'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['list-style-position'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['list-style-type'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['margin'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['margin-bottom'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['margin-left'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['margin-right'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['margin-top'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marker-offset'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marks'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marquee-direction'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marquee-loop'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marquee-play-count'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marquee-speed'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['marquee-style'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['max-height'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['max-width'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['min-height'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['min-width'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['move-to'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['nav-down'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['nav-index'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['nav-left'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['nav-right'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['nav-up'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['opacity'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['orphans'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['outline'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['outline-color'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['outline-offset'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['outline-style'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['outline-width'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['overflow'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['overflow-style'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['overflow-wrap'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['overflow-x'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['overflow-y'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['padding'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['padding-bottom'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['padding-left'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['padding-right'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['padding-top'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['page'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['page-break-after'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['page-break-before'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['page-break-inside'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['page-policy'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['pause'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['pause-after'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['pause-before'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['perspective'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['perspective-origin'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['phonemes'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['pitch'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['pitch-range'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['play-during'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['position'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['presentation-level'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['punctuation-trim'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['quotes'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['rendering-intent'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['resize'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['rest'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['rest-after'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['rest-before'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['richness'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['right'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['rotation'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['rotation-point'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['ruby-align'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['ruby-overhang'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['ruby-position'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['ruby-span'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['size'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['speak'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['speak-header'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['speak-numeral'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['speak-punctuation'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['speech-rate'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['src'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['stress'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['string-set'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['tab-size'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['table-layout'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['target'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['target-name'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['target-new'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['target-position'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-align'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-align-last'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-decoration'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-decoration-color'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-decoration-line'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-decoration-skip'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-decoration-style'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-emphasis'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-emphasis-color'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-emphasis-position'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-emphasis-style'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-height'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-indent'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-justify'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-outline'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-shadow'] = 'CSS2.0,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-space-collapse'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-transform'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-underline-position'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['text-wrap'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['top'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transform'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transform-origin'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transform-style'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transition'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transition-delay'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transition-duration'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transition-property'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['transition-timing-function'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['unicode-bidi'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['vertical-align'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['visibility'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-balance'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-duration'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-family'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-pitch'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-pitch-range'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-rate'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-stress'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['voice-volume'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['volume'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['white-space'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['widows'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['width'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['word-break'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['word-spacing'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['word-wrap'] = 'CSS3.0';
+$GLOBALS['csstidy']['all_properties']['z-index'] = 'CSS2.0,CSS2.1,CSS3.0';
+
+/**
+ * An array containing all properties that can accept a quoted string as a value.
+ *
+ * @global array $GLOBALS['csstidy']['quoted_string_properties']
+ */
+$GLOBALS['csstidy']['quoted_string_properties'] = array('content', 'font-family', 'quotes');
+
+/**
+ * An array containing all properties that can be defined multiple times without being overwritten.
+ *
+ * @global array $GLOBALS['csstidy']['quoted_string_properties']
+ */
+$GLOBALS['csstidy']['multiple_properties'] = array('background', 'background-image');
 
 /**
  * An array containing all predefined templates.
@@ -444,6 +614,7 @@ $GLOBALS['csstidy']['predefined_templates']['default'][] = '</span> <span class=
 $GLOBALS['csstidy']['predefined_templates']['default'][] = '<span class="selector">'; //string before selector
 $GLOBALS['csstidy']['predefined_templates']['default'][] = '</span> <span class="format">{</span>'."\n"; //bracket after selector
 $GLOBALS['csstidy']['predefined_templates']['default'][] = "\t".'<span class="property">'; //string before property
+
 $GLOBALS['csstidy']['predefined_templates']['default'][] = '</span><span class="value">'; //string after property+before value
 $GLOBALS['csstidy']['predefined_templates']['default'][] = '</span><span class="format">;</span>'."\n"; //string after value
 $GLOBALS['csstidy']['predefined_templates']['default'][] = '<span class="format">}</span>'; //closing bracket - selector
@@ -501,60 +672,9 @@ $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = "\n";
 
 
 /**
- * CSSTidy - CSS Parser and Optimiser
+ * Contains a class for printing CSS code
  *
- * CSS Printing class
- * This class prints CSS data generated by csstidy.
- *
- * This file is part of CSSTidy.
- *
- * CSSTidy is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * CSSTidy is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with CSSTidy; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package csstidy
- * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- */
-	
-/**
- * CSSTidy - CSS Parser and Optimiser
- *
- * CSS Printing class
- * This class prints CSS data generated by csstidy.
- *
- * Copyright 2005, 2006, 2007 Florian Schmitz
- *
- * This file is part of CSSTidy.
- *
- *   CSSTidy is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Lesser General Public License as published by
- *   the Free Software Foundation; either version 2.1 of the License, or
- *   (at your option) any later version.
- *
- *   CSSTidy is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- * 
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
- * @package csstidy
- * @author Florian Schmitz (floele at gmail dot com) 2005-2007
- * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Cedric Morin (cedric at yterium dot com) 2010
+ * @version 1.0
  */
 
 /**
@@ -564,7 +684,7 @@ $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = "\n";
  *
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.0.1
+ * @version 1.1.0
  */
 class csstidy_print {
 	
@@ -827,32 +947,58 @@ class csstidy_print {
 	 */
 	function _convert_raw_css($default_media='') {
 		$this->tokens = array();
+		$sort_selectors = $this->parser->get_cfg('sort_selectors');
+		$sort_properties = $this->parser->get_cfg('sort_properties');
 		
 		foreach ($this->css as $medium => $val) {
-			if ($this->parser->get_cfg('sort_selectors'))
+			if ($sort_selectors)
 				ksort($val);
 			if (intval($medium) < DEFAULT_AT) {
-				$this->parser->_add_token(AT_START, $medium, true);
+				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
+				if (strlen(trim($medium))){
+					$this->parser->_add_token(AT_START, $medium, true);
+				}
 			}
 			elseif ($default_media) {
 				$this->parser->_add_token(AT_START, $default_media, true);
 			}
 			
 			foreach ($val as $selector => $vali) {
-				if ($this->parser->get_cfg('sort_properties'))
+				if ($sort_properties)
 					ksort($vali);
 				$this->parser->_add_token(SEL_START, $selector, true);
 				
+				$invalid = array(
+								 '*' => array(), // IE7 hacks first
+								 '_' => array(), // IE6 hacks
+								 '/' => array(), // IE6 hacks
+								 '-' => array()  // IE6 hacks
+								 );
 				foreach ($vali as $property => $valj) {
-					$this->parser->_add_token(PROPERTY, $property, true);
-					$this->parser->_add_token(VALUE, $valj, true);
+					if (strncmp($property,"//",2)!==0){
+						$matches = array();
+						if ($sort_properties && preg_match('/^(\*|_|\/|-)(?!(ms|moz|o\b|xv|atsc|wap|khtml|webkit|ah|hp|ro|rim|tc)-)/', $property, $matches)) {
+							$invalid[$matches[1]][$property] = $valj;
+						} else {
+							$this->parser->_add_token(PROPERTY, $property, true);
+							$this->parser->_add_token(VALUE, $valj, true);
+						}
+					}
 				}
-				
+				foreach ($invalid as $prefix => $props) {
+					foreach ($props as $property => $valj) {
+						$this->parser->_add_token(PROPERTY, $property, true);
+						$this->parser->_add_token(VALUE, $valj, true);
+					}
+				}
 				$this->parser->_add_token(SEL_END, $selector, true);
 			}
 			
 			if (intval($medium) < DEFAULT_AT) {
-				$this->parser->_add_token(AT_END, $medium, true);
+				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
+				if (strlen(trim($medium))){
+					$this->parser->_add_token(AT_END, $medium, true);
+				}
 			}
 			elseif ($default_media) {
 				$this->parser->_add_token(AT_END, $default_media, true);
@@ -932,35 +1078,10 @@ class csstidy_print {
 	
 }
 
-	
 /**
- * CSSTidy - CSS Parser and Optimiser
+ * Contains a class for optimising CSS code
  *
- * CSS Optimising Class
- * This class optimises CSS data generated by csstidy.
- *
- * Copyright 2005, 2006, 2007 Florian Schmitz
- *
- * This file is part of CSSTidy.
- *
- *   CSSTidy is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Lesser General Public License as published by
- *   the Free Software Foundation; either version 2.1 of the License, or
- *   (at your option) any later version.
- *
- *   CSSTidy is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- * 
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
- * @package csstidy
- * @author Florian Schmitz (floele at gmail dot com) 2005-2007
- * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
+ * @version 1.0
  */
 
 /**
@@ -1209,8 +1330,32 @@ class csstidy_optimise {
 	function cut_color($color) {
 		$replace_colors = & $GLOBALS['csstidy']['replace_colors'];
 		
+		// if it's a string, don't touch !
+		if (strncmp($color,"'",1)==0 OR strncmp($color,'"',1)==0)
+			return $color;
+		
+		/* expressions complexes de type gradient */
+		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0){
+			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
+			if (stripos($color,"progid:")!==false)
+				return $color;
+			preg_match_all(",rgb\([^)]+\),i",$color,$matches,PREG_SET_ORDER);
+			if (count($matches)){
+				foreach ($matches as $m){
+					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
+				}
+			}
+			preg_match_all(",#[0-9a-f]{6}(?=[^0-9a-f]),i",$color,$matches,PREG_SET_ORDER);
+			if (count($matches)){
+				foreach ($matches as $m){
+					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
+				}
+			}
+			return $color;
+		}
+		
 		// rgb(0,0,0) -> #000000 (or #000 in this case later)
-		if (strtolower(substr($color, 0, 4)) === 'rgb(') {
+		if (strncasecmp($color, 'rgb(', 4)==0) {
 			$color_tmp = substr($color, 4, strlen($color) - 5);
 			$color_tmp = explode(',', $color_tmp);
 			for ($i = 0; $i < count($color_tmp); $i++) {
@@ -1862,63 +2007,7 @@ class csstidy_optimise {
 	}
 	
 }
-	
-/**
- * CSSTidy - CSS Parser and Optimiser
- *
- * CSS Parser class
- *
- * Copyright 2005, 2006, 2007 Florian Schmitz
- *
- * This file is part of CSSTidy.
- *
- *   CSSTidy is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Lesser General Public License as published by
- *   the Free Software Foundation; either version 2.1 of the License, or
- *   (at your option) any later version.
- *
- *   CSSTidy is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- *
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
- * @package csstidy
- * @author Florian Schmitz (floele at gmail dot com) 2005-2007
- * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
- * @author Cedric Morin (cedric at yterium dot com) 2010
- */
-/**
- * Defines ctype functions if required
- *
- * @version 1.0
- */
-	//require_once('class.csstidy_ctype.php');
 
-/**
- * Various CSS data needed for correct optimisations etc.
- *
- * @version 1.3
- */
-	//require('data.inc.php');
-
-/**
- * Contains a class for printing CSS code
- *
- * @version 1.0
- */
-	//require('class.csstidy_print.php');
-
-/**
- * Contains a class for optimising CSS code
- *
- * @version 1.0
- */
-	//require('class.csstidy_optimise.php');
 
 /**
  * CSS Parser class
@@ -1931,7 +2020,7 @@ class csstidy_optimise {
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.3.1
+ * @version 1.4.0
  */
 class csstidy {
 	
@@ -2013,6 +2102,13 @@ class csstidy {
 	 */
 	var $at = '';
 	/**
+	 * Saves the at rule for next selector (during @font-face or other @)
+	 * @var string
+	 * @access private
+	 */
+	var $next_selector_at = '';
+	
+	/**
 	 * Saves the current selector
 	 * @var string
 	 * @access private
@@ -2055,25 +2151,20 @@ class csstidy {
 	 */
 	var $sub_value_arr = array();
 	/**
-	 * Saves the char which opened the last string
-	 * @var string
+	 * Saves the stack of characters that opened the current strings
+	 * @var array
 	 * @access private
 	 */
-	var $str_char = '';
-	var $cur_string = '';
+	var $str_char = array();
+	var $cur_string = array();
 	/**
 	 * Status from which the parser switched to ic or instr
-	 * @var string
+	 * @var array
 	 * @access private
 	 */
-	var $from = '';
+	var $from = array();
 	/**
-	 * Variable needed to manage string-in-strings, for example url("foo.png")
-	 * @var string
-	 * @access private
-	 */
-	var $str_in_str = false;
-	/**
+	 /**
 	 * =true if in invalid at-rule
 	 * @var bool
 	 * @access private
@@ -2099,10 +2190,10 @@ class csstidy {
 	var $line = 1;
 	/**
 	 * Marks if we need to leave quotes for a string
-	 * @var string
+	 * @var array
 	 * @access private
 	 */
-	var $quoted_string = false;
+	var $quoted_string = array();
 	
 	/**
 	 * List of tokens
@@ -2143,7 +2234,7 @@ class csstidy {
 		/* preserve or not browser hacks */
 		$this->settings['discard_invalid_selectors'] = false;
 		$this->settings['discard_invalid_properties'] = false;
-		$this->settings['css_level'] = 'CSS2.1';
+		$this->settings['css_level'] = 'CSS3.0';
 		$this->settings['preserve_css'] = false;
 		$this->settings['timestamp'] = false;
 		$this->settings['template'] = ''; // say that propertie exist
@@ -2415,6 +2506,7 @@ class csstidy {
 		
 		$all_properties = & $GLOBALS['csstidy']['all_properties'];
 		$at_rules = & $GLOBALS['csstidy']['at_rules'];
+		$quoted_string_properties = & $GLOBALS['csstidy']['quoted_string_properties'];
 		
 		$this->css = array();
 		$this->print->input_css = $string;
@@ -2433,7 +2525,7 @@ class csstidy {
 						if ($string{$i} === '/' && @$string{$i + 1} === '*') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'at';
+							$this->from[] = 'at';
 						} elseif ($string{$i} === '{') {
 							$this->status = 'is';
 							$this->at = $this->css_new_media_section($this->at);
@@ -2443,8 +2535,8 @@ class csstidy {
 						} elseif ($string{$i} === '\\') {
 							$this->at .= $this->_unicode($string, $i);
 						}
-						// fix for complicated media, i.e @media screen and (-webkit-min-device-pixel-ratio:0)
-						elseif (in_array($string{$i}, array('(', ')', ':'))) {
+						// fix for complicated media, i.e @media screen and (-webkit-min-device-pixel-ratio:1.5)
+						elseif (in_array($string{$i}, array('(', ')', ':', '.'))) {
 							$this->at .= $string{$i};
 						}
 					} else {
@@ -2461,13 +2553,18 @@ class csstidy {
 						if ($string{$i} === '/' && @$string{$i + 1} === '*' && trim($this->selector) == '') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'is';
+							$this->from[] = 'is';
 						} elseif ($string{$i} === '@' && trim($this->selector) == '') {
 							// Check for at-rule
 							$this->invalid_at = true;
 							foreach ($at_rules as $name => $type) {
 								if (!strcasecmp(substr($string, $i + 1, strlen($name)), $name)) {
 									($type === 'at') ? $this->at = '@' . $name : $this->selector = '@' . $name;
+									if ($type === "atis"){
+										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:($this->at?$this->at:DEFAULT_AT));
+										$this->at = $this->css_new_media_section(' ');
+										$type = "is";
+									}
 									$this->status = $type;
 									$i += strlen($name);
 									$this->invalid_at = false;
@@ -2486,15 +2583,19 @@ class csstidy {
 								$this->log('Invalid @-rule: ' . $invalid_at_name . ' (removed)', 'Warning');
 							}
 						} elseif (($string{$i} === '"' || $string{$i} === "'")) {
-							$this->cur_string = $string{$i};
+							$this->cur_string[] = $string{$i};
 							$this->status = 'instr';
-							$this->str_char = $string{$i};
-							$this->from = 'is';
+							$this->str_char[] = $string{$i};
+							$this->from[] = 'is';
 							/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
-							$this->quoted_string = ($string{$i - 1} == '=' );
+							$this->quoted_string[] = ($string{$i - 1} == '=' );
 						} elseif ($this->invalid_at && $string{$i} === ';') {
 							$this->invalid_at = false;
 							$this->status = 'is';
+							if($this->next_selector_at){
+								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->next_selector_at = '';
+							}
 						} elseif ($string{$i} === '{') {
 							$this->status = 'ip';
 							if($this->at == '') {
@@ -2538,7 +2639,7 @@ class csstidy {
 						} elseif ($string{$i} === '/' && @$string{$i + 1} === '*' && $this->property == '') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'ip';
+							$this->from[] = 'ip';
 						} elseif ($string{$i} === '}') {
 							$this->explode_selectors();
 							$this->status = 'is';
@@ -2546,13 +2647,19 @@ class csstidy {
 							$this->_add_token(SEL_END, $this->selector);
 							$this->selector = '';
 							$this->property = '';
+							if($this->next_selector_at){
+								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->next_selector_at = '';
+							}
 						} elseif ($string{$i} === ';') {
 							$this->property = '';
 						} elseif ($string{$i} === '\\') {
 							$this->property .= $this->_unicode($string, $i);
 						}
 						// else this is dumb IE a hack, keep it
-						elseif ($this->property=='' AND !ctype_space($string{$i})) {
+						// including //
+						elseif (($this->property=='' AND !ctype_space($string{$i}))
+								OR ($this->property=='/' OR $string{$i}=="/")) {
 							$this->property .= $string{$i};
 						}
 					}
@@ -2568,12 +2675,13 @@ class csstidy {
 						if ($string{$i} === '/' && @$string{$i + 1} === '*') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'iv';
+							$this->from[] = 'iv';
 						} elseif (($string{$i} === '"' || $string{$i} === "'" || $string{$i} === '(')) {
-							$this->cur_string = $string{$i};
-							$this->str_char = ($string{$i} === '(') ? ')' : $string{$i};
+							$this->cur_string[] = $string{$i};
+							$this->str_char[] = ($string{$i} === '(') ? ')' : $string{$i};
 							$this->status = 'instr';
-							$this->from = 'iv';
+							$this->from[] = 'iv';
+							$this->quoted_string[] = in_array(strtolower($this->property), $quoted_string_properties);
 						} elseif ($string{$i} === ',') {
 							$this->sub_value = trim($this->sub_value) . ',';
 						} elseif ($string{$i} === '\\') {
@@ -2605,7 +2713,7 @@ class csstidy {
 							$this->sub_value .= $string{$i};
 						}
 						if (($string{$i} === '}' || $string{$i} === ';' || $pn) && !empty($this->selector)) {
-							if ($this->at == '') {
+							if($this->at == ''){
 								$this->at = $this->css_new_media_section(DEFAULT_AT);
 							}
 							
@@ -2617,17 +2725,23 @@ class csstidy {
 							
 							$this->optimise->subvalue();
 							if ($this->sub_value != '') {
-								/* original, disabled for fix below
-								 if (substr($this->sub_value, 0, 6) == 'format') {
-								 $this->sub_value = str_replace(array('format(', ')'), array('format("', '")'), $this->sub_value);
-								 }//*/
-								$this->sub_value_arr[] = $this->sub_value;
-								// [FIX] @font-face with multiple fonts and CSSTidy
-								// (http://www.pixelastic.com/blog/86:csstidy-and-the-woff-fonts)
-								foreach($this->sub_value_arr as &$sub_value) {
-									if (substr($sub_value, 0, 6) == 'format') {
-										$sub_value = str_replace(array('format(', ')'), array('format("', '")'), $sub_value);
+								if (strncmp($this->sub_value,'format',6)==0) {
+									$format_strings = csstidy::parse_string_list(substr($this->sub_value, 7, -1));
+									if (!$format_strings) {
+										$this->sub_value = "";
 									}
+									else {
+										$this->sub_value = "format(";
+										
+										foreach ($format_strings as $format_string) {
+											$this->sub_value .= '"' . str_replace('"', '\\"', $format_string) . '",';
+										}
+										
+										$this->sub_value = substr($this->sub_value, 0, -1) . ")";
+									}
+								}
+								if ($this->sub_value != '') {
+									$this->sub_value_arr[] = $this->sub_value;
 								}
 								$this->sub_value = '';
 							}
@@ -2663,6 +2777,10 @@ class csstidy {
 							$this->status = 'is';
 							$this->invalid_at = false;
 							$this->selector = '';
+							if($this->next_selector_at){
+								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->next_selector_at = '';
+							}
 						}
 					} elseif (!$pn) {
 						$this->sub_value .= $string{$i};
@@ -2679,55 +2797,82 @@ class csstidy {
 					
 					/* Case in string */
 				case 'instr':
-					if ($this->str_char === ')' && ($string{$i} === '"' || $string{$i} === '\'') && !$this->str_in_str && !csstidy::escaped($string, $i)) {
-						$this->str_in_str = true;
-					} elseif ($this->str_char === ')' && ($string{$i} === '"' || $string{$i} === '\'') && $this->str_in_str && !csstidy::escaped($string, $i)) {
-						$this->str_in_str = false;
+					$_str_char = $this->str_char[count($this->str_char)-1];
+					$_cur_string = $this->cur_string[count($this->cur_string)-1];
+					$_quoted_string = $this->quoted_string[count($this->quoted_string)-1];
+					$temp_add = $string{$i};
+					
+					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but 
+					// parentheticals can be nested more than once.
+					if ($_str_char === ")" && ($string{$i} === "(" || $string{$i} === '"' || $string{$i} === '\'') && !csstidy::escaped($string, $i)) {
+						$this->cur_string[] = $string{$i};
+						$this->str_char[] = $string{$i} == "(" ? ")" : $string{$i};
+						$this->from[] = 'instr';
+						$this->quoted_string[] = ($_str_char === ")" AND $string{$i} !== "(" AND trim($_cur_string)=="(")?$_quoted_string:!($string{$i} === "(");
+						continue;
 					}
-					$temp_add = $string{$i};					 // ...and no not-escaped backslash at the previous position
-					if (($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !csstidy::escaped($string, $i - 1))) {
-						$temp_add = "\\A ";
+					
+					if ($_str_char !== ")" && ($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !csstidy::escaped($string, $i - 1))) {
+						$temp_add = "\\A";
 						$this->log('Fixed incorrect newline in string', 'Warning');
 					}
-					// this optimisation remove space in css3 properties (see vendor-prefixed/webkit-gradient.csst)
-					#if (!($this->str_char === ')' && in_array($string{$i}, $GLOBALS['csstidy']['whitespace']) && !$this->str_in_str)) {
-					$this->cur_string .= $temp_add;
-					#}
-					if ($string{$i} == $this->str_char && !csstidy::escaped($string, $i) && !$this->str_in_str) {
-						$this->status = $this->from;
-						if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property !== 'content') {
-							if (!$this->quoted_string) {
-								if ($this->str_char === '"' || $this->str_char === '\'') {
-									// Temporarily disable this optimization to avoid problems with @charset rule, quote properties, and some attribute selectors...
-									// Attribute selectors fixed, added quotes to @chartset, no problems with properties detected. Enabled
-									$this->cur_string = substr($this->cur_string, 1, -1);
-								} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) /* () */ {
-									$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+					
+					$_cur_string .= $temp_add;
+					
+					if ($string{$i} === $_str_char && !csstidy::escaped($string, $i)) {
+						$this->status = array_pop($this->from);
+						
+						if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $_cur_string) && $this->property !== 'content') {
+							if (!$_quoted_string) {
+								if ($_str_char !== ')') {
+									// Convert properties like
+									// font-family: 'Arial';
+									// to
+									// font-family: Arial;
+									// or
+									// url("abc")
+									// to
+									// url(abc)
+									$_cur_string = substr($_cur_string, 1, -1);
 								}
 							} else {
-								$this->quoted_string = false;
+								$_quoted_string = false;
 							}
 						}
-						if ($this->from === 'iv') {
-							if (!$this->quoted_string){
-								if (strpos($this->cur_string,',')!==false)
+						
+						array_pop($this->cur_string);
+						array_pop($this->quoted_string);
+						array_pop($this->str_char);
+						
+						if ($_str_char === ")") {
+							$_cur_string = "(" . trim(substr($_cur_string, 1, -1)) . ")";
+						}
+						
+						if ($this->status === 'iv') {
+							if (!$_quoted_string){
+								if (strpos($_cur_string,',')!==false)
 									// we can on only remove space next to ','
-									$this->cur_string = implode(',',array_map('trim',explode(',',$this->cur_string)));
+									$_cur_string = implode(',',array_map('trim',explode(',',$_cur_string)));
 								// and multiple spaces (too expensive)
-								if (strpos($this->cur_string,'  ')!==false)
-									$this->cur_string = preg_replace(",\s+,"," ",$this->cur_string);
+								if (strpos($_cur_string,'  ')!==false)
+									$_cur_string = preg_replace(",\s+,"," ",$_cur_string);
 							}
-							$this->sub_value .= $this->cur_string;
-						} elseif ($this->from === 'is') {
-							$this->selector .= $this->cur_string;
+							$this->sub_value .= $_cur_string;
+						} elseif ($this->status === 'is') {
+							$this->selector .= $_cur_string;
+						} elseif ($this->status === 'instr') {
+							$this->cur_string[count($this->cur_string)-1] .= $_cur_string;
 						}
+					}
+					else {
+						$this->cur_string[count($this->cur_string)-1] = $_cur_string;
 					}
 					break;
 					
 					/* Case in-comment */
 				case 'ic':
 					if ($string{$i} === '*' && $string{$i + 1} === '/') {
-						$this->status = $this->from;
+						$this->status = array_pop($this->from);
 						$i++;
 						$this->_add_token(COMMENT, $cur_comment);
 						$cur_comment = '';
@@ -2930,7 +3075,9 @@ class csstidy {
 	 * @version 1.0
 	 */
 	static function is_important(&$value) {
-		return (!strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
+		return (
+				strpos($value,"!")!==false // quick test
+				AND !strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
 	}
 	
 	/**
@@ -2983,11 +3130,75 @@ class csstidy {
 	 * @version 1.0
 	 */
 	function property_is_valid($property) {
+		if (in_array(trim($property), $GLOBALS['csstidy']['multiple_properties'])) $property = trim($property);
 		$all_properties = & $GLOBALS['csstidy']['all_properties'];
 		return (isset($all_properties[$property]) && strpos($all_properties[$property], strtoupper($this->get_cfg('css_level'))) !== false );
 	}
 	
+	/**
+	 * Accepts a list of strings (e.g., the argument to format() in a @font-face src property)
+	 * and returns a list of the strings.  Converts things like:
+	 *
+	 * format(abc) => format("abc")
+	 * format(abc def) => format("abc","def")
+	 * format(abc "def") => format("abc","def")
+	 * format(abc, def, ghi) => format("abc","def","ghi")
+	 * format("abc",'def') => format("abc","def")
+	 * format("abc, def, ghi") => format("abc, def, ghi")
+	 *
+	 * @param string
+	 * @return array
+	 */
+	
+	function parse_string_list($value) {
+		$value = trim($value);
+		
+		// Case: empty
+		if (!$value) return array();
+		
+		$strings = array();
+		
+		$in_str = false;
+		$current_string = "";
+		
+		for ($i = 0, $_len = strlen($value); $i < $_len; $i++) {
+			if (($value{$i} == "," || $value{$i} === " ") && $in_str === true) {
+				$in_str = false;
+				$strings[] = $current_string;
+				$current_string = "";
+			}
+			else if ($value{$i} == '"' || $value{$i} == "'"){
+				if ($in_str === $value{$i}) {
+					$strings[] = $current_string;
+					$in_str = false;
+					$current_string = "";
+					continue;
+				}
+				else if (!$in_str) {
+					$in_str = $value{$i};
+				}
+			}
+			else {
+				if ($in_str){
+					$current_string .= $value{$i};
+				}
+				else {
+					if (!preg_match("/[\s,]/", $value{$i})) {
+						$in_str = true;
+						$current_string = $value{$i};
+					}
+				}
+			}
+		}
+		
+		if ($current_string) {
+			$strings[] = $current_string;
+		}
+		
+		return $strings;
+	}
 }
+
 
 
 /* PHP & Web Toolkit specific code starts here */
@@ -3001,7 +3212,7 @@ $files = array();
 $options = array();
 
 $css = new csstidy();
-	
+
 // csstidy config + template
 $css->set_cfg('sort_selectors', false);
 $css->set_cfg('sort_properties', false);
@@ -3027,7 +3238,7 @@ else {
 	$css->set_cfg('preserve_css', true);
 }
 $css->load_template($template);
-	
+
 // line endings
 $line_endings = 'NA';
 if (isset($argv[3]) && $argv[3] == '-l' && isset($argv[4]) && strlen($argv[4]) > 0) {
@@ -3037,7 +3248,7 @@ if (isset($argv[3]) && $argv[3] == '-l' && isset($argv[4]) && strlen($argv[4]) >
 // read stdin
 $source_orig_cli = '';
 while ($inp = fread(STDIN,8192)) {
-    $source_orig_cli .= $inp;
+	$source_orig_cli .= $inp;
 }
 $css_code = $source_orig_cli;
 
