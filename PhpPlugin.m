@@ -79,7 +79,7 @@ jshint no idea yet...
 		
 		downloadController = [[DownloadController alloc] init];
 		[downloadController setMyPlugin:self];
-		
+				
 		// init vars
 		controller = aController;
 		myBundle = plugInBundle;
@@ -658,43 +658,6 @@ jshint no idea yet...
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
-	
-	/*
-	@try {		
-		NSMutableArray *args = [NSMutableArray array];
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyBracesOnOwnLine]) {
-			[args addObject:@"braces_on_own_line"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyPreserveNewlines]) {
-			[args addObject:@"preserve_newlines"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidySpaceAfterAnonFunction]) {
-			[args addObject:@"space_after_anon_function"];
-		}
-		if ([[controller focusedTextView:self] usesTabs]) {
-			[args addObject:@"indent_char_tab"];
-		}
-		else {
-			[args addObject:@"indent_char_space"];
-		}
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"] arguments:args called:@"JSTidy"];
-	}
-	@catch (NSException *e) {	
-		[messageController alertCriticalException:e];
-	}
-	return;
-	if ([[self getEditorText] length] > maxLengthJs) {
-		[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
-		return;
-	}
-	@try {
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, [self currentLineEnding], nil];
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-	}
-	@catch (NSException *e) {
-		[messageController alertCriticalException:e];
-	}
-	*/
 }
 
 - (void)doJsMinify
@@ -823,7 +786,6 @@ jshint no idea yet...
 		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self codaPluginPath] error: &error];
 		int numPlugins = 0;
 		for (NSString *filename in dirContents) {
-			[self doLog:[@"File: " stringByAppendingString:filename]];
 			if ([filename hasPrefix:@"PhpPlugin"] && [filename hasSuffix:@"codaplugin"]) {
 				[self doLog:[@"FOUND: " stringByAppendingString:filename]];
 				numPlugins++;
