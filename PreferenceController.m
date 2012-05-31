@@ -52,6 +52,7 @@ NSString* const PrefDebugMode = @"dechipwreckDebugMode";
 NSString* const PrefUpdateCheck = @"dechipwreckUpdateCheck";
 NSString* const PrefLastUpdateCheck = @"dechipwreckLastUpdateCheck";
 NSString* const PrefAutoSave = @"dechipwreckAutoSave";
+NSString* const PrefPhpOnSave = @"dechipwreckPhpOnSave";
 NSString* const PrefPhpBeepOnly = @"dechipwreckPhpBeepOnly";
 NSString* const PrefUseSelection = @"dechipwreckUseSelection";
 

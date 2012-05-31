@@ -37,6 +37,7 @@ extern NSString* const PrefDebugMode;
 extern NSString* const PrefUpdateCheck;
 extern NSString* const PrefLastUpdateCheck;
 extern NSString* const PrefAutoSave;
+extern NSString* const PrefPhpOnSave;
 extern NSString* const PrefPhpBeepOnly;
 extern NSString* const PrefUseSelection;
 
