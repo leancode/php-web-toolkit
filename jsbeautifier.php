@@ -1215,4 +1215,3 @@ if (isset($argv[2])) {
 }
 
 echo $result;
-

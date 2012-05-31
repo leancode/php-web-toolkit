@@ -52,6 +52,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)doValidateHtml;
 - (void)doValidatePhp;
 - (void)doJsLint;
+- (ValidationResult*)validatePhp;
 
 // actions: remote validation
 - (void)doValidateRemoteCss;
@@ -72,17 +73,15 @@ static unsigned int maxLengthJs = 65535;
 - (void)checkForUpdateNow;
 - (void)downloadUpdateWeb;
 - (void)testUpdatePlugin;
-- (void)testTidyAll;
-- (void)testValidateAll;
 
 // helpers
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
-- (void)showPluginResources;
-- (void)testNotifications;
+- (void)showPluginResources; 
 - (void)doLog:(NSString*)loggable;
 - (BOOL)isCoda2;
+- (void)sanityCheck;
 
 // editor actions
 - (void)displayHtmlString:(NSString*)data;
@@ -101,6 +100,7 @@ static unsigned int maxLengthJs = 65535;
 - (NSString*)phpVersion;
 - (NSString*)tidyExecutable;
 - (NSString*)jscInterpreter;
+- (NSString*)codaPluginPath;
 
 // growl
 - (NSString*)growlNotify;

@@ -294,5 +294,17 @@ $source_orig_cli = '';
 while ($inp = fread(STDIN,8192)) {
     $source_orig_cli .= $inp;
 }
-echo JSMin::minify($source_orig_cli);
-?>
+$result = JSMin::minify($source_orig_cli);
+if (isset($argv[1])) {
+	if ($argv[1] == 'CR') {
+		$result = str_replace("\n","\r", $result);
+	}
+	else if ($argv[1] == 'LF') {
+		$result = str_replace("\r","\n", $result);
+	}
+	else {
+		$result = str_replace("\n","\r\n", $result);
+	}
+}
+
+echo $result;

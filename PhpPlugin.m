@@ -6,12 +6,11 @@
 //  Copyright 2008-2011 chipwreck.de. All rights reserved.
 
 /*
-csslint:
+csslint. maybe?:
  https://github.com/stubbornella/csslint
  http://www.nczonline.net/blog/2011/08/18/css-lint-updated-to-0-5-0/?
  
 jshint setting defaults:
-
 + browser    : true, // if the standard browser globals should be predefined
 + debug      : true, // if debugger statements should be allowed
 + devel      : true, // if logging should be allowed (console, alert, etc.)
@@ -22,17 +21,14 @@ jshint setting defaults:
 + prototypejs : true, // if Prototype and Scriptaculous globals should be predefined
  
 jshint settings not used:
-
 - passfail   : true, // if the scan should stop on first error
 
 jshint no idea yet...
- 
 ? couch       : true, // if CouchDB globals should be predefined
 ? es5         : true, // if ES5 syntax should be allowed
 ? rhino       : true, // if the Rhino environment globals should be predefined
 ? expr        : true, // if ExpressionStatement should be allowed as Programs
 ? supernew    : true, // if `new function () { ... };` and `new Object;` should be tolerated
- 
  */
 
 #import "PhpPlugin.h"
@@ -64,7 +60,6 @@ jshint no idea yet...
 {
 	return [self initWithController:aController plugInBundle:plugInBundle];
 }
-
 
 - (id)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
 {
@@ -143,14 +138,6 @@ jshint no idea yet...
 									 target:self selector:@selector(doJsTidy)
 						  representedObject:nil keyEquivalent:@"$~^j" pluginName:[self name]]; // cmd+alt+ctrl+j
 		
-		
-		// [ß] >>
-		/*
-		 [controller registerActionWithTitle:NSLocalizedString(@"[BETA] Open plugin resources", @"") underSubmenuWithTitle:@"[BETA TEST]"
-		 target:self selector:@selector(showPluginResources)
-		 representedObject:nil keyEquivalent:nil pluginName:[self name]]; // 
-		 */
-		
 		// root >>
 		[controller registerActionWithTitle:NSLocalizedString(@"Check for updates", @"") underSubmenuWithTitle:nil
 									 target:self selector:@selector(checkForUpdateNow)
@@ -165,29 +152,8 @@ jshint no idea yet...
 									 target:self selector:@selector(showPreferencesWindow)
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
 		
-		// check sbjson
-		if (![[NSUserDefaults standardUserDefaults] integerForKey:PrefMsgShown]) {
-			@try {
-				SBJsonParser *json = [SBJsonParser alloc];
-				if (![json respondsToSelector:@selector(objectWithString:error:)]) {
-					int lesscssresp = [messageController alertInformation:
-									   NSLocalizedString(@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead.",@"")
-															   additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once.",@"")
-															 cancelButton:YES];
-					
-					if (lesscssresp == 1) {
-						NSString *lesscsspath = [@"~/Library/Application Support/Coda/Plug-Ins" stringByExpandingTildeInPath];
-						[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/LessCSS.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
-						[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/MojoPlugin.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
-					}
-					
-					[[NSUserDefaults standardUserDefaults] setInteger:1 forKey: PrefMsgShown];
-				}
-			}
-			@catch (NSException *e) {
-				[messageController alertCriticalException:e];
-			}
-		}
+		// check for duplicate/incompatible plugins
+		[self sanityCheck];
 				
 		// startup msg
 		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
@@ -217,8 +183,7 @@ jshint no idea yet...
 		
 		if ( ![self editorTextPresent] ) {
 			if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite)
-				&& action != @selector(testUpdatePlugin) && action != @selector(showPluginResources) && action != @selector(testNotifications)
-				&& action != @selector(testTidyAll) && action != @selector(testValidateAll)
+				&& action != @selector(testUpdatePlugin) && action != @selector(showPluginResources)
 				) {
 				return NO;
 			}
@@ -231,19 +196,24 @@ jshint no idea yet...
 	}
 }
 
-/*
-- (void)textViewWillSave:(CodaTextView*)textView
+- (void)textViewWillSave:(CodaTextView*)textView /* Coda 2 only */
 {
-	[self doLog:@"about to save"];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefPhpOnSave] && ([[textView path] hasSuffix:@"php"] || [[textView path] hasSuffix:@"phtml"])) {
+		
+		ValidationResult *myresult = [self validatePhp];
+		
+		if ([myresult hasFailResult]) {
+			NSBeep();
+			int lineOfError = 0;
+			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
+			[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
+			[scanner scanInt: &lineOfError];
+			
+			[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
+		}
+	}
 }
-- (void)textViewDidFocus:(CodaTextView*)textView
-{
-	[self doLog:@"did focus"];	
-}
-- (NSString*)willPublishFileAtPath:(NSString*)inputPath
-{	
-}
-*/
+
 
 #pragma mark Local Validation
 
@@ -271,8 +241,7 @@ jshint no idea yet...
 - (void)doValidatePhp
 {
 	@try {
-		NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
-		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO useStdOut:YES];
+		ValidationResult *myresult = [self validatePhp];
 
 		if ([myresult hasFailResult]) {
 			NSBeep();
@@ -306,6 +275,12 @@ jshint no idea yet...
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
 	}
+}
+
+- (ValidationResult*)validatePhp
+{
+	NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
+	return [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO useStdOut:YES];
 }
 
 - (void)doJsLint
@@ -398,15 +373,11 @@ jshint no idea yet...
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSmartTabs]) {
 			[options appendString:@"smarttabs,"];
 		}
-
-		//	NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], @"--", [self getEditorText], options, nil];
 		
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];
 		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
 	
-		 if ([myresult hasFailResult]) {
-			 // NSString *res = [[NSString alloc] initWithData:[[myresult result] dataUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
-
+		if ([myresult hasFailResult]) {
 			[messageController showResult:
 			 [[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
 									forUrl:@""
@@ -546,6 +517,10 @@ jshint no idea yet...
 -(void)doTidyCss
 {
 	@try {
+		if ([[self currentEncoding] isEqualToString:@"-utf16"]) {
+			[messageController alertInformation:@"CSS files in UTF-16 aren't supported" additional:@"Convert the CSS file to UTF-8 in order to process it." cancelButton:NO];
+			return;
+		}
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam],
 								@"-l", [self currentLineEnding], nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"] arguments:args called:@"CSSTidy"];
@@ -679,35 +654,14 @@ jshint no idea yet...
 		
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:options, [self currentLineEnding], nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"] arguments:args called:@"JSTidy"];
-		
-		/*
-		 NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, [self currentLineEnding], nil];
-		 [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"], options, [self currentLineEnding], nil];
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/php-call.sh"] arguments:args called:@"JSTidy"];	
-		 */
-		
-		/*
-		 if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
-		 NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
-		 [self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-		 }
-		 else {
-		 NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
-		 [self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
-		 }
-		 */
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
 	
-	return;
-	
-	@try {
-		
+	/*
+	@try {		
 		NSMutableArray *args = [NSMutableArray array];
-
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSTidyBracesOnOwnLine]) {
 			[args addObject:@"braces_on_own_line"];
 		}
@@ -723,56 +677,31 @@ jshint no idea yet...
 		else {
 			[args addObject:@"indent_char_space"];
 		}
-		/*
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
-			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-		}
-		else {
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
-			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
-		}
-		*/
-		
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"] arguments:args called:@"JSTidy"];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
 	}
 	return;
-	
 	if ([[self getEditorText] length] > maxLengthJs) {
 		[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 		return;
 	}
-	
 	@try {
-		
-		/*
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, [self currentLineEnding], nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-		*/
-		/*
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsViaShell]) { 
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], options, nil];
-			[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSTidy"];	
-		}
-		else {
-			NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jstidy-min.js"], @"--", [self getEditorText], options, nil];		
-			[self reformatWith:[self jscInterpreter] arguments:args called:@"JSTidy"];
-		}
-		 */
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
-
+	*/
 }
 
 - (void)doJsMinify
 {
 	@try {
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] arguments:[NSMutableArray array] called:@"JSMinify"];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[self currentLineEnding], nil];
+		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] arguments:args called:@"JSMinify"];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
@@ -840,8 +769,7 @@ jshint no idea yet...
 
 - (void)showPluginResources
 {
-	NSString *respath = [@"~/Library/Application Support/Coda/Plug-Ins/PhpPlugin.codaplugin/Contents/Resources/" stringByExpandingTildeInPath];
-	[[NSWorkspace sharedWorkspace] selectFile:[respath stringByAppendingPathComponent:@"tidy"] inFileViewerRootedAtPath:respath];
+	[[NSWorkspace sharedWorkspace] openURL: [NSURL fileURLWithPath: [myBundle resourcePath]]];
 }
 
 - (void)doLog:(NSString *)loggable
@@ -859,6 +787,65 @@ jshint no idea yet...
 - (BOOL)isCoda2
 {
 	return ([controller apiVersion] >= 6);
+}
+
+- (void)sanityCheck
+{
+	// check sbjson
+	if (![[NSUserDefaults standardUserDefaults] integerForKey:PrefMsgShown]) {
+		@try {
+			SBJsonParser *json = [SBJsonParser alloc];
+			if (![json respondsToSelector:@selector(objectWithString:error:)]) {
+				int lesscssresp = [messageController alertInformation:
+								   NSLocalizedString(@"Another plugin is not compatible with the PHP & WebToolkit plugin.\n\nProbably LessCSS or Mojo WebOS.\n\nIf you use the LessCSS plugin: Please uninstall and visit http://incident57.com/less/ to use Less.app instead.",@"")
+														   additional:NSLocalizedString(@"Click OK to open the Plugins-folder, uninstall the Plugin and restart Coda.\n\nThis message appears only once.",@"")
+														 cancelButton:YES];
+				
+				if (lesscssresp == 1) {
+					NSString *lesscsspath = [[[myBundle bundlePath] stringByDeletingLastPathComponent] stringByExpandingTildeInPath];
+					[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/LessCSS.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
+					[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/MojoPlugin.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
+				}
+				
+				[[NSUserDefaults standardUserDefaults] setInteger:1 forKey:PrefMsgShown];
+			}
+		}
+		@catch (NSException *e) {
+			[messageController alertCriticalException:e];
+		}
+	}
+	
+	// check duplicate plugins
+	@try {
+		NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+		NSError *error = nil;
+		[self doLog:[@"Checking for duplicate plugins in: " stringByAppendingString:[self codaPluginPath]]];
+		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self codaPluginPath] error: &error];
+		int numPlugins = 0;
+		for (NSString *filename in dirContents) {
+			[self doLog:[@"File: " stringByAppendingString:filename]];
+			if ([filename hasPrefix:@"PhpPlugin"] && [filename hasSuffix:@"codaplugin"]) {
+				[self doLog:[@"FOUND: " stringByAppendingString:filename]];
+				numPlugins++;
+			}
+		}
+		if (numPlugins > 1) {
+			int plugindupresp = [messageController alertInformation:
+								 NSLocalizedString(@"You have installed PHP & Web Toolkit more than once.",@"")
+														 additional:NSLocalizedString(@"Click OK to open the Plugins-folder, delete additional files starting with 'PHPPlugin' restart Coda.\n\n\nThis message might appear more than once.",@"")
+														thirdButton:@"Help"];
+			
+			if (plugindupresp == 1) {
+				[[NSWorkspace sharedWorkspace] openURL: [NSURL fileURLWithPath: [self codaPluginPath]]]; 
+			}
+			else if (plugindupresp == 3) {
+				[self goToHelpWebsite];
+			}
+		}
+	}
+	@catch (NSException *e) {
+		[messageController alertCriticalException:e];
+	}
 }
 
 #pragma mark Editor actions
@@ -1000,6 +987,11 @@ jshint no idea yet...
 
 #pragma mark Information getters
 
+- (NSString *)codaPluginPath
+{
+	return [[myBundle bundlePath] stringByDeletingLastPathComponent];	
+}
+
 - (NSString *)pluginVersionNumber
 {
 	return [[myBundle infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -1094,7 +1086,7 @@ jshint no idea yet...
 	
 	@try {
 		dataIn = [textInput dataUsingEncoding: anEncoding];
-		[self doLog: [NSString stringWithFormat:@"in goes %@", textInput] ];
+		// [self doLog: [NSString stringWithFormat:@"in goes %@", textInput] ];
 	
 		NSPipe *toPipe = [NSPipe pipe];
 		NSPipe *fromPipe = [NSPipe pipe];
@@ -1122,11 +1114,13 @@ jshint no idea yet...
 
 		if (anEncoding == NSUnicodeStringEncoding && [launchPath isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal]]) {
 			anEncoding = NSUTF8StringEncoding; // php binary never returns utf16..
+			[self doLog: @"File was UTF-16 but php binary can't handle this correctly, so falling back to UTF-8"];
 		}
+		
 		NSMutableString *resultData = [[NSMutableString alloc] initWithData: [reading readDataToEndOfFile] encoding: anEncoding];
 		
 		[aTask terminate];
-		[self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
+		// [self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
 		return resultData;
 	}
 	@catch (NSException *e) {	
