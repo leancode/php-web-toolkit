@@ -112,7 +112,7 @@ NSString* const UrlHomepage =  @"http://www.chipwreck.de/blog/software/coda-php/
 NSString* const UrlDonationpage = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=donationlink#donate";
 NSString* const UrlTwitter = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=twitterlink#twitter";
 NSString* const UrlFacebook = @"http://www.chipwreck.de/blog/about/donate/?utm_source=prefs&utm_medium=plugin&utm_campaign=facebooklink#facebook";
-NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help-quick/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink";
+NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink#quick";
 NSString* const UrlProCSSor = @"http://procssorapp.com/?q=coda";
 NSString* const UrlTidyHelp = @"http://tidy.sourceforge.net/docs/quickref.html";
 NSString* const UrlVersionCheck = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=483&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=";
