@@ -64,6 +64,9 @@ NSString* const PrefMsgShown = @"dechipwreckPrefMsgShown";
 NSString* const PrefLastVersionRun = @"dechipwreckPrefLastVersionRun";
 
 NSString* const PrefCssLevel = @"dechipwreckPrefCssLevel";
+NSString* const PrefCssTidyRemoveLast = @"dechipwreckPrefCssTidyRemoveLast";
+NSString* const PrefCssMinifyOnPublish = @"dechipwreckPrefCssMinifyOnPublish";
+NSString* const PrefJsMinifyOnPublish = @"dechipwreckPrefJsMinifyOnPublish";
 
 NSString* const PrefPhpTidyBraces = @"dechipwreckPrefPhpTidyBraces";
 NSString* const PrefPhpTidyBlankLines = @"dechipwreckPrefPhpTidyBlankLines";

@@ -48,6 +48,9 @@ extern NSString* const PrefHtmlTidyCustomConfig;
 extern NSString* const PrefMsgShown;
 extern NSString* const PrefLastVersionRun;
 extern NSString* const PrefCssLevel;
+extern NSString* const PrefCssTidyRemoveLast;
+extern NSString* const PrefCssMinifyOnPublish;
+extern NSString* const PrefJsMinifyOnPublish;
 
 extern NSString* const PrefPhpTidyBraces;
 extern NSString* const PrefPhpTidyBlankLines;
