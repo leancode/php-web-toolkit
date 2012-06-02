@@ -17,7 +17,7 @@ jshint setting defaults:
 + jquery     : true, // if jQuery globals should be predefined
 + laxbreak   : true, // if line breaks should not be checked
 + mootools    : true, // if MooTools globals should be predefined 
-+ node        : true, // if the Node.js environment globals should be predefined
++ node        : true, // if the Node.js environment globals should be predefined !!REMOVED!!
 + prototypejs : true, // if Prototype and Scriptaculous globals should be predefined
  
 jshint settings not used:
@@ -214,6 +214,47 @@ jshint no idea yet...
 	}
 }
 
+- (NSString*)willPublishFileAtPath:(NSString*)inputPath /* Coda 2 only */
+{
+	if (
+		([[NSUserDefaults standardUserDefaults] boolForKey:PrefCssMinifyOnPublish] && [[[controller focusedTextView:self] path] hasSuffix:@"css"])
+		||
+		([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsMinifyOnPublish] && [[[controller focusedTextView:self] path] hasSuffix:@"js"])
+		) {
+		return [self minifyFileOnDisk:inputPath];
+	}
+	return inputPath;
+}
+
+- (NSString*)minifyFileOnDisk:(NSString*)inputPath
+{
+	[self doLog:[NSString stringWithFormat:@"Minify file in: %@", inputPath]];
+	
+	NSString *tmpFileName = [NSString stringWithFormat:@"minify-%.0f-%i.tmp", [[NSDate date] timeIntervalSince1970], (arc4random() % 99999999)];
+	NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:tmpFileName];
+	
+	NSError *error;
+	NSString *inputText = [[NSString alloc] initWithContentsOfFile:inputPath encoding:NSUTF8StringEncoding error:&error];
+	if (inputText == nil) {
+		[self doLog:[NSString stringWithFormat:@"Error reading minify at %@\n%@", inputPath, [error localizedFailureReason]]];
+		[messageController alertCriticalError:[NSString stringWithFormat:@"Error readinig minified at %@\n%@", inputPath, [error localizedFailureReason]] additional:@""];
+		return inputPath;
+	}
+	
+	[self doLog:[NSString stringWithFormat:@"Minify file out: %@", tmpPath]];
+	
+	NSMutableArray *args = [NSMutableArray arrayWithObjects:[self currentLineEnding], nil];
+	NSMutableString *resultText = [self filterTextInput:inputText with:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] options:args encoding:[[controller focusedTextView:self] encoding] useStdout:YES];
+	BOOL ok = [resultText writeToFile:tmpPath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+	[inputText release];
+	if (!ok) {
+		[self doLog:[NSString stringWithFormat:@"Error writing minified file at %@\n%@", tmpPath, [error localizedFailureReason]]];
+		[messageController alertCriticalError:[NSString stringWithFormat:@"Error writing minified file at %@\n%@", tmpPath, [error localizedFailureReason]] additional:@""];
+		return inputPath;
+	}
+	
+	return tmpPath;	
+}
 
 #pragma mark Local Validation
 
@@ -291,7 +332,7 @@ jshint no idea yet...
 			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
-		NSMutableString* options = [NSMutableString stringWithString:@"browser,debug,devel,jquery,laxbreak,mootools,node,prototypejs,"];
+		NSMutableString* options = [NSMutableString stringWithString:@"browser,debug,devel,jquery,laxbreak,mootools,prototypejs,"]; // node removed
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintBitwise]) {
 			[options appendString:@"bitwise,"];
 		}
@@ -521,8 +562,18 @@ jshint no idea yet...
 			[messageController alertInformation:@"CSS files in UTF-16 aren't supported" additional:@"Convert the CSS file to UTF-8 in order to process it." cancelButton:NO];
 			return;
 		}
+		NSString *prefJs;
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefCssTidyRemoveLast]) {
+			prefJs = @"1";
+		}
+		else {
+			prefJs = @"0";			
+		}
+		
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam],
-								@"-l", [self currentLineEnding], nil];
+								@"-l", [self currentLineEnding], 
+								@"-last", prefJs, 
+								nil];
 		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"] arguments:args called:@"CSSTidy"];
 	}
 	@catch (NSException *e) {	
@@ -543,7 +594,7 @@ jshint no idea yet...
 
 - (void)doTidyPhp
 {
-	@try {	
+	@try {
 		NSMutableArray	*vargs = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
 		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:vargs called:@"PHP" showResult:NO useStdOut:YES];
 		
