@@ -2698,7 +2698,8 @@ class csstidy {
 										break;
 									case '@namespace': $this->namespace = implode(' ', $this->sub_value_arr);
 										break;
-									case '@import': $this->import[] = implode(' ', $this->sub_value_arr);
+										
+									case '@import': $this->import[] = implode(' ', $this->sub_value_arr); //! @todo
 										break;
 								}
 								
@@ -3219,7 +3220,7 @@ $css->set_cfg('sort_properties', false);
 $css->set_cfg('case_properties', 1);
 $css->set_cfg('merge_selectors', 1);
 $css->set_cfg('preserve_css', false);
-$css->set_cfg('css_level', 'CSS2.1');
+$css->set_cfg('css_level', 'CSS3.0');
 
 $template = 'default';
 if (isset($argv[1]) && $argv[1] == '-t' && isset($argv[2]) && strlen($argv[2]) > 0) {
@@ -3237,12 +3238,17 @@ else if (isset($argv[2]) && $argv[2] == 'highest_compression') {
 else {
 	$css->set_cfg('preserve_css', true);
 }
+	
 $css->load_template($template);
 
 // line endings
 $line_endings = 'NA';
 if (isset($argv[3]) && $argv[3] == '-l' && isset($argv[4]) && strlen($argv[4]) > 0) {
 	$line_endings = $argv[4];
+}
+// remove last ;
+if (isset($argv[5]) && $argv[5] == '-last' && isset($argv[6]) && strlen($argv[6]) > 0) {
+	$css->set_cfg('remove_last_;', $argv[6]);
 }
 
 // read stdin
@@ -3255,6 +3261,7 @@ $css_code = $source_orig_cli;
 // execute csstidy, re-insert line endings and output result
 if ($css->parse($css_code)) {
 	$out = $css->print->plain();
+	$out = preg_replace('/(@import "url\(([^"]+)\)")/', '@import url("\\2")', $out);
 	switch ($line_endings) {
 		case 'CRLF':
 			$out = str_replace("\n", "\r\n", $out);
