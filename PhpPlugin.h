@@ -75,6 +75,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)testUpdatePlugin;
 
 // helpers
+- (NSString*)minifyFileOnDisk:(NSString*)inputPath;
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
