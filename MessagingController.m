@@ -19,7 +19,6 @@
 		@try {
 			[NSBundle loadNibNamed:@"InfoPanel" owner:self];
 			[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
-			
 		}
 		@catch (NSException *e) {
 			[self alertCriticalException:e];
