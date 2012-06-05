@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /*
 Naming conventions kept over from python code.
@@ -1202,16 +1201,18 @@ if (isset($argv[1])) {
 
 $result = js_beautify($source_orig_cli, $opts);
 
-if (isset($argv[2])) {
-	if ($argv[2] == 'CR') {
-		$result = str_replace("\n","\r", $result);
-	}
-	else if ($argv[2] == 'LF') {
+$line_endings = isset($argv[2]) ? $argv[2] : '';
+switch ($line_endings) {
+	case 'CRLF':
+		$result = str_replace("\n", "\r\n", $result);
+		break;
+	case 'CR':
+		$result = str_replace("\n", "\r", $result);
+		break;
+	case 'LF':
 		$result = str_replace("\r","\n", $result);
-	}
-	else {
-		$result = str_replace("\n","\r\n", $result);
-	}
+		break;
 }
+
 
 echo $result;

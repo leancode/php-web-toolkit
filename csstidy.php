@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 
 /* ctype_space  Check for whitespace character(s) */
@@ -3260,17 +3259,21 @@ $css_code = $source_orig_cli;
 
 // execute csstidy, re-insert line endings and output result
 if ($css->parse($css_code)) {
-	$out = $css->print->plain();
-	$out = preg_replace('/(@import "url\(([^"]+)\)")/', '@import url("\\2")', $out);
+	$result = $css->print->plain();
+	$result = preg_replace('/(@import "url\(([^"]+)\)")/', '@import url("\\2")', $result);
+
 	switch ($line_endings) {
 		case 'CRLF':
-			$out = str_replace("\n", "\r\n", $out);
+			$result = str_replace("\n", "\r\n", $result);
 			break;
 		case 'CR':
-			$out = str_replace("\n", "\r", $out);
+			$result = str_replace("\n", "\r", $result);
+			break;
+		case 'LF':
+			$result = str_replace("\r","\n", $result);
 			break;
 	}
-	echo $out;
+	echo $result;
 }
 else {
 	echo "!ERROR parsing";
