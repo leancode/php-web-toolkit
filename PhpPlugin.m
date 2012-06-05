@@ -17,7 +17,7 @@ jshint setting defaults:
 + jquery     : true, // if jQuery globals should be predefined
 + laxbreak   : true, // if line breaks should not be checked
 + mootools    : true, // if MooTools globals should be predefined 
-+ node        : true, // if the Node.js environment globals should be predefined !!REMOVED!!
++ node        : FALSE, // if the Node.js environment globals should be predefined !!REMOVED!!
 + prototypejs : true, // if Prototype and Scriptaculous globals should be predefined
  
 jshint settings not used:
@@ -44,7 +44,6 @@ jshint no idea yet...
 @implementation PhpPlugin
 
 #pragma mark Required Coda Plugin Methods
-
 
 // Support for Coda 2.0 and lower
 
@@ -181,10 +180,8 @@ jshint no idea yet...
 	@try {
 		SEL action = [aMenuItem action];
 		
-		if ( ![self editorTextPresent] ) {
-			if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite)
-				&& action != @selector(testUpdatePlugin) && action != @selector(showPluginResources)
-				) {
+		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) && action != @selector(testUpdatePlugin) && action != @selector(showPluginResources)) {
+			if ( ![self editorTextPresent] ) {
 				return NO;
 			}
 		}
@@ -203,13 +200,7 @@ jshint no idea yet...
 		ValidationResult *myresult = [self validatePhp];
 		
 		if ([myresult hasFailResult]) {
-			NSBeep();
-			int lineOfError = 0;
-			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
-			[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
-			[scanner scanInt: &lineOfError];
-			
-			[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
+			[self showPhpError:myresult];
 		}
 	}
 }
@@ -236,7 +227,6 @@ jshint no idea yet...
 	NSError *error;
 	NSString *inputText = [[NSString alloc] initWithContentsOfFile:inputPath encoding:NSUTF8StringEncoding error:&error];
 	if (inputText == nil) {
-		[self doLog:[NSString stringWithFormat:@"Error reading minify at %@\n%@", inputPath, [error localizedFailureReason]]];
 		[messageController alertCriticalError:[NSString stringWithFormat:@"Error readinig minified at %@\n%@", inputPath, [error localizedFailureReason]] additional:@""];
 		return inputPath;
 	}
@@ -248,7 +238,6 @@ jshint no idea yet...
 	BOOL ok = [resultText writeToFile:tmpPath atomically:YES encoding:NSUTF8StringEncoding error:&error];
 	[inputText release];
 	if (!ok) {
-		[self doLog:[NSString stringWithFormat:@"Error writing minified file at %@\n%@", tmpPath, [error localizedFailureReason]]];
 		[messageController alertCriticalError:[NSString stringWithFormat:@"Error writing minified file at %@\n%@", tmpPath, [error localizedFailureReason]] additional:@""];
 		return inputPath;
 	}
@@ -285,13 +274,7 @@ jshint no idea yet...
 		ValidationResult *myresult = [self validatePhp];
 
 		if ([myresult hasFailResult]) {
-			NSBeep();
-			int lineOfError = 0;
-			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
-			[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
-			[scanner scanInt: &lineOfError];
-
-			[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
+			[self showPhpError:myresult];
 		}
 		else if ([myresult valid]) {
 			NSMutableString *addInfo = [NSMutableString stringWithString:[@"File: " stringByAppendingString:[self currentFilename]]];
@@ -320,8 +303,19 @@ jshint no idea yet...
 
 - (ValidationResult*)validatePhp
 {
-	NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
+	NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-n", @"-l", @"--", nil];
 	return [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO useStdOut:YES];
+}
+
+- (void)showPhpError:(ValidationResult*)myresult
+{
+	NSBeep();
+	int lineOfError = 0;
+	NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
+	[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
+	[scanner scanInt: &lineOfError];
+	
+	[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
 }
 
 - (void)doJsLint
@@ -570,11 +564,16 @@ jshint no idea yet...
 			prefJs = @"0";			
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-t", [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam],
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:
+								@"-n",
+								@"-f",
+								[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"],
+								@"--",
+								@"-t", [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam],
 								@"-l", [self currentLineEnding], 
 								@"-last", prefJs, 
 								nil];
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"] arguments:args called:@"CSSTidy"];
+		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"CSSTidy"];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
@@ -595,21 +594,14 @@ jshint no idea yet...
 - (void)doTidyPhp
 {
 	@try {
-		NSMutableArray	*vargs = [NSMutableArray arrayWithObjects:@"-l", @"-n", @"--", nil];
-		ValidationResult *myresult = [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:vargs called:@"PHP" showResult:NO useStdOut:YES];
+		ValidationResult *myresult = [self validatePhp];
 		
 		if ([myresult hasFailResult]) {
-			NSBeep();
-			int lineOfError = 0;
-			NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
-			[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
-			[scanner scanInt: &lineOfError];
-			
-			[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
+			[self showPhpError:myresult];
 			return;
 		}
 		
-		NSMutableArray *args = [NSMutableArray array];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-n", @"-f", [[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"], @"--", nil];
 		
 		[args addObject:@"-l"];
 		[args addObject: [self currentLineEnding]];
@@ -676,7 +668,7 @@ jshint no idea yet...
 			[args addObject:@"0"]; 		 
 		}
 			
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"] arguments:args called:@"PHPTidy"];
+		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHPTidy"];
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
@@ -703,8 +695,14 @@ jshint no idea yet...
 			[options appendString:@"indent_char_space,"];
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:options, [self currentLineEnding], nil];
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"] arguments:args called:@"JSTidy"];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:
+								@"-n",
+								@"-f",
+								[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"],
+								@"--",
+								options, [self currentLineEnding], nil];
+		
+		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"JSTidy"];
 	}
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
@@ -714,8 +712,14 @@ jshint no idea yet...
 - (void)doJsMinify
 {
 	@try {
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[self currentLineEnding], nil];
-		[self reformatWith:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] arguments:args called:@"JSMinify"];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:
+								@"-n",
+								@"-f",
+								[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"],
+								@"--",
+								[self currentLineEnding], nil];		
+		
+		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"JSMinify"];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
@@ -1052,8 +1056,8 @@ jshint no idea yet...
 	
 	if (resultText == nil || [resultText length] == 0) {
 		[myResult setError:YES];
-		[myResult setErrorMessage:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")]];
-		[myResult setAdditional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"")];
+		[myResult setErrorMessage:[name stringByAppendingString:NSLocalizedString(@" returned nothing", @"")]];
+		[myResult setAdditional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.", @"")];
 	}
 	else {
 		[myResult setResult:resultText];
@@ -1153,6 +1157,7 @@ jshint no idea yet...
 	[preferenceController release];
 	[messageController release];
 	[updateController release];
+	[downloadController release];
 	[super dealloc];
 }
 

@@ -53,6 +53,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)doValidatePhp;
 - (void)doJsLint;
 - (ValidationResult*)validatePhp;
+- (void)showPhpError:(ValidationResult*)myresult;
 
 // actions: remote validation
 - (void)doValidateRemoteCss;
