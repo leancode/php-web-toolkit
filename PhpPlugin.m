@@ -151,8 +151,7 @@ jshint no idea yet...
 									 target:self selector:@selector(showPreferencesWindow)
 						  representedObject:nil keyEquivalent:@"$~@," pluginName:[self name]]; // cmd+alt+shift+,
 		
-		// check for duplicate/incompatible plugins
-		[self sanityCheck];
+		[self sanityCheck]; // check for duplicate/incompatible plugins
 				
 		// startup msg
 		if (![[[NSUserDefaults standardUserDefaults] stringForKey:PrefLastVersionRun] isEqualToString: [self pluginVersionNumber]]) {
@@ -375,9 +374,6 @@ jshint no idea yet...
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLoopfunc]) {
 			[options appendString:@"loopfunc,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSafe]) {
-			[options appendString:@"safe,"];
-		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintStrict]) {
 			[options appendString:@"strict,"];
 		}
@@ -410,13 +406,13 @@ jshint no idea yet...
 		}
 		
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];
-		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSLint" showResult:YES useStdOut:YES];
+		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSHint" showResult:YES useStdOut:YES];
 	
 		if ([myresult hasFailResult]) {
 			[messageController showResult:
 			 [[MessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
 									forUrl:@""
-								withTitle:[@"JSLint validation result for " stringByAppendingString:[self currentFilename]]];			
+								withTitle:[@"JSHint validation result for " stringByAppendingString:[self currentFilename]]];			
 		}
 	}
 	@catch (NSException *e) {	
@@ -759,6 +755,7 @@ jshint no idea yet...
 	[updateController downloadUpdate:nil];
 }
 
+
 #pragma mark Helper methods
 
 - (NSString *)improveWebOutput:(NSString *)input fromDomain:(NSString *)domain // Hacked stuff..improve w3c output with absolute links DON'T ASK!
@@ -863,6 +860,17 @@ jshint no idea yet...
 	@catch (NSException *e) {
 		[messageController alertCriticalException:e];
 	}
+	
+	// check growl
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseGrowl]) {
+		if ([self growlVersion] == nil) {
+			[self doLog:@"No growl version found, disabling growl notifications"];
+			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:PrefUseGrowl];
+		}
+		else {
+			[self doLog:[@"Found growl version: " stringByAppendingString: [self growlVersion]]];
+		}
+	}	
 }
 
 #pragma mark Editor actions
@@ -1044,7 +1052,54 @@ jshint no idea yet...
 
 - (NSString *)growlNotify
 {
-	return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify"];
+	if ([[self growlVersion] isEqualToString:@"1.2"]) {
+		return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify-1.2"];
+	}
+	else {
+		return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify-1.3"];
+	}
+}
+
+- (NSString *)growlVersion //! @todo..
+{
+	if (growlVersion != nil) {
+		return growlVersion;
+	}
+	@try {
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		NSString *path;
+		NSBundle *prefBundle;
+		NSArray *librarySearchPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSLocalDomainMask | NSUserDomainMask, YES); // old style, but works
+		NSEnumerator *searchPathEnumerator = [librarySearchPaths objectEnumerator];
+		
+		while ((path = [searchPathEnumerator nextObject])) {
+			path = [[path stringByAppendingPathComponent:@"PreferencePanes"] stringByAppendingPathComponent:@"Growl.prefPane"];			
+			if ([fileManager fileExistsAtPath:path]) {
+				prefBundle = [NSBundle bundleWithPath:path];
+				if (prefBundle) {
+					NSString *version = [[prefBundle infoDictionary] objectForKey:@"CFBundleVersion"];
+					if ([version hasPrefix:@"1.2"]) {
+						growlVersion = @"1.2";
+						return growlVersion;
+					}
+					if ([version hasPrefix:@"1.3"] || [version hasPrefix:@"1.4"]) {
+						growlVersion = @"1.3";
+						return growlVersion;
+					}
+					return nil;
+				}
+			}
+		}
+	}
+	@catch (NSException *e) {
+		[self doLog: [NSString stringWithFormat:@"Exception searching growl version %@ %@ %@", [e name], [e description], [e reason]]];
+	}
+	@finally {
+	}
+	return nil;
+	/*
+	NSBundle *prefBundle = [NSBundle bundleWithPath: @"/Library/PreferencePanes/Growl.prefPane"]; if (prefBundle != nil) {return [[prefBundle infoDictionary] objectForKey:@"CFBundleVersion"];}
+	 */
 }
 
 #pragma mark Filter
