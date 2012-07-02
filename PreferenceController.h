@@ -29,10 +29,6 @@ extern NSString* const PrefUseGrowl;
 extern NSString* const PrefResultWindow;
 extern NSString* const PrefJsViaShell;
 
-extern NSString* const PrefProcIndentType;
-extern NSString* const PrefProcColumnize;
-extern NSString* const PrefProcAlignment;
-
 extern NSString* const PrefDebugMode;
 extern NSString* const PrefUpdateCheck;
 extern NSString* const PrefLastUpdateCheck;
@@ -40,6 +36,8 @@ extern NSString* const PrefAutoSave;
 extern NSString* const PrefPhpOnSave;
 extern NSString* const PrefPhpBeepOnly;
 extern NSString* const PrefUseSelection;
+extern NSString* const PrefPhpExtensions;
+extern NSString* const PrefMinExtensions;
 
 extern NSString* const PrefCssTidyConfig;
 extern NSString* const PrefHtmlTidyConfig;
@@ -74,7 +72,7 @@ extern NSString* const PrefJSHintNomen;
 extern NSString* const PrefJSHintOnevar;
 extern NSString* const PrefJSHintPlusplus;
 extern NSString* const PrefJSHintRegexp;
-extern NSString* const PrefJSHintSafe;
+extern NSString* const PrefJSHintSafe; // unused
 extern NSString* const PrefJSHintStrict;
 extern NSString* const PrefJSHintSub;
 extern NSString* const PrefJSHintUndef;
@@ -101,6 +99,7 @@ extern NSString* const UrlFacebook;
 extern NSString* const UrlHelp;
 extern NSString* const UrlProCSSor;
 extern NSString* const UrlTidyHelp;
+extern NSString* const UrlJsHintHelp;
 extern NSString* const UrlVersionCheck;
 extern NSString* const UrlDownload;
 extern NSString* const UrlDownloadDirect;
@@ -113,26 +112,16 @@ extern NSString* const UrlDownloadTest;
 
 	IBOutlet NSPanel *prefPanel;
 	IBOutlet NSTabView *tabView;
-	IBOutlet NSButton *procFailSafeBtn;
-	IBOutlet NSButton *procGroupBtn;
-	IBOutlet NSButton *procIndentBtn;
-	IBOutlet NSButton *procColumnizeBtn;
 	
 	IBOutlet NSButton *useResultWindowBtn;
 	
 	IBOutlet NSButton *useGrowlBtn;
+	IBOutlet NSButton *phpValidateSaveBtn;
 	
 	IBOutlet NSSegmentedCell *htmlValidator;
 	
 	IBOutlet NSPopUpButton *cssConfigBtn;
 	IBOutlet NSPopUpButton *htmlConfigBtn;
-	
-	IBOutlet NSPopUpButton *procBracesBtn;
-	IBOutlet NSPopUpButton *procFormattingBtn;
-	IBOutlet NSPopUpButton *procIndentSizeBtn;
-	IBOutlet NSPopUpButton *procSortingBtn;
-	IBOutlet NSPopUpButton *procIndentLevelBtn;
-	IBOutlet NSPopUpButton *procAlignmentBtn;
 	
 	IBOutlet NSPopUpButton *cssLevelBtn;
 	
@@ -140,7 +129,8 @@ extern NSString* const UrlDownloadTest;
 	
 	IBOutlet NSTextField *labelPhpLocal;
 	IBOutlet NSTextField *fieldPhpLocal;
-	IBOutlet NSTextField *labelProcSorting;
+	
+	IBOutlet NSTextField *phpExtensions;
 	
 	IBOutlet NSTextField *htmlValidatorUrl;
 	IBOutlet NSTextField *htmlValidatorFieldname;
@@ -165,11 +155,13 @@ extern NSString* const UrlDownloadTest;
 - (NSArray *)htmlTidyConfigs;
 
 - (IBAction)htmlConfigModified: (id)sender;
+- (IBAction)phpValidateOnSaveModified: (id)sender;
 - (void)enableTextView:(NSTextView*)textView As:(BOOL)enableIt;
 - (IBAction)selectHTMLValidator:(id)sender;
 
 - (IBAction)goToHelpWebsite:(id)sender;
 - (IBAction)goToTidyDocumentationWebsite:(id)sender;
+- (IBAction)goToJsHintDocumentationWebsite:(id)sender;
 - (IBAction)goToProcssor:(id)sender;
 - (IBAction)goToDonationPage:(id)sender;
 - (IBAction)goToFacebook:(id)sender;

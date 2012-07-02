@@ -194,7 +194,31 @@ jshint no idea yet...
 
 - (void)textViewWillSave:(CodaTextView*)textView /* Coda 2 only */
 {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefPhpOnSave] && ([[textView path] hasSuffix:@"php"] || [[textView path] hasSuffix:@"phtml"])) {
+	NSString *exts = [[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpExtensions];
+	if (exts == nil) {
+		return;
+	}
+	NSArray *extsArray = [exts componentsSeparatedByCharactersInSet:
+						  [NSCharacterSet characterSetWithCharactersInString:@", "] // NSString *trimmedString = [dirtyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+						];
+	if (extsArray == nil) {
+		return;
+	}
+	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefPhpOnSave]) {
+		BOOL doValidate = NO;
+		for (NSString *anextension in extsArray) {
+			if (anextension != nil && ![anextension isEqualToString:@""]) {
+				[self doLog:[NSString stringWithFormat:@"Checking extension: %@", anextension]];
+				if ([[textView path] hasSuffix:anextension]) {
+					[self doLog:[NSString stringWithFormat:@"File has extension: %@", anextension]];
+					doValidate = YES;
+				}
+			}
+		}
+		if (!doValidate) {
+			return;
+		}
 		
 		ValidationResult *myresult = [self validatePhp];
 		

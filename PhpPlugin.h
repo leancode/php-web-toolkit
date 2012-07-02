@@ -31,6 +31,7 @@ static unsigned int maxLengthJs = 65535;
 	NSObject <CodaPlugInBundle> *myBundle;
 	NSString *versionNumber;
 	NSString *checkUpdateUrl;
+	NSString *growlVersion;
 
 	NSMutableData *receivedData;
 	NSMutableString *currentStringValue;
@@ -103,6 +104,7 @@ static unsigned int maxLengthJs = 65535;
 - (NSString*)tidyExecutable;
 - (NSString*)jscInterpreter;
 - (NSString*)codaPluginPath;
+- (NSString*)growlVersion;
 
 // growl
 - (NSString*)growlNotify;

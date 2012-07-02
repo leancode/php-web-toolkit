@@ -33,20 +33,6 @@ NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
 NSString* const PrefResultWindow = @"dechipwreckResultWindow";
 NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
 
-NSString* const PrefProcFormatting = @"dechipwreckProcFormatting"; // property_formatting - newline>1, newline, same_line
-NSString* const PrefProcBraces = @"dechipwreckProcBraces"; // braces - default, aligned_braces, pico, pico_extra, gnu, gnu_saver, banner, horstmann
-NSString* const PrefProcSelectorsSame = @"dechipwreckProcSelectorsSame"; // selectors_on_same_line - true/false
-NSString* const PrefProcIndentSize = @"dechipwreckProcIndentSize"; // indent_size - default, 1, 2, 3, 4
-NSString* const PrefProcBlankLine = @"dechipwreckProcBlankLine"; // blank_line_rules
-NSString* const PrefProcSort = @"dechipwreckProcSort"; // sort_declarations - length, length_desc, abc, abc_desc 
-NSString* const PrefProcDocblock = @"dechipwreckProcDocblock"; // docblock
-NSString* const PrefProcGrouping = @"dechipwreckProcGrouping"; // grouping
-NSString* const PrefProcSafe = @"dechipwreckProcSafe"; // safe
-NSString* const PrefProcIndentRules = @"dechipwreckProcIndentRules"; // indent_rules
-NSString* const PrefProcIndentLevel = @"dechipwreckProcIndentLevel"; // max_child_level - 1,2,3,4
-NSString* const PrefProcColumnize = @"dechipwreckProcColumnize"; // tabbing
-NSString* const PrefProcAlignment = @"dechipwreckProcAlignment"; // alignment - left,right
-	NSString* const PrefProcIndentType = @"dechipwreckProcIndentType"; // indent_type - tab, space
 
 NSString* const PrefDebugMode = @"dechipwreckDebugMode";
 NSString* const PrefUpdateCheck = @"dechipwreckUpdateCheck";
@@ -55,6 +41,8 @@ NSString* const PrefAutoSave = @"dechipwreckAutoSave";
 NSString* const PrefPhpOnSave = @"dechipwreckPhpOnSave";
 NSString* const PrefPhpBeepOnly = @"dechipwreckPhpBeepOnly";
 NSString* const PrefUseSelection = @"dechipwreckUseSelection";
+NSString* const PrefPhpExtensions = @"dechipwreckPhpExtensions";
+NSString* const PrefMinExtensions = @"dechipwreckMinExtensions";
 
 NSString* const PrefCssTidyConfig = @"dechipwreckCssTidyConfig";
 NSString* const PrefHtmlTidyConfig = @"dechipwreckHtmlTidyConfig";
@@ -152,12 +140,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
 	[cssConfigBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefCssTidyConfig]];
 	[htmlConfigBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefHtmlTidyConfig]];
-	[procSortingBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefProcSort]];
-	[procBracesBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefProcBraces]];
-	[procFormattingBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefProcFormatting]];
-	[procIndentSizeBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefProcIndentSize]];
-	[procIndentLevelBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefProcIndentLevel]];
-	[procAlignmentBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefProcAlignment]];
 	[cssLevelBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefCssLevel]];
 	[phpTidyBracesBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefPhpTidyBraces]];
 	
@@ -172,6 +154,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		[self loadHtmlTidyCustomConfig];		
 	}
 	[self htmlConfigModified:self];
+	[self phpValidateOnSaveModified:self];
 	
 	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
 	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
@@ -185,6 +168,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
 	[defaultValues setObject:@"file" forKey: PrefHtmlValidatorParamFile];
 	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
+	[defaultValues setObject:@"php,phtml" forKey: PrefPhpExtensions];
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefJsViaShell];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseGrowl];
 	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
@@ -196,7 +180,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefUpdateCheck];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssTidyConfig];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefHtmlTidyConfig];
-	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefProcSafe];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssLevel];
 	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefPhpTidyReplacePhpTags];
 	
@@ -229,12 +212,6 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	if (canClose) {
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[cssConfigBtn indexOfSelectedItem]] forKey: PrefCssTidyConfig];
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[htmlConfigBtn indexOfSelectedItem]] forKey: PrefHtmlTidyConfig];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[procBracesBtn indexOfSelectedItem]] forKey: PrefProcBraces];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[procFormattingBtn indexOfSelectedItem]] forKey: PrefProcFormatting];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[procAlignmentBtn indexOfSelectedItem]] forKey: PrefProcAlignment];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[procIndentSizeBtn indexOfSelectedItem]] forKey: PrefProcIndentSize];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[procSortingBtn indexOfSelectedItem]] forKey: PrefProcSort];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[procIndentLevelBtn indexOfSelectedItem]] forKey: PrefProcIndentLevel];
 		[[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithString:[customTidyConfig string]] forKey: PrefHtmlTidyCustomConfig];
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[cssLevelBtn indexOfSelectedItem]] forKey: PrefCssLevel];
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[phpTidyBracesBtn indexOfSelectedItem]] forKey: PrefPhpTidyBraces];
@@ -284,6 +261,11 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	else {
 		[self enableTextView:customTidyConfig As:NO];
 	}
+}
+
+- (IBAction)phpValidateOnSaveModified: (id)sender
+{
+	[phpExtensions setEnabled:([phpValidateSaveBtn state] == YES)];
 }
 
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
