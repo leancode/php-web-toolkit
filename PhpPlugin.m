@@ -209,7 +209,6 @@ jshint no idea yet...
 		BOOL doValidate = NO;
 		for (NSString *anextension in extsArray) {
 			if (anextension != nil && ![anextension isEqualToString:@""]) {
-				[self doLog:[NSString stringWithFormat:@"Checking extension: %@", anextension]];
 				if ([[textView path] hasSuffix:anextension]) {
 					[self doLog:[NSString stringWithFormat:@"File has extension: %@", anextension]];
 					doValidate = YES;

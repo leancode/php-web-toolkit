@@ -266,6 +266,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 - (IBAction)phpValidateOnSaveModified: (id)sender
 {
 	[phpExtensions setEnabled:([phpValidateSaveBtn state] == YES)];
+	[phpExtensions setStringValue:[[phpExtensions stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 }
 
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
