@@ -8,7 +8,7 @@
 
 #import "HtmlValidationConfig.h"
 #import "HtmlTidyConfig.h"
-#import "MessagingController.h"
+#import "CwMessagingController.h"
 
 @implementation HtmlValidationConfig
 

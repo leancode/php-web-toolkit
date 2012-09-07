@@ -7,7 +7,7 @@
 //
 
 #import "HtmlTidyConfig.h"
-#import "MessagingController.h"
+#import "CwMessagingController.h"
 
 @implementation HtmlTidyConfig
 
@@ -39,7 +39,7 @@
 
 + (NSString*)parseTidyOutput:(NSString*)resultText
 {
-	return [[MessagingController getCssForHtmlTidy] stringByAppendingString:[self escapeEntities:resultText]];
+	return [[CwMessagingController getCssForHtmlTidy] stringByAppendingString:[self escapeEntities:resultText]];
 }
 
 
