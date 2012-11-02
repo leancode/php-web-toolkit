@@ -46,7 +46,7 @@
 		if (lastupdate == 0 || timediff > PrefDelayUpdateCheck ) { // never or after three days
 			[self isUpdateAvailableAsync];
 			[[NSUserDefaults standardUserDefaults] setInteger:now forKey:PrefLastUpdateCheck];
-			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate empty or expired, is now %u and did check", now]];
+			[myPlugin doLog: [NSString stringWithFormat:@"Updatecheck: Pref for lastupdate empty or expired, is now %lu and did check", now]];
 		}
 	}
 }
