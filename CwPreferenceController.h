@@ -78,6 +78,7 @@ extern NSString* const PrefJSHintSub;
 extern NSString* const PrefJSHintUndef;
 extern NSString* const PrefJSHintWhite;
 extern NSString* const PrefJSHintSmartTabs;
+extern NSString* const PrefJSHintLaxComma;
 
 extern NSString* const PrefJSHintEqnull;
 extern NSString* const PrefJSHintNoarg;
@@ -86,6 +87,8 @@ extern NSString* const PrefJSHintBoss;
 extern NSString* const PrefJSHintShadow;
 extern NSString* const PrefJSHintLatedef;
 extern NSString* const PrefJSHintGlobalstrict;
+
+extern NSString* const PrefJSHintValidateOnSave;
 
 extern NSString* const PrefJSTidyPreserveNewlines;
 extern NSString* const PrefJSTidySpaceAfterAnonFunction;

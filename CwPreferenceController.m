@@ -85,6 +85,7 @@ NSString* const PrefJSHintRegexp = @"dechipwreckPrefJSHintRegexp";
 NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";
 NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite";
 NSString* const PrefJSHintSmartTabs = @"dechipwreckPrefJSHintSmartTabs";
+NSString* const PrefJSHintLaxComma = @"dechipwreckPrefJSHintLaxComma";
 
 NSString* const PrefJSHintEqnull = @"dechipwreckPrefJSHintEqnull";
 NSString* const PrefJSHintNoarg = @"dechipwreckPrefJSHintNoarg";
@@ -93,6 +94,8 @@ NSString* const PrefJSHintBoss = @"dechipwreckPrefJSHintBoss";
 NSString* const PrefJSHintShadow = @"dechipwreckPrefJSHintShadow";
 NSString* const PrefJSHintLatedef = @"dechipwreckPrefJSHintLatedef";
 NSString* const PrefJSHintGlobalstrict = @"dechipwreckPrefJSHintGlobalstrict";
+
+NSString* const PrefJSHintValidateOnSave = @"dechipwreckPrefJSHintValidateOnSave";
 
 NSString* const PrefJSTidyPreserveNewlines = @"dechipwreckPrefJSTidyPreserveNewlines";
 NSString* const PrefJSTidySpaceAfterAnonFunction = @"dechipwreckPrefJSTidySpaceAfterAnonFunction";
