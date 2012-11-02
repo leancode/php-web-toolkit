@@ -191,13 +191,13 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 			[postData appendData:[[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
 			[postData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", [keys objectAtIndex:i]] dataUsingEncoding:NSUTF8StringEncoding]];
 			[postData appendData:[[NSString stringWithFormat:@"%@",[fields valueForKey: [keys objectAtIndex: i]]] dataUsingEncoding:NSUTF8StringEncoding]];
-			[postData appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+			[postData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 		}
 		[postData appendData: [[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
 		[postData appendData: [[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", uploadfield, filename] dataUsingEncoding:NSUTF8StringEncoding]];
 		[postData appendData: [[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", mimetype] dataUsingEncoding:NSUTF8StringEncoding]];
 		[postData appendData: data];
-		[postData appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+		[postData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 		
 
 		[postData appendData: [[NSString stringWithFormat:@"--%@--\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
