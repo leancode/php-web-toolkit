@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "Encoding.h"
+#import "CwEncoding.h"
 
 @protocol AbstractConfig
 
@@ -16,19 +16,19 @@
 
 	- (void)setLineEnding: (NSString*)aLineEnding;
 	- (NSString*)getLineEnding;
-	- (void)setEncoding: (Encoding*)anEncoding;
-	- (Encoding*)getEncoding;
+	- (void)setEncoding: (CwEncoding*)anEncoding;
+	- (CwEncoding*)getEncoding;
 
 @end
 
 @interface AbstractCommand : NSObject <AbstractConfig>
 {
-	Encoding* encoding;
+	CwEncoding* encoding;
 	NSString* lineEnding;
 }
 - (void)setLineEnding: (NSString*)aLineEnding;
 - (NSString*)getLineEnding;
-- (void)setEncoding: (Encoding*)anEncoding;
-- (Encoding*)getEncoding;
+- (void)setEncoding: (CwEncoding*)anEncoding;
+- (CwEncoding*)getEncoding;
 
 @end

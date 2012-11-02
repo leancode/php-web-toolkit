@@ -7,8 +7,12 @@
 
 #import "CwValidationController.h"
 #import "ValidationResult.h"
+#import "PreferenceController.h"
+#import "PhpPlugin.h"
 
 @implementation CwValidationController
+
+@synthesize error, result, errorMessage, inputData, encoding;
 
 - (id)init
 {
@@ -20,22 +24,17 @@
     return self;
 }
 
--(NSStringEncoding)encoding
+- (void)setMyPlugin:(PhpPlugin *)myPluginInstance
 {
-	return NSUTF8StringEncoding;
-}
--(NSString*)input
-{
-	return @"";
+	myPlugin = myPluginInstance;
 }
 
 
 #pragma mark Filter
 
-- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout
+- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name useStdOut:(BOOL)usesstdout
 {
-	NSMutableString *resultText = [self filterTextInput:[self input] with:command options:args encoding:[self encoding] useStdout:usesstdout];
-	
+	NSMutableString *resultText = [self filterTextInput:inputData with:command options:args encoding:encoding useStdout:usesstdout];
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 	
 	if (resultText == nil || [resultText length] == 0) {
@@ -51,34 +50,45 @@
 		}
 	}
 	
+	/*
 	if ([myResult error]) {
-		
+		//		[messageController alertInformation:[myResult errorMessage] additional:[myResult additional] cancelButton:NO];
 	}	
 	else if ([myResult valid] && show) {
-		
+		//		[messageController showInfoMessage:[name stringByAppendingString:NSLocalizedString(@": No errors",@"")] additional:resultText];
 	}
+	 */
 	
 	return [myResult autorelease];
 }
 
-- (NSMutableString*)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
+
+- (NSString *)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
 {
-	NSMutableString *resultText = [self filterTextInput:[self input] with:command options:args encoding:[self encoding] useStdout:YES];
+	NSMutableString *resultText = [self filterTextInput:inputData with:command options:args encoding:encoding useStdout:YES];
 	
 	if (resultText == nil || [resultText length] < 6) {
-		// ?
+		[self setError:YES];
+		[self setErrorMessage:[[name stringByAppendingString:NSLocalizedString(@" nothing received.",@"")] stringByAppendingString: resultText]];
+		return nil;
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"\nFatal"]) {
-		// ?
+		[self setError:YES];
+		[self setErrorMessage:[[name stringByAppendingString:NSLocalizedString(@" exception received.",@"")] stringByAppendingString: resultText]];
+		return nil;
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"!ERROR"]) {
-		// ?
+		[self setError:YES];
+		[self setErrorMessage:[name stringByAppendingFormat:@": %@",[resultText substringFromIndex:1]]];
+		return nil;
 	}
 	else {
-		
-	}
-	return resultText;
+		[self setError:NO];
+		return resultText;
+		//		[messageController showInfoMessage:[name stringByAppendingString:@" done"] additional:[@"File: " stringByAppendingString:[self currentFilename]]];
+	}	
 }
+
 
 - (NSMutableString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray *)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout
 {
@@ -87,6 +97,7 @@
 	
 	@try {
 		dataIn = [textInput dataUsingEncoding: anEncoding];
+		// [self doLog: [NSString stringWithFormat:@"in goes %@", textInput] ];
 		
 		NSPipe *toPipe = [NSPipe pipe];
 		NSPipe *fromPipe = [NSPipe pipe];
@@ -97,7 +108,7 @@
 			reading = [fromPipe fileHandleForReading];
 		}
 		else {
-			reading = [errPipe fileHandleForReading];		
+			reading = [errPipe fileHandleForReading];
 		}
 		
 		[aTask setStandardInput:toPipe];
@@ -106,18 +117,28 @@
 		[aTask setArguments:cmdlineOptions];
 		[aTask setLaunchPath:launchPath];
 		
+		[myPlugin doLog:[NSString stringWithFormat:@"Executing %@ at path %@ with %@", aTask, launchPath, cmdlineOptions] ];
+		
 		[aTask launch];
 		[writing writeData:dataIn];
 		[writing closeFile];
 		
+		if (anEncoding == NSUnicodeStringEncoding && [launchPath isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal]]) {
+			anEncoding = NSUTF8StringEncoding; // php binary never returns utf16..
+			[myPlugin doLog:@"File was UTF-16 but php binary can't handle this correctly, so falling back to UTF-8"];
+		}
+		
 		NSMutableString *resultData = [[NSMutableString alloc] initWithData: [reading readDataToEndOfFile] encoding: anEncoding];
 		
 		[aTask terminate];
-		//		[self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
+		// [self doLog: [NSString stringWithFormat:@"Returned %@", resultData] ];
+		[self setError:NO];
 		return resultData;
 	}
 	@catch (NSException *e) {	
-		//		[messageController alertCriticalException:e];
+		[self setError:YES];
+		[myPlugin doLog:[NSString stringWithFormat:@"Exception %@ %@ %@", [e name], [e description], [e reason]]];
+		// [messageController alertCriticalException:e];
 		return nil;
 	}
 	@finally {

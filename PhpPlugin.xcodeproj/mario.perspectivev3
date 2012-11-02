@@ -319,7 +319,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {337, 892}}</string>
+							<string>{{0, 0}, {337, 889}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -329,7 +329,7 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {354, 910}}</string>
+						<string>{{0, 0}, {354, 907}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
@@ -340,7 +340,7 @@
 							<real>43</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 107 1920 951 0 0 1920 1058 </string>
+						<string>0 110 1920 948 0 0 1920 1058 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -356,7 +356,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>AC098CD40EFDC0CC0012A2CB</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>PreferenceController.m</string>
+								<string>CwPreferenceController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -364,11 +364,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>AC098CD50EFDC0CC0012A2CB</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>PreferenceController.m</string>
+										<string>CwPreferenceController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>AC3AE86B14D3306200A27269</string>
+										<string>AC3D7C811641F1E8007D54F4</string>
 										<key>history</key>
 										<array>
 											<string>AC62094B12B69D360080B995</string>
@@ -430,7 +430,7 @@
 											<string>AC57DEC7138C66C2006A9695</string>
 											<string>AC3AE85C14D31FA900A27269</string>
 											<string>AC3AE85D14D31FA900A27269</string>
-											<string>AC3AE85F14D31FA900A27269</string>
+											<string>AC3AE86B14D3306200A27269</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -444,21 +444,23 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1561, 514}}</string>
+								<string>{{0, 0}, {1561, 512}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 107 1920 951 0 0 1920 1058 </string>
+								<string>0 110 1920 948 0 0 1920 1058 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>514pt</string>
+							<string>512pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>391pt</string>
+							<string>390pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
+									<key>BecomeActive</key>
+									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
@@ -469,7 +471,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1561, 364}}</string>
+										<string>{{10, 27}, {1561, 363}}</string>
+										<key>RubberWindowFrame</key>
+										<string>0 110 1920 948 0 0 1920 1058 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -524,8 +528,6 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {1561, 364}}</string>
-										<key>RubberWindowFrame</key>
-										<string>0 107 1920 951 0 0 1920 1058 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -553,11 +555,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>AC3AE86314D31FBA00A27269</string>
+				<string>AC3D7C7E1641F1BD007D54F4</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>AC3AE86414D31FBA00A27269</string>
+				<string>AC3D7C7F1641F1BD007D54F4</string>
 				<string>AC098CD40EFDC0CC0012A2CB</string>
-				<string>AC3AE86514D31FBA00A27269</string>
+				<string>AC3D7C801641F1BD007D54F4</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -728,7 +730,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>349384802.68204898</real>
+	<real>373420520.51213902</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>1</integer>
 	<key>ToolbarIsVisible</key>
@@ -746,7 +748,7 @@
 		<string>/Volumes/data/Users/mario/Projekte/OSX/Coda Plugins/PhpPlugin/src/PhpPlugin.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 107 1920 951 0 0 1920 1058 </string>
+	<string>0 110 1920 948 0 0 1920 1058 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
