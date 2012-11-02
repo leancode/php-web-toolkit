@@ -53,7 +53,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)doValidateHtml;
 - (void)doValidatePhp;
 - (void)doJsLint;
-- (ValidationResult*)validatePhp;
+- (ValidationResult*)validatePhp:(BOOL)wholeBuffer;
 - (void)showPhpError:(ValidationResult*)myresult;
 
 // actions: remote validation
@@ -69,6 +69,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)doStripPhp;
 - (void)doJsTidy;
 - (void)doJsMinify;
+- (void)doCssMinify;
 
 // updates
 - (void)showUpdateAvailable;
@@ -77,7 +78,7 @@ static unsigned int maxLengthJs = 65535;
 - (void)testUpdatePlugin;
 
 // helpers
-- (NSString*)minifyFileOnDisk:(NSString*)inputPath;
+- (NSString*)minifyFileOnDisk:(NSString*)inputPath type:(NSString*)fileType;
 - (NSString*)improveWebOutput:(NSString*)input fromDomain:(NSString*)domain;
 - (void)goToHelpWebsite;
 - (void)showPreferencesWindow;
@@ -111,7 +112,7 @@ static unsigned int maxLengthJs = 65535;
 
 // filter
 - (void)reformatWith:(NSString*)command arguments:(NSMutableArray*)args called:(NSString*)name;
-- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout;
+- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout  alwaysWholeBuffer:(BOOL)wholeBuffer;
 - (NSMutableString *)filterTextInput:(NSString *)textInput with:(NSString *)launchPath options:(NSMutableArray*)cmdlineOptions encoding:(NSStringEncoding)anEncoding useStdout:(BOOL)useout;
 
 @end

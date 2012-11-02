@@ -121,7 +121,7 @@ jshint no idea yet...
 						  representedObject:nil keyEquivalent:@"~@t" pluginName:[self name]]; // alt+shift+t
 	
 		[controller registerActionWithTitle:NSLocalizedString(@"Minify CSS", @"") underSubmenuWithTitle:@"CSS"
-									 target:self selector:@selector(doJsMinify)
+									 target:self selector:@selector(doCssMinify)
 						  representedObject:nil keyEquivalent:@"$^@m" pluginName:[self name]]; // alt+shift+t
 		
 		// JS >>
@@ -194,6 +194,12 @@ jshint no idea yet...
 
 - (void)textViewWillSave:(CodaTextView*)textView /* Coda 2 only */
 {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintValidateOnSave] && [[textView path] hasSuffix:@"js"]) {
+		[self doLog:@"File has js extension, about to call JSHint"];
+		[self doJsLint];
+		return;
+	}
+
 	NSString *exts = [[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpExtensions];
 	if (exts == nil) {
 		return;
@@ -219,7 +225,7 @@ jshint no idea yet...
 			return;
 		}
 		
-		ValidationResult *myresult = [self validatePhp];
+		ValidationResult *myresult = [self validatePhp:YES];
 		
 		if ([myresult hasFailResult]) {
 			[self showPhpError:myresult];
@@ -229,17 +235,17 @@ jshint no idea yet...
 
 - (NSString*)willPublishFileAtPath:(NSString*)inputPath /* Coda 2 only */
 {
-	if (
-		([[NSUserDefaults standardUserDefaults] boolForKey:PrefCssMinifyOnPublish] && [[[controller focusedTextView:self] path] hasSuffix:@"css"])
-		||
-		([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsMinifyOnPublish] && [[[controller focusedTextView:self] path] hasSuffix:@"js"])
-		) {
-		return [self minifyFileOnDisk:inputPath];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefCssMinifyOnPublish] && [inputPath hasSuffix:@"css"]) {
+		return [self minifyFileOnDisk:inputPath type:@"css"];
 	}
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJsMinifyOnPublish] && [inputPath hasSuffix:@"js"]) {
+		return [self minifyFileOnDisk:inputPath type:@"js"];
+	}
+	
 	return inputPath;
 }
 
-- (NSString*)minifyFileOnDisk:(NSString*)inputPath
+- (NSString*)minifyFileOnDisk:(NSString*)inputPath type:(NSString*)fileType
 {
 	[self doLog:[NSString stringWithFormat:@"Minify file in: %@", inputPath]];
 	
@@ -249,14 +255,36 @@ jshint no idea yet...
 	NSError *error;
 	NSString *inputText = [[NSString alloc] initWithContentsOfFile:inputPath encoding:NSUTF8StringEncoding error:&error];
 	if (inputText == nil) {
-		[messageController alertCriticalError:[NSString stringWithFormat:@"Error readinig minified at %@\n%@", inputPath, [error localizedFailureReason]] additional:@""];
+		[messageController alertCriticalError:[NSString stringWithFormat:@"Error reading minified at %@\n%@", inputPath, [error localizedFailureReason]] additional:@""];
 		return inputPath;
 	}
 	
 	[self doLog:[NSString stringWithFormat:@"Minify file out: %@", tmpPath]];
 	
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:[self currentLineEnding], nil];
-	NSMutableString *resultText = [self filterTextInput:inputText with:[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"] options:args encoding:[[controller focusedTextView:self] encoding] useStdout:YES];
+	NSMutableArray *args;
+	NSMutableString *resultText;
+	
+	if ([fileType isEqualTo:@"js"]) {
+		args = [NSMutableArray arrayWithObjects:
+								@"-n",
+								@"-f",
+								[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"],
+								@"--",
+								@"CR", nil];		
+		
+		resultText = [self filterTextInput:inputText with:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] options:args encoding:NSUTF8StringEncoding useStdout:YES];
+	}
+	else {
+		args = [NSMutableArray arrayWithObjects:
+				@"-n",
+				@"-f",
+				[[myBundle resourcePath] stringByAppendingString:@"/cssmin.php"],
+				@"--",
+				@"CR", nil];		
+		
+		resultText = [self filterTextInput:inputText with:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] options:args encoding:NSUTF8StringEncoding useStdout:YES];
+	}
+
 	BOOL ok = [resultText writeToFile:tmpPath atomically:YES encoding:NSUTF8StringEncoding error:&error];
 	[inputText release];
 	if (!ok) {
@@ -276,7 +304,7 @@ jshint no idea yet...
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"],
 								@"--newline", [self currentLineEnding], [self currentEncoding], nil];
 		
-		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES useStdOut:NO];
+		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES useStdOut:NO alwaysWholeBuffer:NO];
 			
 		if ([myresult hasFailResult]) {
 			[messageController showResult:[HtmlTidyConfig parseTidyOutput:[myresult result]]
@@ -293,7 +321,7 @@ jshint no idea yet...
 - (void)doValidatePhp
 {
 	@try {
-		ValidationResult *myresult = [self validatePhp];
+		ValidationResult *myresult = [self validatePhp:NO];
 
 		if ([myresult hasFailResult]) {
 			[self showPhpError:myresult];
@@ -323,10 +351,10 @@ jshint no idea yet...
 	}
 }
 
-- (ValidationResult*)validatePhp
+- (ValidationResult*)validatePhp:(BOOL)wholeBuffer
 {
 	NSMutableArray	*args = [NSMutableArray arrayWithObjects:@"-n", @"-l", @"--", nil];
-	return [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO useStdOut:YES];
+	return [self validateWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"PHP" showResult:NO useStdOut:YES alwaysWholeBuffer:wholeBuffer];
 }
 
 - (void)showPhpError:(ValidationResult*)myresult
@@ -427,9 +455,12 @@ jshint no idea yet...
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSmartTabs]) {
 			[options appendString:@"smarttabs,"];
 		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLaxComma]) {
+			[options appendString:@"laxcomma,"];
+		}
 		
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];
-		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSHint" showResult:YES useStdOut:YES];
+		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSHint" showResult:YES useStdOut:YES alwaysWholeBuffer:NO];
 	
 		if ([myresult hasFailResult]) {
 			[messageController showResult:
@@ -613,7 +644,7 @@ jshint no idea yet...
 - (void)doTidyPhp
 {
 	@try {
-		ValidationResult *myresult = [self validatePhp];
+		ValidationResult *myresult = [self validatePhp:NO];
 		
 		if ([myresult hasFailResult]) {
 			[self showPhpError:myresult];
@@ -739,6 +770,23 @@ jshint no idea yet...
 								[self currentLineEnding], nil];		
 		
 		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"JSMinify"];
+	}
+	@catch (NSException *e) {	
+		[messageController alertCriticalException:e];
+	}
+}
+
+- (void)doCssMinify
+{
+	@try {
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:
+								@"-n",
+								@"-f",
+								[[myBundle resourcePath] stringByAppendingString:@"/cssmin.php"],
+								@"--",
+								[self currentLineEnding], nil];		
+		
+		[self reformatWith:[[NSUserDefaults standardUserDefaults] stringForKey:PrefPhpLocal] arguments:args called:@"CSSMinify"];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
@@ -1127,9 +1175,17 @@ jshint no idea yet...
 
 #pragma mark Filter
 
-- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout
+- (ValidationResult *)validateWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name showResult:(BOOL)show useStdOut:(BOOL)usesstdout alwaysWholeBuffer:(BOOL)wholeBuffer
 {
-	NSMutableString *resultText = [self filterTextInput:[self getEditorText] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:usesstdout];
+	NSMutableString *resultText;
+	if (wholeBuffer) {
+		CodaTextView *textView = [controller focusedTextView:self];
+		resultText = [self filterTextInput:[textView string] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:usesstdout];
+	}
+	else {
+		resultText = [self filterTextInput:[self getEditorText] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:usesstdout];
+	}
+
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 	
 	if (resultText == nil || [resultText length] == 0) {
