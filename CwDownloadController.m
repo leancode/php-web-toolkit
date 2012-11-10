@@ -50,7 +50,6 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 - (IBAction)closePanel:(id)sender
 {
 	@try {
-		
 		if (theDownload != nil) {
 			[theDownload cancel];
 		}
