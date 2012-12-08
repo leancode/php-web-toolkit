@@ -40,6 +40,7 @@ extern NSString* const PrefPhpExtensions;
 extern NSString* const PrefMinExtensions;
 
 extern NSString* const PrefCssTidyConfig;
+extern NSString* const PrefHtmlTidy5;
 extern NSString* const PrefHtmlTidyConfig;
 extern NSString* const PrefHtmlTidyCustomConfig;
 

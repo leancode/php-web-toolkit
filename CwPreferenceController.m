@@ -33,7 +33,6 @@ NSString* const PrefUseGrowl = @"dechipwreckUseGrowl";
 NSString* const PrefResultWindow = @"dechipwreckResultWindow";
 NSString* const PrefJsViaShell = @"dechipwreckJsViaShell";
 
-
 NSString* const PrefDebugMode = @"dechipwreckDebugMode";
 NSString* const PrefUpdateCheck = @"dechipwreckUpdateCheck";
 NSString* const PrefLastUpdateCheck = @"dechipwreckLastUpdateCheck";
@@ -45,6 +44,7 @@ NSString* const PrefPhpExtensions = @"dechipwreckPhpExtensions";
 NSString* const PrefMinExtensions = @"dechipwreckMinExtensions";
 
 NSString* const PrefCssTidyConfig = @"dechipwreckCssTidyConfig";
+NSString* const PrefHtmlTidy5 = @"decipwreckHtmlTidy5";
 NSString* const PrefHtmlTidyConfig = @"dechipwreckHtmlTidyConfig";
 NSString* const PrefHtmlTidyCustomConfig = @"dechipwreckHtmlTidyCustomConfig";
 
