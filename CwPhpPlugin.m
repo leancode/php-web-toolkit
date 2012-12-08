@@ -1113,7 +1113,12 @@ jshint no idea yet...
 
 - (NSString *)tidyExecutable
 {
-	return [[myBundle resourcePath] stringByAppendingString:@"/tidy"];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefHtmlTidy5])  {
+		return [[myBundle resourcePath] stringByAppendingString:@"/tidy5"];
+	}
+	else {
+		return [[myBundle resourcePath] stringByAppendingString:@"/tidy"];
+	}
 }
 
 - (NSString *)jscInterpreter
