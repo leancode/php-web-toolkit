@@ -34,6 +34,7 @@
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
 		AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209EF12B6D5E50080B995 /* Preferences.xib */; };
 		AC7B768910F8F70F00089B11 /* CssTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC7B768810F8F70F00089B11 /* CssTidyConfig.m */; };
+		AC845E1C1672AF440057E8E6 /* tidy5 in Resources */ = {isa = PBXBuildFile; fileRef = AC845E1B1672AF440057E8E6 /* tidy5 */; };
 		AC8C518C110A5FA600EB784D /* HtmlTidyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */; };
 		AC8C51B8110A638500EB784D /* tidy_config_format_wrapped.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */; };
 		AC8C51BA110A63CA00EB784D /* tidy_config_format_indented.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC8C51B9110A63CA00EB784D /* tidy_config_format_indented.txt */; };
@@ -142,6 +143,7 @@
 		AC7B768710F8F70F00089B11 /* CssTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CssTidyConfig.h; sourceTree = "<group>"; };
 		AC7B768810F8F70F00089B11 /* CssTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CssTidyConfig.m; sourceTree = "<group>"; };
 		AC7BC118127B512400C58EB4 /* jstidy.js */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = jstidy.js; sourceTree = "<group>"; };
+		AC845E1B1672AF440057E8E6 /* tidy5 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = tidy5; sourceTree = "<group>"; };
 		AC8C518A110A5FA600EB784D /* HtmlTidyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlTidyConfig.h; sourceTree = "<group>"; };
 		AC8C518B110A5FA600EB784D /* HtmlTidyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlTidyConfig.m; sourceTree = "<group>"; };
 		AC8C51B7110A638500EB784D /* tidy_config_format_wrapped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tidy_config_format_wrapped.txt; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				AC17BBEB1587D4FB00794C9E /* growlnotify-1.2 */,
 				AC17BBEC1587D4FB00794C9E /* growlnotify-1.3 */,
 				ACA91D8C1264E4C10032639D /* tidy */,
+				AC845E1B1672AF440057E8E6 /* tidy5 */,
 				ACBBA81A15710A4E00425ECE /* paypal-24.png */,
 				ACBB164B138B42B2002AB0C2 /* twitter_newbird_blue-24.png */,
 				ACBB1639138B3A85002AB0C2 /* facebook-24.png */,
@@ -396,7 +399,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "PhpPlugin" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -450,6 +453,7 @@
 				AC17BBEE1587D4FB00794C9E /* growlnotify-1.3 in Resources */,
 				AC32AB6B15A26F1400DF58AB /* gplus-24.png in Resources */,
 				AC11D7601624C51C001DE336 /* cssmin.php in Resources */,
+				AC845E1C1672AF440057E8E6 /* tidy5 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -604,7 +609,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
-				CURRENT_PROJECT_VERSION = 3.1;
+				CURRENT_PROJECT_VERSION = 3.9;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -632,7 +637,7 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = YES;
-				VALIDATE_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -642,7 +647,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3.0;
+				CURRENT_PROJECT_VERSION = 3.9;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -670,13 +675,14 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = NO;
-				VALIDATE_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
 		};
 		AC7908621329924400CADF8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
