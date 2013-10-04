@@ -3,7 +3,7 @@
 //  PhpPlugin
 //
 //  Created by Mario Fischer on 23.12.08.
-//  Copyright 2008-2011 chipwreck.de. All rights reserved.
+//  Copyright 2008-2013 chipwreck.de. All rights reserved.
 
 /*
 csslint. maybe?:
@@ -1247,6 +1247,11 @@ jshint no idea yet...
 		NSPipe *toPipe = [NSPipe pipe];
 		NSPipe *fromPipe = [NSPipe pipe];
 		NSPipe *errPipe = [NSPipe pipe];
+		
+		if (aTask == nil || dataIn == nil || toPipe == nil || fromPipe == nil || errPipe == nil) {
+			return nil;
+		}
+		
 		NSFileHandle *writing = [toPipe fileHandleForWriting];
 		NSFileHandle *reading;
 		if (useout) {
@@ -1254,6 +1259,10 @@ jshint no idea yet...
 		}
 		else {
 			reading = [errPipe fileHandleForReading];
+		}
+		
+		if (reading == nil || writing == nil) {
+			return nil;
 		}
 
 		[aTask setStandardInput:toPipe];
