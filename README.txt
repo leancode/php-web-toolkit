@@ -1,5 +1,8 @@
 PHP & Web Toolkit
 
+=== IMPORTANT ===
+
+The source code here is not yet ready to be downloaded and compiled.
 
 === Description ===
 
