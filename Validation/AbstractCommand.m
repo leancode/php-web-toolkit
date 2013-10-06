@@ -21,12 +21,12 @@
 	return lineEnding;
 }
 
-- (void)setEncoding: (Encoding*)anEncoding
+- (void)setEncoding: (CwEncoding*)anEncoding
 {
 	encoding = anEncoding;
 }
 
-- (Encoding*)getEncoding
+- (CwEncoding*)getEncoding
 {
 	return encoding;
 }
