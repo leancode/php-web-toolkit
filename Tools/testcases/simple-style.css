@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'KomikaTextRegular';
+    src: url('KOMTXT__-webfont.eot');
+    src: local('☺'), url('KOMTXT__-webfont.woff') format('woff'), url('KOMTXT__-webfont.ttf') format('truetype'), url('KOMTXT__-webfont.svg#webfontg8E6Mgnc') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+p {
+	    margin: 0 0 -20 0 px;
+}

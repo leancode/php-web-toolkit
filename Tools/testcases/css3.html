@@ -1,0 +1,117 @@
+<html>
+
+<head>
+
+	<style lang="text/css">
+	div {
+		background-color: green;
+		margin: 1em;
+		padding: 1em;
+		color: white;
+		width: 100px;
+	}
+
+	.grad {
+		background-image:-webkit-gradient(linear, left top, left bottom, from(#00abeb), to(#fff), color-stop(0.5, #fff), color-stop(0.5, #66cc00))
+	}
+	
+	
+	.mask {
+		-webkit-border-radius: 10px;
+		-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+	}
+	.reflect {
+		-webkit-box-reflect:below 3px
+			-webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white));
+	}
+	.perspective {
+		-webkit-perspective: 500;
+		background-color: transparent;
+	}
+	.transform {
+		-webkit-transform: rotateY(45deg) translate(-10px,-20px) scale(1.2) rotate(30deg);
+	}
+	div#opaque1 {
+		opacity: 0.5;
+	    -webkit-transition-property: -webkit-transform, opacity;
+	    -webkit-transition-duration: 4s, 2s;
+	    -webkit-transition-delay: 2s, 0;
+	}	
+	div#opaque2 {
+		opacity: 0.5;
+		 -webkit-transition: opacity 500ms ease-out 100ms;
+	}
+	div#slide {
+		background-color: grey;
+	}
+	div#grow {
+		background-color: blue;
+		-webkit-transition-property: width;
+		-webkit-transition-duration: 0.5s;
+		-webkit-transition-timing-function: default;
+	}
+	
+	.diagonalslide {
+		-webkit-animation-name: diagonal-slide;
+		-webkit-animation-duration: 3s;
+		-webkit-animation-iteration-count: 3;
+	} 
+	@-webkit-keyframes diagonal-slide {
+		from {
+			margin-left: 1em;
+			margin-top: 1em;
+		}
+		to {
+			margin-left: 5em;
+			margin-top: 5em;
+		}
+	}
+	.face {
+		height: 2em;
+		width: 3em;
+		background-color: black;
+		-webkit-border-radius: 10px;
+		-webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
+		-webkit-backface-visibility: hidden;
+	}
+	</style>
+
+	<script language="JavaScript">
+	function grow() {
+	    box = document.getElementById("grow");
+	    var old_width = box.offsetWidth;
+	    box.style.width = old_width * 1.5;
+	}
+	</script>
+</head>
+
+<body>
+	<div id="opaque1" onclick="this.style['opacity']='1.0'">opacity 1</div>
+	<div id="opaque2" onclick="this.style['opacity']='1.0'">opacity 2</div>
+	<div id="slide" onclick="this.className='diagonalslide'">slide</div>
+	<div id="grow" onclick="grow();">grow</div>
+	<div id="gradient" class="grad">gradient</div>
+	<div id="mask" class="mask">mask</div>
+	<div id="reflect" class="reflect">reflect</div>
+	<br>
+	<div class="face">card</div>
+	<div class="perspective">
+		<div id="transform" class="transform">transform</div>
+	</div>
+	<div style="font-size: 100%; margin: 1em 1em; -webkit-perspective: 500; -webkit-transform-style: preserve-3d;" >
+		<div style="height: 8em; width: 6em; text-align:center; background-color: red;
+          -webkit-transform-style: preserve-3d; -webkit-transform: rotateY(40deg);">
+              Preserve 3d
+          <div style="-webkit-transform: translateZ(3em); background-color: blue;">I stand out from my parent element.</div>
+		</div>
+	</div>
+	<div style="font-size: 100%; margin: 1em 1em; -webkit-perspective: 500; -webkit-transform-style: flat;" >
+		<div style="height: 8em; width: 6em; text-align:center; background-color: red;
+          -webkit-transform-style: preserve-3d; -webkit-transform: rotateY(40deg);">
+              Preserve flat
+          <div style="-webkit-transform: translateZ(3em); background-color: blue;">I stand out from my parent element.</div>
+		</div>
+	</div>
+</body>
+
+</html>

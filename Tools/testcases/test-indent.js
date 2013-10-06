@@ -1,0 +1,1 @@
+/*jslint indent:4 */ui.Linear = function () {    test();    goog.base(this);};

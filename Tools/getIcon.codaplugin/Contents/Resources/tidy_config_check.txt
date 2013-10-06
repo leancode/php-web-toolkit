@@ -1,0 +1,8 @@
+// config file for Coda HTML Tidy CHECK script
+// http://www.chipwreck.de/blog/software/coda-php
+// rev 4
+
+// Change these if you need to debug a problem with Tidy
+output-html: yes
+quiet: no
+show-warnings: yes

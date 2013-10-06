@@ -1,0 +1,13 @@
+@import url('../thematic/library/styles/reset.css');
+/*
+Theme Name:		Chipwreck
+*/
+html,body,div {
+margin:0;
+background: -webkit-gradient(linear, 0 0, 0 100%, from(#e8e8e8), to(#fefefe));
+background: -moz-linear-gradient(top, #e8e8e8, #fefefe);
+/* vertical-align: baseline; */
+}
+@media "print" {
+	body { display: block; }
+}

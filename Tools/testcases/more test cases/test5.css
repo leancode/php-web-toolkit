@@ -1,0 +1,13 @@
+
+body {
+/*	border-radius:5px;*/
+	color:green;
+	padding:10px;
+}
+
+@font-face {
+	font-family:KomikaTextRegular;
+	font-style:normal;
+	font-weight:400;
+	/* src:local(☺), url(KOMTXT__-webfont.woff) format(woff), url(KOMTXT__-webfont.ttf) format(truetype), url(KOMTXT__-webfont.svg#webfontg8E6Mgnc) format(svg); */
+}
