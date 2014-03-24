@@ -78,12 +78,12 @@ NSString* const PrefJSHintSub = @"dechipwreckPrefJSHintSub";
 NSString* const PrefJSHintBitwise = @"dechipwreckPrefJSHintBitwise";
 NSString* const PrefJSHintNewcap = @"dechipwreckPrefJSHintNewcap";
 NSString* const PrefJSHintNoempty = @"dechipwreckPrefJSHintNoempty";
-NSString* const PrefJSHintNomen = @"dechipwreckPrefJSHintNomen";
+NSString* const PrefJSHintNomen = @"dechipwreckPrefJSHintNomen"; // legacy, unused
 NSString* const PrefJSHintOnevar = @"dechipwreckPrefJSHintOnevar";
 NSString* const PrefJSHintPlusplus = @"dechipwreckPrefJSHintPlusplus";
 NSString* const PrefJSHintRegexp = @"dechipwreckPrefJSHintRegexp";
-NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";
-NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite";
+NSString* const PrefJSHintUndef = @"dechipwreckPrefJSHintUndef";// legacy, unused
+NSString* const PrefJSHintWhite = @"dechipwreckPrefJSHintWhite"; // legacy, unused
 NSString* const PrefJSHintSmartTabs = @"dechipwreckPrefJSHintSmartTabs";
 NSString* const PrefJSHintLaxComma = @"dechipwreckPrefJSHintLaxComma";
 
@@ -96,6 +96,7 @@ NSString* const PrefJSHintLatedef = @"dechipwreckPrefJSHintLatedef";
 NSString* const PrefJSHintGlobalstrict = @"dechipwreckPrefJSHintGlobalstrict";
 
 NSString* const PrefJSHintValidateOnSave = @"dechipwreckPrefJSHintValidateOnSave";
+NSString* const PrefJSHintOptions = @"dechipwreckPrefJSHintOptions";
 
 NSString* const PrefJSTidyPreserveNewlines = @"dechipwreckPrefJSTidyPreserveNewlines";
 NSString* const PrefJSTidySpaceAfterAnonFunction = @"dechipwreckPrefJSTidySpaceAfterAnonFunction";
@@ -110,7 +111,7 @@ NSString* const UrlGoogle = @"http://www.chipwreck.de/blog/about/donate/?utm_sou
 NSString* const UrlHelp = @"http://www.chipwreck.de/blog/software/coda-php/help/?utm_source=plugin&utm_medium=plugin&utm_campaign=helplink#quick";
 NSString* const UrlProCSSor = @"http://procssorapp.com/?q=coda";
 NSString* const UrlTidyHelp = @"http://tidy.sourceforge.net/docs/quickref.html";
-NSString* const UrlJsHintHelp = @"http://www.jshint.com/options/";
+NSString* const UrlJsHintHelp = @"http://www.jshint.com/docs/options/";
 NSString* const UrlVersionCheck = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/versioncheck2.php?sw=codaphp&rnd=483&utm_source=updatecheck&utm_medium=plugin&utm_campaign=checkupdate&version=";
 NSString* const UrlDownload = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";
 NSString* const UrlDownloadDirect = @"http://www.chipwreck.de/blog/wp-content/themes/chipwreck/download.php?sw=codaphp&direct=1&utm_source=updatecheck&utm_medium=plugin&utm_campaign=downloadupdate&version=";

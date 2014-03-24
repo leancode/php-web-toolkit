@@ -376,36 +376,10 @@ jshint no idea yet...
 			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
+		// camelcase, freeze, indent, quotmark, unused, trailing, expr, funcscope, iterator, lastsemic, laxbreak, multistr, notypeof, proto, scripturl, supernew, validthis
 		NSMutableString* options = [NSMutableString stringWithString:@"browser,debug,devel,jquery,laxbreak,mootools,prototypejs,"]; // node removed
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintBitwise]) {
 			[options appendString:@"bitwise,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNewcap]) {
-			[options appendString:@"newcap,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNoempty]) {
-			[options appendString:@"noempty,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNomen]) {
-			[options appendString:@"nomen,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintOnevar]) {
-			[options appendString:@"onevar,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintPlusplus]) {
-			[options appendString:@"plusplus,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintRegexp]) {
-			[options appendString:@"regexp,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintUndef]) {
-			[options appendString:@"undef,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintWhite]) {
-			[options appendString:@"white,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintAsi]) {
-			[options appendString:@"asi,"];
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintCurly]) {
 			[options appendString:@"curly,"];
@@ -413,50 +387,83 @@ jshint no idea yet...
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEqeqeq]) {
 			[options appendString:@"eqeqeq,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEvil]) {
-			[options appendString:@"evil,"];
-		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintForin]) {
 			[options appendString:@"forin,"];
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintImmed]) {
 			[options appendString:@"immed,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLoopfunc]) {
-			[options appendString:@"loopfunc,"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLatedef]) {
+			[options appendString:@"latedef,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintStrict]) {
-			[options appendString:@"strict,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSub]) {
-			[options appendString:@"sub,"];
-		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEqnull]) {
-			[options appendString:@"eqnull,"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNewcap]) {
+			[options appendString:@"newcap,"];
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNoarg]) {
 			[options appendString:@"noarg,"];
 		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNoempty]) {
+			[options appendString:@"noempty,"];
+		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNonew]) {
 			[options appendString:@"nonew,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintPlusplus]) {
+			[options appendString:@"plusplus,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintUndef]) {
+			[options appendString:@"undef,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintStrict]) {
+			[options appendString:@"strict,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintAsi]) {
+			[options appendString:@"asi,"];
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintBoss]) {
 			[options appendString:@"boss,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintShadow]) {
-			[options appendString:@"shadow,"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEqnull]) {
+			[options appendString:@"eqnull,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLatedef]) {
-			[options appendString:@"latedef,"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintEvil]) {
+			[options appendString:@"evil,"];
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintGlobalstrict]) {
 			[options appendString:@"globalstrict,"];
 		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLaxComma]) {
+			[options appendString:@"laxcomma,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLoopfunc]) {
+			[options appendString:@"loopfunc,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintShadow]) {
+			[options appendString:@"shadow,"];
+		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSmartTabs]) {
 			[options appendString:@"smarttabs,"];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintLaxComma]) {
-			[options appendString:@"laxcomma,"];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintSub]) {
+			[options appendString:@"sub,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintOnevar]) { // legacy?
+			[options appendString:@"onevar,"];
+		}
+						
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintNomen]) { // legacy
+			[options appendString:@"nomen,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintRegexp]) { // legacy
+			[options appendString:@"regexp,"];
+		}		
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefJSHintWhite]) { // legacy
+			[options appendString:@"white,"];
+		}
+		if ([[NSUserDefaults standardUserDefaults] stringForKey:PrefJSHintOptions] != nil) {
+			[options appendString:
+			  [[NSUserDefaults standardUserDefaults] stringForKey:PrefJSHintOptions]
+			 ];
 		}
 		
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];

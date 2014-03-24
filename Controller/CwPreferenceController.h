@@ -89,6 +89,8 @@ extern NSString* const PrefJSHintShadow;
 extern NSString* const PrefJSHintLatedef;
 extern NSString* const PrefJSHintGlobalstrict;
 
+extern NSString* const PrefJSHintOptions;
+
 extern NSString* const PrefJSHintValidateOnSave;
 
 extern NSString* const PrefJSTidyPreserveNewlines;

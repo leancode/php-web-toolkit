@@ -131,6 +131,7 @@
 		AC5637081800C08D0049C93B /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+SBJSON.m"; path = "JSON/NSObject+SBJSON.m"; sourceTree = "<group>"; };
 		AC5637091800C08D0049C93B /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+SBJSON.m"; path = "JSON/NSString+SBJSON.m"; sourceTree = "<group>"; };
 		AC56370F1800C2690049C93B /* My Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "My Growl Registration Ticket.growlRegDict"; path = "Resources/My Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
+		AC5A386A18297FE90069F93F /* jshintwrap.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = jshintwrap.js; path = "Other Sources/jshintwrap.js"; sourceTree = "<group>"; };
 		AC6209CC12B6D3340080B995 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ACD6CCDC100012FC007E94B1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SheetPHPError.xib; sourceTree = "<group>"; };
 		ACEF736E1327233D0025427D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ResultPanel.xib; sourceTree = "<group>"; };
@@ -296,6 +297,7 @@
 				AC371F741800CF1C000101AF /* jshint.js */,
 				AC371F751800CF1C000101AF /* jstidy.js */,
 				32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */,
+				AC5A386A18297FE90069F93F /* jshintwrap.js */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -368,6 +370,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "PhpPlugin" */;
 			buildPhases = (
+				AC5A386C1829808D0069F93F /* Run Script (concat jshint + jshinwrapper) */,
 				AC57EA0C134D0AD1005D1C5E /* Run Script (Minify JS) */,
 				AC57EA0D134D0C5B005D1C5E /* Run Script (Minify JS) */,
 				8D5B49AF048680CD000E48DA /* Resources */,
@@ -393,7 +396,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "PhpPlugin" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -482,7 +485,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Tools/jsminify.php\" \"${SRCROOT}/Other Sources/jshint.js\" \"${SRCROOT}/Resources/jshint-min.js\"";
+			shellScript = "\"${SRCROOT}/Tools/jsminify.php\" \"${SRCROOT}/Resources/jshint-all.js\" \"${SRCROOT}/Resources/jshint-min.js\"";
 		};
 		AC57EA0D134D0C5B005D1C5E /* Run Script (Minify JS) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -497,6 +500,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Tools/jsminify.php\" \"${SRCROOT}/Other Sources/jstidy.js\" \"${SRCROOT}/Resources/jstidy-min.js\"";
+		};
+		AC5A386C1829808D0069F93F /* Run Script (concat jshint + jshinwrapper) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (concat jshint + jshinwrapper)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"/bin/cat\" \"${SRCROOT}/Other Sources/jshint.js\" \"${SRCROOT}/Other Sources/jshintwrap.js\" > \"${SRCROOT}/Resources/jshint-all.js\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
