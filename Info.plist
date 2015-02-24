@@ -17,17 +17,17 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.2beta</string>
+	<string>4.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>4.2beta</string>
+	<string>4.2</string>
 	<key>CodaPlugInMinimumAPIVersion</key>
 	<string>5</string>
 	<key>CodaPlugInSupportedAPIVersion</key>
 	<string>6</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright by Mario Fischer, http://www.chipwreck.de</string>
+	<string>Copyright by Mario Fischer. http://www.chipwreck.de</string>
 	<key>NSPrincipalClass</key>
 	<string>CwPhpPlugin</string>
 </dict>

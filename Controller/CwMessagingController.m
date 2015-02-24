@@ -216,10 +216,13 @@
 
 - (IBAction)clearResult:(id)sender
 {
+	/*
 	[resultLabel setStringValue:@""];
 	[[resultView mainFrame] loadHTMLString:@"<html><body>&nbsp;</body></html>" baseURL:[NSURL URLWithString:@"http://www.chipwreck.de"]];
 	[[resultView superview] setNeedsDisplay:YES];
 	[resultPanel update];
+	*/
+	[resultPanel close];
 }
 
 - (IBAction)closeResult:(id)sender
