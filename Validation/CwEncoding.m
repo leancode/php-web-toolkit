@@ -28,14 +28,13 @@
     static NSArray *encodings;
     if (!encodings)
     {
-		encodings = [[NSArray alloc] initWithObjects:
-			[CwEncoding encodingWithTitle:@"Always ask…" intvalue:0 cmdLine:@""],
+		encodings = @[[CwEncoding encodingWithTitle:@"Always ask…" intvalue:0 cmdLine:@""],
 			[CwEncoding encodingWithTitle:@"ASCII" intvalue:1 cmdLine:@"-ascii"],
             [CwEncoding encodingWithTitle:@"UTF-8" intvalue:4 cmdLine:@"-utf8"],
             [CwEncoding encodingWithTitle:@"ISO Latin 1" intvalue:5 cmdLine:@"-latin1"],
 			[CwEncoding encodingWithTitle:@"UTF-16" intvalue:10 cmdLine:@"-utf16"], // NSUnicodeStringEncoding = 10, NSUTF16StringEncoding
             [CwEncoding encodingWithTitle:@"Windows CP1252" intvalue:12 cmdLine:@"-win1252"],
-            [CwEncoding encodingWithTitle:@"MacRoman" intvalue:30 cmdLine:@"-mac"], nil];
+            [CwEncoding encodingWithTitle:@"MacRoman" intvalue:30 cmdLine:@"-mac"]];
     }
     return encodings;
 }
@@ -47,7 +46,7 @@
 	CwEncoding *anencoding;
 	while ((anencoding = [encodingEnumerator nextObject]))
 	{
-		if (theValue == [anencoding intvalue])
+		if (theValue == anencoding.intvalue)
 		{
 			return anencoding;			
 		}
@@ -58,18 +57,18 @@
 
 + (CwEncoding *)encodingForIndex:(int)theIdx
 {
-	return [[CwEncoding encodingsArray] objectAtIndex:theIdx];
+	return [CwEncoding encodingsArray][theIdx];
 }
 
 /* Convenience constructor */
-+ (id)encodingWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
++ (instancetype)encodingWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
 {
     CwEncoding *newEncoding = [[self alloc] init];
     newEncoding.title = aTitle;
     newEncoding.intvalue = aValue;
 	newEncoding.cmdLineParam = aCmdLine;
     
-    return [newEncoding autorelease];
+    return newEncoding;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -77,11 +76,11 @@
 	[encoder encodeInteger: intvalue forKey:@"encoding"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [[CwEncoding encodingForIntvalue:theencoding] retain];
+	return [CwEncoding encodingForIntvalue:theencoding];
 }
 
 @end

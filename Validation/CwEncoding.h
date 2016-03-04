@@ -21,7 +21,7 @@
 @property (copy) NSString *cmdLineParam;
 
 + (NSArray *)encodingsArray;
-+ (id)encodingWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
++ (instancetype)encodingWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
 + (CwEncoding *)encodingForIndex:(int)theIdx;
 + (CwEncoding *)encodingForIntvalue:(int)theValue;
 

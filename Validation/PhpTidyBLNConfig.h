@@ -1,15 +1,15 @@
 //
-//  CssTidyConfig.h
+//  PhpTidyConfig.h
 //  PhpPlugin
 //
-//  Created by Mario Fischer on 09.01.10.
-//  Copyright 2010 chipwreck.de. All rights reserved.
+//  Created by Mario Fischer on 24.01.11.
+//  Copyright 2011 chipwreck.de. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
-#import "AbstractCommand.h"
 
-@interface CssTidyConfig : NSObject<NSCoding>
+
+@interface PhpTidyBLNConfig : NSObject<NSCoding>
 {
 @public
     int intvalue;
@@ -23,7 +23,8 @@
 
 + (NSArray *)configArray;
 + (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
-+ (CssTidyConfig *)configForIndex:(int)theIdx;
-+ (CssTidyConfig *)configForIntvalue:(int)theValue;
++ (PhpTidyBLNConfig *)configForIndex:(int)theIdx;
++ (PhpTidyBLNConfig *)configForIntvalue:(int)theValue;
+
 
 @end

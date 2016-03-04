@@ -11,13 +11,13 @@
 
 @protocol AbstractConfig
 
-	- (NSMutableArray*)getArgs;
-	- (NSString*)getCmdline;
+	@property (NS_NONATOMIC_IOSONLY, getter=getArgs, readonly, copy) NSMutableArray *args;
+	@property (NS_NONATOMIC_IOSONLY, getter=getCmdline, readonly, copy) NSString *cmdline;
 
-	- (void)setLineEnding: (NSString*)aLineEnding;
-	- (NSString*)getLineEnding;
-	- (void)setEncoding: (CwEncoding*)anEncoding;
-	- (CwEncoding*)getEncoding;
+
+	@property (NS_NONATOMIC_IOSONLY, getter=getLineEnding, copy) NSString *lineEnding;
+
+	@property (NS_NONATOMIC_IOSONLY, getter=getEncoding, strong) CwEncoding *encoding;
 
 @end
 
@@ -26,9 +26,7 @@
 	CwEncoding* encoding;
 	NSString* lineEnding;
 }
-- (void)setLineEnding: (NSString*)aLineEnding;
-- (NSString*)getLineEnding;
-- (void)setEncoding: (CwEncoding*)anEncoding;
-- (CwEncoding*)getEncoding;
+@property (NS_NONATOMIC_IOSONLY, getter=getLineEnding, copy) NSString *lineEnding;
+@property (NS_NONATOMIC_IOSONLY, getter=getEncoding, strong) CwEncoding *encoding;
 
 @end

@@ -13,7 +13,7 @@
 
 @synthesize valid, error, result, errorMessage, additional;
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self != nil)
@@ -27,12 +27,12 @@
 
 -(BOOL)hasFailResult
 {
-	return ![self valid] && ![self error] && [self hasResult];
+	return !self.valid && !self.error && [self hasResult];
 }
 
 -(BOOL)hasResult
 {
-	return ([self result] != nil && [[self result] length] > 0);
+	return (self.result != nil && self.result.length > 0);
 }
 
 @end

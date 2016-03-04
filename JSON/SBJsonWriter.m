@@ -48,7 +48,7 @@
 static NSMutableCharacterSet *kEscapeChars;
 
 + (void)initialize {
-	kEscapeChars = [[NSMutableCharacterSet characterSetWithRange: NSMakeRange(0,32)] retain];
+	kEscapeChars = [NSMutableCharacterSet characterSetWithRange: NSMakeRange(0,32)];
 	[kEscapeChars addCharactersInString: @"\"\\"];
 }
 
@@ -78,7 +78,7 @@ static NSMutableCharacterSet *kEscapeChars;
         return tmp;
     
     if (error)
-        *error = [self.errorTrace lastObject];
+        *error = (self.errorTrace).lastObject;
     return nil;
 }
 
@@ -139,7 +139,7 @@ static NSMutableCharacterSet *kEscapeChars;
         else
             addComma = YES;
         
-        if ([self humanReadable])
+        if (self.humanReadable)
             [json appendString:[self indent]];
         
         if (![self appendValue:value into:json]) {
@@ -148,7 +148,7 @@ static NSMutableCharacterSet *kEscapeChars;
     }
     
     depth--;
-    if ([self humanReadable] && [fragment count])
+    if (self.humanReadable && fragment.count)
         [json appendString:[self indent]];
     [json appendString:@"]"];
     return YES;
@@ -161,9 +161,9 @@ static NSMutableCharacterSet *kEscapeChars;
     }
     [json appendString:@"{"];
     
-    NSString *colon = [self humanReadable] ? @" : " : @":";
+    NSString *colon = self.humanReadable ? @" : " : @":";
     BOOL addComma = NO;
-    NSArray *keys = [fragment allKeys];
+    NSArray *keys = fragment.allKeys;
     if (self.sortKeys)
         keys = [keys sortedArrayUsingSelector:@selector(compare:)];
     
@@ -173,7 +173,7 @@ static NSMutableCharacterSet *kEscapeChars;
         else
             addComma = YES;
         
-        if ([self humanReadable])
+        if (self.humanReadable)
             [json appendString:[self indent]];
         
         if (![value isKindOfClass:[NSString class]]) {
@@ -185,14 +185,14 @@ static NSMutableCharacterSet *kEscapeChars;
             return NO;
         
         [json appendString:colon];
-        if (![self appendValue:[fragment objectForKey:value] into:json]) {
+        if (![self appendValue:fragment[value] into:json]) {
             [self addErrorWithCode:EUNSUPPORTED description:[NSString stringWithFormat:@"Unsupported value for key %@ in object", value]];
             return NO;
         }
     }
     
     depth--;
-    if ([self humanReadable] && [fragment count])
+    if (self.humanReadable && fragment.count)
         [json appendString:[self indent]];
     [json appendString:@"}"];
     return YES;    
@@ -208,7 +208,7 @@ static NSMutableCharacterSet *kEscapeChars;
         [json appendString:fragment];
         
     } else {
-        NSUInteger length = [fragment length];
+        NSUInteger length = fragment.length;
         for (NSUInteger i = 0; i < length; i++) {
             unichar uc = [fragment characterAtIndex:i];
             switch (uc) {

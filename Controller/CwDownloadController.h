@@ -12,7 +12,7 @@
 extern NSString* const TmpUpdateFile;
 extern NSString* const TmpUnpackedFile;
 
-@interface CwDownloadController : NSWindowController
+@interface CwDownloadController : NSWindowController <NSURLDownloadDelegate>
 {
 	CwPhpPlugin *myPlugin;
 	NSString *downloadUrl;
@@ -35,6 +35,7 @@ extern NSString* const TmpUnpackedFile;
 @property (copy) NSString *downloadPath;
 @property (copy) NSURLDownload *theDownload;
 @property (copy) NSURLResponse *downloadResponse;
+@property (copy) NSArray *tlo;
 
 - (void)setMyPlugin:(CwPhpPlugin *)myPluginInstance;
 - (void)showPanelWithUrl:(NSString*)url;

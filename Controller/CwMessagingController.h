@@ -35,6 +35,10 @@
 	int lineOfErrorSaved;
 }
 
+@property (copy) NSArray *tloRP;
+@property (copy) NSArray *tloSPE;
+@property (copy) NSArray *tloIP;
+
 - (void)setMyPlugin:(CwPhpPlugin *)myPluginInstance;
 - (void)setBundlePath: (NSString *)thePath;
 

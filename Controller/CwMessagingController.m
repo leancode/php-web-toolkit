@@ -12,13 +12,27 @@
 
 @implementation CwMessagingController
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self != nil) {
 		@try {
-			[NSBundle loadNibNamed:@"InfoPanel" owner:self];
-			[NSBundle loadNibNamed:@"SheetPHPError" owner:self];
+			NSString *nibName1 = @"InfoPanel";
+			NSString *nibName2 = @"SheetPHPError";
+			if([[NSBundle mainBundle] respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
+				NSArray * t = nil;
+				NSArray * t2 = nil;
+				[[NSBundle mainBundle] loadNibNamed:nibName1 owner:self topLevelObjects:&t];
+				[[NSBundle mainBundle] loadNibNamed:nibName2 owner:self topLevelObjects:&t2];
+				_tloIP = t;
+				_tloSPE = t2;
+			} else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+				[NSBundle loadNibNamed:nibName1 owner:self];
+				[NSBundle loadNibNamed:nibName2 owner:self];
+#pragma clang diagnostic pop
+			}
 		}
 		@catch (NSException *e) {
 			[self alertCriticalException:e];
@@ -46,12 +60,12 @@
 	
 	NSAlert *alert = [[NSAlert alloc] init];
 	
-	[alert setAlertStyle: alertStyle];
+	alert.alertStyle = alertStyle;
 	[alert addButtonWithTitle: @"Ok"];
-	[alert setIcon: [[[NSImage alloc] initWithContentsOfFile:[myPlugin pluginIconPath]] autorelease]];
-	[alert setMessageText: msg];
+	alert.icon = [[NSImage alloc] initWithContentsOfFile:[myPlugin pluginIconPath]];
+	alert.messageText = msg;
 	if (addMsg != nil) {
-		[alert setInformativeText: addMsg];		
+		alert.informativeText = addMsg;		
 	}
 	if (secondButton != nil) {
 		[alert addButtonWithTitle: secondButton];
@@ -66,7 +80,6 @@
 	if (res == NSAlertThirdButtonReturn) {
 		ret = 3;
 	}
-	[alert release];
 	return ret;
 }
 
@@ -96,7 +109,7 @@
 - (void)alertCriticalException:(NSException*)e
 {
 	[self alertCriticalError: NSLocalizedString(@"Sorry, we have an exception.",@"") additional:
-		[[[e name] stringByAppendingString:NSLocalizedString(@"\n\nReason:\n",@"") ] stringByAppendingString:[e reason]]
+		[[e.name stringByAppendingString:NSLocalizedString(@"\n\nReason:\n",@"") ] stringByAppendingString:e.reason]
 	];
 }
 
@@ -113,19 +126,18 @@
 	else {
 			
 		[self hideInfoMessage:NO];
-		[infoPanel setAlphaValue:1.0];
-		[infoText setStringValue:msg];
-		[infoTextAdditional setStringValue:additionalText];
-		[[infoPanel standardWindowButton:NSWindowCloseButton] setHidden:!isSticky];
+		infoPanel.alphaValue = 1.0;
+		infoText.stringValue = msg;
+		infoTextAdditional.stringValue = additionalText;
+		[infoPanel standardWindowButton:NSWindowCloseButton].hidden = !isSticky;
 		
 		// Calc text height
-		NSTextView *utilityTextView = [[NSTextView alloc] initWithFrame:[infoTextAdditional frame]];
-		[utilityTextView setString:additionalText];
-		[[utilityTextView layoutManager] glyphRangeForTextContainer:[utilityTextView textContainer]]; // force layout
-		CGFloat newHeight = NSHeight([[utilityTextView layoutManager] usedRectForTextContainer:[utilityTextView textContainer]]);
-		[utilityTextView release];
+		NSTextView *utilityTextView = [[NSTextView alloc] initWithFrame:infoTextAdditional.frame];
+		utilityTextView.string = additionalText;
+		[utilityTextView.layoutManager glyphRangeForTextContainer:utilityTextView.textContainer]; // force layout
+		CGFloat newHeight = NSHeight([utilityTextView.layoutManager usedRectForTextContainer:utilityTextView.textContainer]);
 		
-		NSRect r = NSMakeRect([infoPanel frame].origin.x , [infoPanel frame].origin.y , [infoPanel frame].size.width, newHeight + [infoPanel contentMinSize].height);
+		NSRect r = NSMakeRect(infoPanel.frame.origin.x , infoPanel.frame.origin.y , infoPanel.frame.size.width, newHeight + infoPanel.contentMinSize.height);
 		[infoPanel setFrame:r display:YES animate:YES];
 
 		if (!isSticky) {
@@ -141,20 +153,17 @@
 		[panelTimer invalidate];
 		panelTimer = nil;
 	}
-	if (infoPanel == nil || ![infoPanel isVisible]) {
+	if (infoPanel == nil || !infoPanel.visible) {
 		return;
 	}
 	if (fadeout) {
-		NSDictionary *myFadeOut = [NSDictionary dictionaryWithObjectsAndKeys:
-									   infoPanel, NSViewAnimationTargetKey,
-									   NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey, 
-								   nil];
+		NSDictionary *myFadeOut = @{NSViewAnimationTargetKey: infoPanel,
+									   NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
 
-		NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: [NSArray arrayWithObjects:myFadeOut, nil]];
-		[animation setAnimationBlockingMode: NSAnimationBlocking];
-		[animation setDuration: PrefInfoPanelFadeout];
+		NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: @[myFadeOut]];
+		animation.animationBlockingMode = NSAnimationBlocking;
+		animation.duration = PrefInfoPanelFadeout;
 		[animation startAnimation];
-		[animation release];
 	}
 	[infoPanel close];
 }
@@ -164,8 +173,8 @@
 
 - (void)openSheetPhpError:(NSString*)error atLine:(int)lineOfError forWindow:(NSWindow*)window
 {
-	if ( window && ![window attachedSheet] ) {
-		[phpErrorText setStringValue:error];
+	if ( window && !window.attachedSheet ) {
+		phpErrorText.stringValue = error;
 		lineOfErrorSaved = lineOfError;
 		[NSApp beginSheet:sheetPhpError modalForWindow:window modalDelegate:self didEndSelector:@selector(sheetDidEndPhpError:returnCode:contextInfo:) contextInfo:nil];	
 	}
@@ -198,15 +207,25 @@
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
 		@try {
-			[NSBundle loadNibNamed:@"ResultPanel" owner:self];
+			NSString *nibName = @"ResultPanel";
+			if([[NSBundle mainBundle] respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
+				NSArray * t = nil;
+				[[NSBundle mainBundle] loadNibNamed:nibName owner:self topLevelObjects:&t];
+				_tloRP = t;
+			} else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+				[NSBundle loadNibNamed:nibName owner:self];
+#pragma clang diagnostic pop
+			}
 		}
 		@catch (NSException *exception) {
 			[self alertCriticalException:exception];
 			return;
 		}
 
-		[resultLabel setStringValue:title];
-		[[resultView mainFrame] loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
+		resultLabel.stringValue = title;
+		[resultView.mainFrame loadHTMLString:data baseURL:[NSURL URLWithString:baseurl]];
 		[resultPanel makeKeyAndOrderFront:self];
 	}
 	else {
@@ -268,6 +287,12 @@
 	[args addObject:[myPlugin pluginIconPath]];
 	
 	[myPlugin filterTextInput:@"" with:[myPlugin growlNotify] options:args encoding:NSUTF8StringEncoding useStdout:NO];
+}
+
+- (void)dealloc {
+	_tloIP = nil;
+	_tloRP = nil;
+	_tloSPE = nil;
 }
 
 @end

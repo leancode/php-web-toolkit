@@ -19,12 +19,12 @@
 - (void)setMyPlugin:(CwPhpPlugin*)myPluginInstance;
 
 - (void)checkForUpdateAuto;
-- (NSString*)versioncheckUrl;
-- (NSString*)downloadUrl;
-- (NSString*)directDownloadUrl;
-- (NSString*)testDownloadUrl;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *versioncheckUrl;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *downloadUrl;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *directDownloadUrl;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *testDownloadUrl;
 - (IBAction)downloadUpdate:(id)sender;
-- (int)isUpdateAvailable;
+@property (NS_NONATOMIC_IOSONLY, getter=isUpdateAvailable, readonly) int updateAvailable;
 - (void)isUpdateAvailableAsync;
 
 @end

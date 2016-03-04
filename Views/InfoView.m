@@ -11,7 +11,7 @@
 
 @implementation InfoView
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -22,7 +22,7 @@
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-	[[self window] performClose:self];
+	[self.window performClose:self];
 }
 
 @end

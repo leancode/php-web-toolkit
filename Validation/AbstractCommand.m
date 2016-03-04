@@ -34,7 +34,7 @@
 
 -(NSArray*)getArgs
 {
-	return [NSArray arrayWithObjects:nil];
+	return @[];
 }
 
 -(NSString*)getCmdline;

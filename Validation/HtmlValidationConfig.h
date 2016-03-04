@@ -24,7 +24,7 @@
 @property (copy) NSString *validationFieldname;
 
 + (NSArray *)configArray;
-+ (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue url:(NSString *)anUrl fieldname:(NSString*)aFieldname;
++ (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue url:(NSString *)anUrl fieldname:(NSString*)aFieldname;
 + (NSMutableString*)parseValidatorNuOutput:(NSMutableDictionary*)jsonResult;
 + (HtmlValidationConfig *)configForIndex:(int)theIdx;
 + (HtmlValidationConfig *)configForUrl:(NSString*)theUrl;

@@ -58,6 +58,7 @@ NSString* const PrefJsMinifyOnPublish = @"dechipwreckPrefJsMinifyOnPublish";
 
 NSString* const PrefPhpTidyBraces = @"dechipwreckPrefPhpTidyBraces";
 NSString* const PrefPhpTidyBlankLines = @"dechipwreckPrefPhpTidyBlankLines";
+NSString* const PrefPhpTidyBlankLinesNums = @"dechipwreckPrefPhpTidyBlankLinesNums";
 NSString* const PrefPhpTidyComma = @"dechipwreckPrefPhpTidyComma";
 NSString* const PrefPhpTidyWhitespace = @"dechipwreckPrefPhpTidyWhitespace";
 NSString* const PrefPhpTidyFixBrackets = @"dechipwreckPrefPhpTidyFixBrackets";
@@ -122,11 +123,11 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 # pragma mark -
 # pragma mark Init and windowspecific
 
-- (id)init 
+- (instancetype)init 
 { 
 	self = [super initWithWindowNibName:@"Preferences"];
 	//	[[NSUserDefaultsController sharedUserDefaultsController] setAppliesImmediately: NO];
-	[[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:[self getDefaults]];
+	[NSUserDefaultsController sharedUserDefaultsController].initialValues = [self getDefaults];
 	[self setDefaults];
 	return self; 
 }
@@ -147,13 +148,13 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	[htmlConfigBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefHtmlTidyConfig]];
 	[cssLevelBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefCssLevel]];
 	[phpTidyBracesBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefPhpTidyBraces]];
+	[phpTidyBlankLinesBtn selectItemAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey: PrefPhpTidyBlankLinesNums]];
 	
-	[htmlValidator setSelectedSegment:
-	 [[HtmlValidationConfig configForUrl:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl] ] intvalue]
-	 ];
+	htmlValidator.selectedSegment = [HtmlValidationConfig configForUrl:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl] ].intvalue
+	 ;
 	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlTidyCustomConfig] != nil) {
-		[customTidyConfig setString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlTidyCustomConfig]];
+		customTidyConfig.string = [[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlTidyCustomConfig];
 	}
 	else {
 		[self loadHtmlTidyCustomConfig];		
@@ -161,32 +162,32 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 	[self htmlConfigModified:self];
 	[self phpValidateOnSaveModified:self];
 	
-	[versionNumberField setStringValue: [myPlugin pluginVersionNumber]];
-	[phpversionNumberField setStringValue: [myPlugin phpVersion]];
+	versionNumberField.stringValue = [myPlugin pluginVersionNumber];
+	phpversionNumberField.stringValue = [myPlugin phpVersion];
 }
 
 - (NSMutableDictionary *)getDefaults
 {
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
-	[defaultValues setObject:@"http://jigsaw.w3.org/css-validator/validator" forKey: PrefCssValidatorUrl];
-	[defaultValues setObject:@"http://html5.validator.nu" forKey: PrefHtmlValidatorUrl];
-	[defaultValues setObject:@"file" forKey: PrefCssValidatorParamFile];
-	[defaultValues setObject:@"file" forKey: PrefHtmlValidatorParamFile];
-	[defaultValues setObject:@"/usr/bin/php" forKey: PrefPhpLocal];
-	[defaultValues setObject:@"php,phtml" forKey: PrefPhpExtensions];
-	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefJsViaShell];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseGrowl];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefDebugMode];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefUseSelection];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefAutoSave];
-	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefResultWindow];
-	[defaultValues setValue:[NSNumber numberWithInt:0] forKey: PrefPhpBeepOnly];
-	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefTidyInternal];
-	[defaultValues setValue:[NSNumber numberWithInt:1] forKey: PrefUpdateCheck];
-	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssTidyConfig];
-	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefHtmlTidyConfig];
-	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefCssLevel];
-	[defaultValues setObject:[NSNumber numberWithInt:1] forKey: PrefPhpTidyReplacePhpTags];
+	defaultValues[PrefCssValidatorUrl] = @"http://jigsaw.w3.org/css-validator/validator";
+	defaultValues[PrefHtmlValidatorUrl] = @"http://html5.validator.nu";
+	defaultValues[PrefCssValidatorParamFile] = @"file";
+	defaultValues[PrefHtmlValidatorParamFile] = @"file";
+	defaultValues[PrefPhpLocal] = @"/usr/bin/php";
+	defaultValues[PrefPhpExtensions] = @"php,phtml";
+	[defaultValues setValue:@1 forKey: PrefJsViaShell];
+	[defaultValues setValue:@0 forKey: PrefUseGrowl];
+	[defaultValues setValue:@0 forKey: PrefDebugMode];
+	[defaultValues setValue:@0 forKey: PrefUseSelection];
+	[defaultValues setValue:@0 forKey: PrefAutoSave];
+	[defaultValues setValue:@1 forKey: PrefResultWindow];
+	[defaultValues setValue:@0 forKey: PrefPhpBeepOnly];
+	[defaultValues setValue:@1 forKey: PrefTidyInternal];
+	[defaultValues setValue:@1 forKey: PrefUpdateCheck];
+	defaultValues[PrefCssTidyConfig] = @1;
+	defaultValues[PrefHtmlTidyConfig] = @1;
+	defaultValues[PrefCssLevel] = @1;
+	defaultValues[PrefPhpTidyReplacePhpTags] = @1;
 	
 	return defaultValues;
 }
@@ -206,31 +207,32 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
 	BOOL canClose = true;
 	
-	if (! [self fileExists:[fieldPhpLocal stringValue]] ) {
+	if (! [self fileExists:fieldPhpLocal.stringValue] ) {
 		canClose = false;
-		[labelPhpLocal setTextColor:[NSColor redColor]];
+		labelPhpLocal.textColor = [NSColor redColor];
 	}
 	else {		
-		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
+		labelPhpLocal.textColor = [NSColor controlTextColor];
 	}
 	
 	if (canClose) {
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[cssConfigBtn indexOfSelectedItem]] forKey: PrefCssTidyConfig];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[htmlConfigBtn indexOfSelectedItem]] forKey: PrefHtmlTidyConfig];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithString:[customTidyConfig string]] forKey: PrefHtmlTidyCustomConfig];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[cssLevelBtn indexOfSelectedItem]] forKey: PrefCssLevel];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[phpTidyBracesBtn indexOfSelectedItem]] forKey: PrefPhpTidyBraces];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:cssConfigBtn.indexOfSelectedItem] forKey: PrefCssTidyConfig];
+		[[NSUserDefaults standardUserDefaults] setObject:@(htmlConfigBtn.indexOfSelectedItem) forKey: PrefHtmlTidyConfig];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithString:customTidyConfig.string] forKey: PrefHtmlTidyCustomConfig];
+		[[NSUserDefaults standardUserDefaults] setObject:@(cssLevelBtn.indexOfSelectedItem) forKey: PrefCssLevel];
+		[[NSUserDefaults standardUserDefaults] setObject:@(phpTidyBracesBtn.indexOfSelectedItem) forKey: PrefPhpTidyBraces];
+		[[NSUserDefaults standardUserDefaults] setObject:@(phpTidyBlankLinesBtn.indexOfSelectedItem) forKey: PrefPhpTidyBlankLinesNums];
 		// [[NSUserDefaultsController sharedUserDefaultsController] save:sender];
 		
-		[labelPhpLocal setTextColor:[NSColor controlTextColor]];
+		labelPhpLocal.textColor = [NSColor controlTextColor];
 		
-		[self saveHtmlTidyCustomConfig:[customTidyConfig string]];
+		[self saveHtmlTidyCustomConfig:customTidyConfig.string];
 		
 		return YES;	
 	}
 	else {
 		NSBeep();
-		[tabView selectTabViewItemAtIndex:([tabView numberOfTabViewItems] - 1)];
+		[tabView selectTabViewItemAtIndex:(tabView.numberOfTabViewItems - 1)];
 		return NO;
 	}	
 }
@@ -250,6 +252,10 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 {
 	return [PhpTidyConfig configArray];
 }
+- (NSArray *)phpTidyBlankLines
+{
+	return [PhpTidyBLNConfig configArray];
+}
 - (NSArray *)htmlTidyConfigs
 {
     return [HtmlTidyConfig configArray];
@@ -260,7 +266,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 
 - (IBAction)htmlConfigModified: (id)sender
 {
-	if ([htmlConfigBtn indexOfSelectedItem] == 5) {
+	if (htmlConfigBtn.indexOfSelectedItem == 5) {
 		[self enableTextView:customTidyConfig As:YES];
 	}
 	else {
@@ -270,19 +276,19 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 
 - (IBAction)phpValidateOnSaveModified: (id)sender
 {
-	[phpExtensions setEnabled:([phpValidateSaveBtn state] == YES)];
-	[phpExtensions setStringValue:[[phpExtensions stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+	phpExtensions.enabled = (phpValidateSaveBtn.state == YES);
+	phpExtensions.stringValue = [phpExtensions.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 -(void)enableTextView:(NSTextView *)textView As:(BOOL)enableIt
 {
-	[textView setSelectable: enableIt];
-	[textView setEditable: enableIt];
+	textView.selectable = enableIt;
+	textView.editable = enableIt;
     if (enableIt) {
-		[textView setTextColor: [NSColor controlTextColor]];
+		textView.textColor = [NSColor controlTextColor];
 	}		
 	else {
-		[textView setTextColor: [NSColor disabledControlTextColor]];
+		textView.textColor = [NSColor disabledControlTextColor];
 	}
 }
 
@@ -336,13 +342,13 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 
 - (IBAction)selectHTMLValidator:(id)sender
 {
-	HtmlValidationConfig* selConfig = [HtmlValidationConfig configForIndex:[htmlValidator selectedSegment]];
+	HtmlValidationConfig* selConfig = [HtmlValidationConfig configForIndex:htmlValidator.selectedSegment];
 	
-	[htmlValidatorUrl setStringValue:[selConfig validationUrl]];
-	[htmlValidatorFieldname setStringValue:[selConfig validationFieldname]];
+	htmlValidatorUrl.stringValue = selConfig.validationUrl;
+	htmlValidatorFieldname.stringValue = selConfig.validationFieldname;
 	
-	[[NSUserDefaults standardUserDefaults] setObject:[selConfig validationUrl] forKey: PrefHtmlValidatorUrl];
-	[[NSUserDefaults standardUserDefaults] setObject:[selConfig validationFieldname] forKey: PrefHtmlValidatorParamFile];
+	[[NSUserDefaults standardUserDefaults] setObject:selConfig.validationUrl forKey: PrefHtmlValidatorUrl];
+	[[NSUserDefaults standardUserDefaults] setObject:selConfig.validationFieldname forKey: PrefHtmlValidatorParamFile];
 }
 
 # pragma mark -
@@ -358,10 +364,10 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 			NSString *fileContents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
 	
 			if (fileContents == nil) {
-				[myPlugin doLog:[NSString stringWithFormat:@"Error reading tidy configuration from %@\n%@", path, [error localizedFailureReason]]];
+				[myPlugin doLog:[NSString stringWithFormat:@"Error reading tidy configuration from %@\n%@", path, error.localizedFailureReason]];
 			}
 			else {
-				[customTidyConfig setString:fileContents];
+				customTidyConfig.string = fileContents;
 			}
 		}
 	}
@@ -376,7 +382,7 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
 		
 		BOOL isok = [contents writeToFile:path atomically:YES encoding: NSUTF8StringEncoding error:&error];
 		if (!isok) {
-			[myPlugin doLog:[NSString stringWithFormat:@"Error writing tidy configuration from %@\n%@", path, [error localizedFailureReason]]];
+			[myPlugin doLog:[NSString stringWithFormat:@"Error writing tidy configuration from %@\n%@", path, error.localizedFailureReason]];
 		}
 	}
 }
@@ -387,10 +393,5 @@ NSString* const UrlDownloadTest = @"http://www.chipwreck.de/downloads/php-codapl
     return ([fileManager fileExistsAtPath:filePath]);	
 }
 
-- (void)dealloc
-{
-	[bundlePath dealloc];
-	[super dealloc];
-}
 
 @end

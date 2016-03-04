@@ -6,10 +6,10 @@
 //  Copyright 2011 chipwreck.de. All rights reserved.
 //
 
-#import "PhpTidyConfig.h"
+#import "PhpTidyBLNConfig.h"
 
 
-@implementation PhpTidyConfig
+@implementation PhpTidyBLNConfig
 
 @synthesize intvalue, title, cmdLineParam;
 
@@ -19,18 +19,22 @@
     static NSArray *configs;
     if (!configs)
     {
-		configs = @[[PhpTidyConfig configWithTitle:@"Always on new line" intvalue:0 cmdLine:@"n"],
-            [PhpTidyConfig configWithTitle:@"Always on same line" intvalue:1 cmdLine:@"s"],
-			[PhpTidyConfig configWithTitle:@"PEAR style" intvalue:2 cmdLine:@"p"]];
+		NSMutableArray* m = [NSMutableArray array];
+		for (int i = 1; i <= 8; i++) {
+			NSString *r = [@(i) stringValue];
+			[m addObject:[PhpTidyBLNConfig configWithTitle:r intvalue:(i-1) cmdLine:r]];
+		}
+		
+		configs = [m copy];
     }
     return configs;
 }
 
 
-+ (PhpTidyConfig *)configForIntvalue:(int)theValue
++ (PhpTidyBLNConfig *)configForIntvalue:(int)theValue
 {
-	NSEnumerator *configEnumerator = [[PhpTidyConfig configArray] objectEnumerator];
-	PhpTidyConfig *aconfig;
+	NSEnumerator *configEnumerator = [[PhpTidyBLNConfig configArray] objectEnumerator];
+	PhpTidyBLNConfig *aconfig;
 	while ((aconfig = [configEnumerator nextObject]))
 	{
 		if (theValue == aconfig.intvalue)
@@ -41,15 +45,15 @@
 	return nil;
 }
 
-+ (PhpTidyConfig *)configForIndex:(int)theIdx
++ (PhpTidyBLNConfig *)configForIndex:(int)theIdx
 {
-	return [PhpTidyConfig configArray][theIdx];
+	return [PhpTidyBLNConfig configArray][theIdx];
 }
 
 /* Convenience constructor */
 + (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
 {
-    PhpTidyConfig *newConfig = [[self alloc] init];
+    PhpTidyBLNConfig *newConfig = [[self alloc] init];
     newConfig.title = aTitle;
     newConfig.intvalue = aValue;
 	newConfig.cmdLineParam = aCmdLine;
@@ -66,7 +70,7 @@
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [PhpTidyConfig configForIntvalue:theencoding];
+	return [PhpTidyBLNConfig configForIntvalue:theencoding];
 }
 
 @end

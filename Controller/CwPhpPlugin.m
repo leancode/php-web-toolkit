@@ -41,13 +41,19 @@ jshint no idea yet...
 #import "HtmlValidationConfig.h"
 #import "CwRequestController.h"
 
+@interface CwPhpPlugin ()
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+@end
+
 @implementation CwPhpPlugin
+
+- (instancetype)init { @throw nil; }
 
 #pragma mark Required Coda Plugin Methods
 
 // Support for Coda 2.0 and lower
 
-- (id)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle
+- (instancetype)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle
 {
     return [self initWithController:aController plugInBundle:(NSObject <CodaPlugInBundle> *)yourBundle];
 }
@@ -55,22 +61,22 @@ jshint no idea yet...
 // Support for Coda 2.0.1 and higher
 // NOTE: must set the CodaPlugInSupportedAPIVersion key to 6 or above to use this init method
 
-- (id)initWithPlugInController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
+- (instancetype)initWithPlugInController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
 {
 	return [self initWithController:aController plugInBundle:plugInBundle];
 }
 
-- (id)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
+- (instancetype)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle
 {
     if ( (self = [super init]) != nil )
     {
 		// init controllers
 		preferenceController = [[CwPreferenceController alloc] init];
-		[preferenceController setBundlePath:[plugInBundle resourcePath]];
+		[preferenceController setBundlePath:plugInBundle.resourcePath];
 		[preferenceController setMyPlugin:self];
 		
 		messageController = [[CwMessagingController alloc] init];
-		[messageController setBundlePath:[plugInBundle resourcePath]];
+		[messageController setBundlePath:plugInBundle.resourcePath];
 		[messageController setMyPlugin:self];
 		
 		updateController = [[CwUpdateController alloc] init];
@@ -177,7 +183,7 @@ jshint no idea yet...
 - (BOOL)validateMenuItem:(NSMenuItem *)aMenuItem
 {
 	@try {
-		SEL action = [aMenuItem action];
+		SEL action = aMenuItem.action;
 		
 		if (action != @selector(showPreferencesWindow) && action != @selector(checkForUpdateNow) && action != @selector(goToHelpWebsite) && action != @selector(testUpdatePlugin) && action != @selector(showPluginResources)) {
 			if ( ![self editorTextPresent] ) {
@@ -249,13 +255,13 @@ jshint no idea yet...
 {
 	[self doLog:[NSString stringWithFormat:@"Minify file in: %@", inputPath]];
 	
-	NSString *tmpFileName = [NSString stringWithFormat:@"minify-%.0f-%i.tmp", [[NSDate date] timeIntervalSince1970], (arc4random() % 99999999)];
+	NSString *tmpFileName = [NSString stringWithFormat:@"minify-%.0f-%i.tmp", [NSDate date].timeIntervalSince1970, (arc4random() % 99999999)];
 	NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:tmpFileName];
 	
 	NSError *error;
 	NSString *inputText = [[NSString alloc] initWithContentsOfFile:inputPath encoding:NSUTF8StringEncoding error:&error];
 	if (inputText == nil) {
-		[messageController alertCriticalError:[NSString stringWithFormat:@"Error reading minified at %@\n%@", inputPath, [error localizedFailureReason]] additional:@""];
+		[messageController alertCriticalError:[NSString stringWithFormat:@"Error reading minified at %@\n%@", inputPath, error.localizedFailureReason] additional:@""];
 		return inputPath;
 	}
 	
@@ -268,7 +274,7 @@ jshint no idea yet...
 		args = [NSMutableArray arrayWithObjects:
 								@"-n",
 								@"-f",
-								[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"],
+								[myBundle.resourcePath stringByAppendingString:@"/jsminify.php"],
 								@"--",
 								@"CR", nil];		
 		
@@ -278,7 +284,7 @@ jshint no idea yet...
 		args = [NSMutableArray arrayWithObjects:
 				@"-n",
 				@"-f",
-				[[myBundle resourcePath] stringByAppendingString:@"/cssmin.php"],
+				[myBundle.resourcePath stringByAppendingString:@"/cssmin.php"],
 				@"--",
 				@"CR", nil];		
 		
@@ -286,9 +292,8 @@ jshint no idea yet...
 	}
 
 	BOOL ok = [resultText writeToFile:tmpPath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-	[inputText release];
 	if (!ok) {
-		[messageController alertCriticalError:[NSString stringWithFormat:@"Error writing minified file at %@\n%@", tmpPath, [error localizedFailureReason]] additional:@""];
+		[messageController alertCriticalError:[NSString stringWithFormat:@"Error writing minified file at %@\n%@", tmpPath, error.localizedFailureReason] additional:@""];
 		return inputPath;
 	}
 	
@@ -301,13 +306,13 @@ jshint no idea yet...
 {
 	@try {
 		[messageController clearResult:self];
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [[myBundle resourcePath] stringByAppendingString:@"/tidy_config_check.txt"],
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [myBundle.resourcePath stringByAppendingString:@"/tidy_config_check.txt"],
 								@"--newline", [self currentLineEnding], [self currentEncoding], nil];
 		
 		ValidationResult *myresult = [self validateWith:[self tidyExecutable] arguments:args called:@"Tidy" showResult:YES useStdOut:NO alwaysWholeBuffer:NO];
 			
 		if ([myresult hasFailResult]) {
-			[messageController showResult:[HtmlTidyConfig parseTidyOutput:[myresult result]]
+			[messageController showResult:[HtmlTidyConfig parseTidyOutput:myresult.result]
 								   forUrl:@""
 								withTitle:[@"Tidy validation result for " stringByAppendingString:[self currentFilename]]
 			 ];
@@ -326,7 +331,7 @@ jshint no idea yet...
 		if ([myresult hasFailResult]) {
 			[self showPhpError:myresult];
 		}
-		else if ([myresult valid]) {
+		else if (myresult.valid) {
 			NSMutableString *addInfo = [NSMutableString stringWithString:[@"File: " stringByAppendingString:[self currentFilename]]];
 			
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefAutoSave]) {
@@ -361,18 +366,18 @@ jshint no idea yet...
 {
 	NSBeep();
 	int lineOfError = 0;
-	NSScanner *scanner = [NSScanner scannerWithString:[myresult result]];
+	NSScanner *scanner = [NSScanner scannerWithString:myresult.result];
 	[scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
 	[scanner scanInt: &lineOfError];
 	
-	[messageController openSheetPhpError:[[myresult result] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
+	[messageController openSheetPhpError:[myresult.result stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] atLine:lineOfError forWindow:[[controller focusedTextView:self] window]];
 }
 
 - (void)doJsLint
 {
 	@try {
 		[messageController clearResult:self];
-		if ([[self getEditorText] length] > maxLengthJs) {
+		if ([self getEditorText].length > maxLengthJs) {
 			[messageController alertInformation:@"File is too large: More than 64KB can't be handled currently." additional:@"You can use only a selection or minify the code. This is a known issue currently, sorry." cancelButton:NO];
 			return;
 		}
@@ -466,12 +471,12 @@ jshint no idea yet...
 			 ];
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:[[myBundle resourcePath] stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];
-		ValidationResult *myresult = [self validateWith:[[myBundle resourcePath] stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSHint" showResult:YES useStdOut:YES alwaysWholeBuffer:NO];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:[myBundle.resourcePath stringByAppendingString:@"/jshint-min.js"], options, [self currentLineEnding], nil];
+		ValidationResult *myresult = [self validateWith:[myBundle.resourcePath stringByAppendingString:@"/js-call.sh"] arguments:args called:@"JSHint" showResult:YES useStdOut:YES alwaysWholeBuffer:NO];
 	
 		if ([myresult hasFailResult]) {
 			[messageController showResult:
-			 [[CwMessagingController getCssForJsLint] stringByAppendingString:[myresult result]]
+			 [[CwMessagingController getCssForJsLint] stringByAppendingString:myresult.result]
 									forUrl:@""
 								withTitle:[@"JSHint validation result for " stringByAppendingString:[self currentFilename]]];			
 		}
@@ -481,6 +486,16 @@ jshint no idea yet...
 	}
 }
 
+#pragma mark CwPhpPluginDelegate delegate implementation
+
+- (void)done:(id)caller{
+	[self doValidateRemoteHtmlDone:caller];
+}
+
+- (void)error:(id)caller{
+	[self doValidateRemoteHtmlDone:caller];
+}
+
 #pragma mark Remote Validation
 
 - (void)doValidateRemoteHtml
@@ -488,7 +503,7 @@ jshint no idea yet...
 	@try {
 		[messageController clearResult:self];
 		NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
+									 [CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]].cmdLineParam, @"profile",
 									 @"1", @"ss",
 									 @"yes", @"showsource",
 									 @"json", @"out",
@@ -496,24 +511,24 @@ jshint no idea yet...
 									 @"markup-validator", @"tests",								 
 									 nil];
 		
-		CwRequestController *myreq = [[[CwRequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
+		CwRequestController *myreq = [[CwRequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefHtmlValidatorUrl]]
 									  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
 										fields:args
 								   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorParamFile]
 									  filename:[self currentFilename]
 									  mimetype:@"text/html"
-									  delegate:self 
-								  doneSelector:@selector(doValidateRemoteHtmlDone:) errorSelector:@selector(doValidateRemoteHtmlDone:)] autorelease];
+									  delegate:self];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
 	}
 }
+
 - (void)doValidateRemoteHtmlDone:(id)sender
 {
 	@try {
 		NSString *resultText = [sender serverReply];
-		if (resultText == nil || [resultText length] == 0) {
+		if (resultText == nil || resultText.length == 0) {
 			[messageController alertCriticalError:NSLocalizedString(@"No response from HTML online validator",@"")
 									   additional:[NSLocalizedString(@"Make sure you're online and check the Preferences.\n\nError: ",@"") stringByAppendingString:[sender errorReply]]
 			 ];
@@ -527,11 +542,10 @@ jshint no idea yet...
 			}
 			else {
 				NSMutableDictionary *jsonResult = [json objectWithString:resultText error:&error];
-				[json release];
 				json = nil;
 				
 				NSMutableString *resultFromJson = [HtmlValidationConfig parseValidatorNuOutput:jsonResult];
-				if (resultFromJson != nil && [resultFromJson length] > 0) {
+				if (resultFromJson != nil && resultFromJson.length > 0) {
 					[messageController showResult:[[CwMessagingController getCssforValidatorNu] stringByAppendingString:resultFromJson]
 										   forUrl:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]
 										withTitle:[NSLocalizedString(@"HTML validation result via ",@"") stringByAppendingString:[[NSUserDefaults standardUserDefaults] stringForKey: PrefHtmlValidatorUrl]]];
@@ -554,17 +568,16 @@ jshint no idea yet...
 	@try {
 		[messageController clearResult:self];
 		NSMutableDictionary *args = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									 [[CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]] cmdLineParam], @"profile",
+									 [CssLevel configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefCssLevel]].cmdLineParam, @"profile",
 									 nil];
 		
-		CwRequestController *myreq = [[[CwRequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
+		CwRequestController *myreq = [[CwRequestController alloc] initWithURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:PrefCssValidatorUrl]]
 									  contents:[[self getEditorText] dataUsingEncoding:NSUTF8StringEncoding]
 										fields:args
 								   uploadfield:[[NSUserDefaults standardUserDefaults] stringForKey: PrefCssValidatorParamFile]
 									  filename:[self currentFilename]
 									  mimetype:@"text/css"
-									  delegate:self 
-								  doneSelector:@selector(doValidateRemoteCssDone:) errorSelector:@selector(doValidateRemoteCssDone:)] autorelease];
+									  delegate:self];
 	}
 	@catch (NSException *e) {	
 		[messageController alertCriticalException:e];
@@ -574,7 +587,7 @@ jshint no idea yet...
 {
 	@try {
 		NSString *resultText = [sender serverReply];
-		if (resultText == nil || [resultText length] == 0) {
+		if (resultText == nil || resultText.length == 0) {
 			[messageController alertCriticalError:NSLocalizedString(@"No response from CSS online validator",@"")
 									   additional:[NSLocalizedString(@"Make sure you're online and check the Preferences.\n\nError: ",@"") stringByAppendingString:[sender errorReply]]
 			 ];
@@ -596,8 +609,8 @@ jshint no idea yet...
 -(void)doTidyHtml
 {
 	@try {
-		NSString *myConfig = [[HtmlTidyConfig configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefHtmlTidyConfig]] cmdLineParam];	
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [[myBundle resourcePath] stringByAppendingString:[[@"/tidy_config_format_" stringByAppendingString:myConfig] stringByAppendingString:@".txt"]], 
+		NSString *myConfig = [HtmlTidyConfig configForIndex: [[NSUserDefaults standardUserDefaults] integerForKey:PrefHtmlTidyConfig]].cmdLineParam;	
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-config", [myBundle.resourcePath stringByAppendingString:[[@"/tidy_config_format_" stringByAppendingString:myConfig] stringByAppendingString:@".txt"]], 
 								@"--newline", [self currentLineEnding], [self currentEncoding], nil];
 		[self reformatWith:[self tidyExecutable] arguments:args called:@"Tidy"];
 	}
@@ -624,9 +637,9 @@ jshint no idea yet...
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:
 								@"-n",
 								@"-f",
-								[[myBundle resourcePath] stringByAppendingString:@"/csstidy.php"],
+								[myBundle.resourcePath stringByAppendingString:@"/csstidy.php"],
 								@"--",
-								@"-t", [[CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]] cmdLineParam],
+								@"-t", [CssTidyConfig configForIndex:[[NSUserDefaults standardUserDefaults] integerForKey:PrefCssTidyConfig]].cmdLineParam,
 								@"-l", [self currentLineEnding], 
 								@"-last", prefJs, 
 								nil];
@@ -658,22 +671,23 @@ jshint no idea yet...
 			return;
 		}
 		
-		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-n", @"-f", [[myBundle resourcePath] stringByAppendingString:@"/phptidy-coda.php"], @"--", nil];
+		NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-n", @"-f", [myBundle.resourcePath stringByAppendingString:@"/phptidy-coda.php"], @"--", nil];
 		
 		[args addObject:@"-l"];
 		[args addObject: [self currentLineEnding]];
 		
 		int myPhpTidyBracesConfigIdx = [[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBraces];
+		int myPhpTidyBlankLinesConfigIdx = [[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBlankLinesNums];
 		
 		[args addObject:@"-b"];
-		[args addObject:[[PhpTidyConfig configForIndex: myPhpTidyBracesConfigIdx] cmdLineParam]];
+		[args addObject:[PhpTidyConfig configForIndex: myPhpTidyBracesConfigIdx].cmdLineParam];
 		
 		[args addObject:@"-a"];
 		if ([[NSUserDefaults standardUserDefaults] integerForKey:PrefPhpTidyBlankLines] == 1) {
-			[args addObject:@"1"];
+			[args addObject:[PhpTidyBLNConfig configForIndex: myPhpTidyBlankLinesConfigIdx].cmdLineParam];
 		}
 		else {
-			[args addObject:@"0"]; 		 
+			[args addObject:@"0"];
 		}
 		
 		[args addObject:@"-w"];
@@ -755,7 +769,7 @@ jshint no idea yet...
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:
 								@"-n",
 								@"-f",
-								[[myBundle resourcePath] stringByAppendingString:@"/jsbeautifier.php"],
+								[myBundle.resourcePath stringByAppendingString:@"/jsbeautifier.php"],
 								@"--",
 								options, [self currentLineEnding], nil];
 		
@@ -772,7 +786,7 @@ jshint no idea yet...
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:
 								@"-n",
 								@"-f",
-								[[myBundle resourcePath] stringByAppendingString:@"/jsminify.php"],
+								[myBundle.resourcePath stringByAppendingString:@"/jsminify.php"],
 								@"--",
 								[self currentLineEnding], nil];		
 		
@@ -789,7 +803,7 @@ jshint no idea yet...
 		NSMutableArray *args = [NSMutableArray arrayWithObjects:
 								@"-n",
 								@"-f",
-								[[myBundle resourcePath] stringByAppendingString:@"/cssmin.php"],
+								[myBundle.resourcePath stringByAppendingString:@"/cssmin.php"],
 								@"--",
 								[self currentLineEnding], nil];		
 		
@@ -840,7 +854,7 @@ jshint no idea yet...
 {
 	if (input == nil) return @"";
 	
-	NSString *baseDomain = [[domain stringByDeletingLastPathComponent] stringByAppendingString:@"/"];
+	NSString *baseDomain = [domain.stringByDeletingLastPathComponent stringByAppendingString:@"/"];
 	return [
 			[
 			 [input
@@ -862,13 +876,13 @@ jshint no idea yet...
 
 - (void)showPluginResources
 {
-	[[NSWorkspace sharedWorkspace] openURL: [NSURL fileURLWithPath: [myBundle resourcePath]]];
+	[[NSWorkspace sharedWorkspace] openURL: [NSURL fileURLWithPath: myBundle.resourcePath]];
 }
 
 - (void)doLog:(NSString *)loggable
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefDebugMode])  {
-		if ([loggable length] > PrefMaxLogLen) {
+		if (loggable.length > PrefMaxLogLen) {
 			NSLog(@"[Coda PHP Toolkit] %@ [...]", [loggable substringToIndex:PrefMaxLogLen]);
 		}
 		else {
@@ -895,7 +909,7 @@ jshint no idea yet...
 														 cancelButton:YES];
 				
 				if (lesscssresp == 1) {
-					NSString *lesscsspath = [[[myBundle bundlePath] stringByDeletingLastPathComponent] stringByExpandingTildeInPath];
+					NSString *lesscsspath = myBundle.bundlePath.stringByDeletingLastPathComponent.stringByExpandingTildeInPath;
 					[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/LessCSS.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
 					[[NSWorkspace sharedWorkspace] selectFile:[lesscsspath stringByAppendingString:@"/MojoPlugin.codaplugin"] inFileViewerRootedAtPath:lesscsspath];
 				}
@@ -910,7 +924,7 @@ jshint no idea yet...
 	
 	// check duplicate plugins
 	@try {
-		NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
 		NSError *error = nil;
 		[self doLog:[@"Checking for duplicate plugins in: " stringByAppendingString:[self codaPluginPath]]];
 		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self codaPluginPath] error: &error];
@@ -1018,7 +1032,7 @@ jshint no idea yet...
 - (BOOL)editorSelectionPresent /* Selection desired and present? */
 {
 	CodaTextView *textView = [controller focusedTextView:self];
-	return ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseSelection] && [textView selectedText] != nil && [[textView selectedText] length] > PrefMinSelectionLen);
+	return ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUseSelection] && [textView selectedText] != nil && [textView selectedText].length > PrefMinSelectionLen);
 }
 
 - (BOOL)editorTextPresent /* Is a textview present and does it contain text? */
@@ -1028,7 +1042,7 @@ jshint no idea yet...
 	if ( textView != nil && textView ) {
 		NSString *text = nil;
 		text = [textView string];
-		if ( text != nil && [text length] > 0 ) {
+		if ( text != nil && text.length > 0 ) {
 			return YES;
 		}
 	}
@@ -1039,7 +1053,7 @@ jshint no idea yet...
 {
 	CodaTextView *textView = [controller focusedTextView:self];
 	
-	if (newText == nil || [newText length] == 0) {
+	if (newText == nil || newText.length == 0) {
 		[messageController alertCriticalError:NSLocalizedString(@"No new text received in replaceEditorTextWith.",@"")
 								   additional:NSLocalizedString(@"This should not happen, please report a bug at www.chipwreck.de",@"")];
 	}
@@ -1049,7 +1063,7 @@ jshint no idea yet...
 			endRange = [textView selectedRange];
 		} else {
 			endRange.location = 0;
-			endRange.length = [[textView string] length];
+			endRange.length = [textView string].length;
 		}
 		
 		[textView replaceCharactersInRange:endRange withString: newText];
@@ -1058,12 +1072,12 @@ jshint no idea yet...
 
 - (NSString *)currentFilename
 {
-	if ([[[controller focusedTextView:self] window] title] != nil) {
+	if ([[controller focusedTextView:self] window].title != nil) {
 		if ([[controller focusedTextView:self] siteNickname] != nil) {
-			return [[[[controller focusedTextView:self] window] title] stringByReplacingOccurrencesOfString:
+			return [[[controller focusedTextView:self] window].title stringByReplacingOccurrencesOfString:
 					[@" - " stringByAppendingString:[[controller focusedTextView:self] siteNickname]] withString:@""];
 		}
-		return [[[controller focusedTextView:self] window] title];
+		return [[controller focusedTextView:self] window].title;
 	}
 	return @"(untitled)";
 }
@@ -1092,17 +1106,17 @@ jshint no idea yet...
 
 - (NSString *)codaPluginPath
 {
-	return [[myBundle bundlePath] stringByDeletingLastPathComponent];	
+	return myBundle.bundlePath.stringByDeletingLastPathComponent;	
 }
 
 - (NSString *)pluginVersionNumber
 {
-	return [[myBundle infoDictionary] objectForKey:@"CFBundleVersion"];
+	return myBundle.infoDictionary[@"CFBundleVersion"];
 }
 
 - (NSString *)pluginIconPath
 {
-	return [[myBundle resourcePath] stringByAppendingString:@"/codaphp-plugin-icon.png"];
+	return [myBundle.resourcePath stringByAppendingString:@"/codaphp-plugin-icon.png"];
 }
 
 - (NSString *)phpVersion
@@ -1121,10 +1135,10 @@ jshint no idea yet...
 - (NSString *)tidyExecutable
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefHtmlTidy5])  {
-		return [[myBundle resourcePath] stringByAppendingString:@"/tidy5"];
+		return [myBundle.resourcePath stringByAppendingString:@"/tidy5"];
 	}
 	else {
-		return [[myBundle resourcePath] stringByAppendingString:@"/tidy"];
+		return [myBundle.resourcePath stringByAppendingString:@"/tidy"];
 	}
 }
 
@@ -1136,10 +1150,10 @@ jshint no idea yet...
 - (NSString *)growlNotify
 {
 	if ([[self growlVersion] isEqualToString:@"1.2"]) {
-		return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify-1.2"];
+		return [myBundle.resourcePath stringByAppendingString:@"/growlnotify-1.2"];
 	}
 	else {
-		return [[myBundle resourcePath] stringByAppendingString:@"/growlnotify-1.3"];
+		return [myBundle.resourcePath stringByAppendingString:@"/growlnotify-1.3"];
 	}
 }
 
@@ -1160,7 +1174,7 @@ jshint no idea yet...
 			if ([fileManager fileExistsAtPath:path]) {
 				prefBundle = [NSBundle bundleWithPath:path];
 				if (prefBundle) {
-					NSString *version = [[prefBundle infoDictionary] objectForKey:@"CFBundleVersion"];
+					NSString *version = prefBundle.infoDictionary[@"CFBundleVersion"];
 					if ([version hasPrefix:@"1.2"]) {
 						growlVersion = @"1.2";
 						return growlVersion;
@@ -1175,7 +1189,7 @@ jshint no idea yet...
 		}
 	}
 	@catch (NSException *e) {
-		[self doLog: [NSString stringWithFormat:@"Exception searching growl version %@ %@ %@", [e name], [e description], [e reason]]];
+		[self doLog: [NSString stringWithFormat:@"Exception searching growl version %@ %@ %@", e.name, e.description, e.reason]];
 	}
 	@finally {
 	}
@@ -1200,34 +1214,34 @@ jshint no idea yet...
 
 	ValidationResult* myResult = [[ValidationResult alloc] init];
 	
-	if (resultText == nil || [resultText length] == 0) {
+	if (resultText == nil || resultText.length == 0) {
 		[myResult setError:YES];
-		[myResult setErrorMessage:[name stringByAppendingString:NSLocalizedString(@" returned nothing", @"")]];
+		myResult.errorMessage = [name stringByAppendingString:NSLocalizedString(@" returned nothing", @"")];
 		[myResult setAdditional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.", @"")];
 	}
 	else {
-		[myResult setResult:resultText];
+		myResult.result = resultText;
 		
 		if ([resultText rangeOfString:@"No warnings or errors were found"].location != NSNotFound || [resultText rangeOfString:@"No syntax errors detected"].location != NSNotFound) {
 			[myResult setValid:YES];
 		}
 	}
 	
-	if ([myResult error]) {
-		[messageController alertInformation:[myResult errorMessage] additional:[myResult additional] cancelButton:NO];
+	if (myResult.error) {
+		[messageController alertInformation:myResult.errorMessage additional:myResult.additional cancelButton:NO];
 	}	
-	else if ([myResult valid] && show) {
+	else if (myResult.valid && show) {
 		[messageController showInfoMessage:[name stringByAppendingString:NSLocalizedString(@": No errors",@"")] additional:resultText];
 	}
 	
-	return [myResult autorelease];
+	return myResult;
 }
 
 - (void)reformatWith:(NSString *)command arguments:(NSMutableArray *)args called:(NSString *)name
 {
 	NSMutableString *resultText = [self filterTextInput:[self getEditorText] with:command options:args encoding:[[controller focusedTextView:self] encoding] useStdout:YES];
 	
-	if (resultText == nil || [resultText length] < 6) {
+	if (resultText == nil || resultText.length < 6) {
 		[messageController alertInformation:[name stringByAppendingString:NSLocalizedString(@" returned nothing",@"")] additional:NSLocalizedString(@"Make sure the file has no errors, try using UTF-8 encoding.",@"") cancelButton:NO];
 	}
 	else if ([[resultText substringToIndex:6] isEqualToString:@"\nFatal"]) {
@@ -1259,24 +1273,24 @@ jshint no idea yet...
 			return nil;
 		}
 		
-		NSFileHandle *writing = [toPipe fileHandleForWriting];
+		NSFileHandle *writing = toPipe.fileHandleForWriting;
 		NSFileHandle *reading;
 		if (useout) {
-			reading = [fromPipe fileHandleForReading];
+			reading = fromPipe.fileHandleForReading;
 		}
 		else {
-			reading = [errPipe fileHandleForReading];
+			reading = errPipe.fileHandleForReading;
 		}
 		
 		if (reading == nil || writing == nil) {
 			return nil;
 		}
 
-		[aTask setStandardInput:toPipe];
-		[aTask setStandardOutput:fromPipe];
-		[aTask setStandardError:errPipe];
-		[aTask setArguments:cmdlineOptions];
-		[aTask setLaunchPath:launchPath];
+		aTask.standardInput = toPipe;
+		aTask.standardOutput = fromPipe;
+		aTask.standardError = errPipe;
+		aTask.arguments = cmdlineOptions;
+		aTask.launchPath = launchPath;
 	
 		[self doLog: [NSString stringWithFormat:@"Executing %@ at path %@ with %@", aTask, launchPath, cmdlineOptions] ];
 		
@@ -1296,24 +1310,16 @@ jshint no idea yet...
 		return resultData;
 	}
 	@catch (NSException *e) {	
-		[self doLog: [NSString stringWithFormat:@"Exception %@ %@ %@", [e name], [e description], [e reason]]];
+		[self doLog: [NSString stringWithFormat:@"Exception %@ %@ %@", e.name, e.description, e.reason]];
 		[messageController alertCriticalException:e];
 		return nil;
 	}
 	@finally {
-		[aTask release];
+		aTask = nil;
 	}
 	
     return nil;
 }
 
--(void)dealloc
-{
-	[preferenceController release];
-	[messageController release];
-	[updateController release];
-	[downloadController release];
-	[super dealloc];
-}
 
 @end

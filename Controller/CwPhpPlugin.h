@@ -14,13 +14,22 @@
 #import "CssLevel.h"
 #import "CwPhpPlugin.h"
 #import "PhpTidyConfig.h"
+#import "PhpTidyBLNConfig.h"
 #import "JSON.h"
 
 static unsigned int maxLengthJs = 65535;
 
 @class CodaPlugInsController, CwPreferenceController, CwMessagingController, ValidationResult, CwUpdateController, CwDownloadController;
 
-@interface CwPhpPlugin : NSObject <CodaPlugIn>
+@protocol CwPhpPluginDelegate <NSObject>
+
+- (void)done:(id)caller;
+- (void)error:(id)caller;
+
+- (void)doLog:(NSString *)toLog;
+@end
+
+@interface CwPhpPlugin : NSObject <CodaPlugIn, CwPhpPluginDelegate>
 {
 	CodaPlugInsController *controller;
 	CwPreferenceController *preferenceController;
@@ -41,13 +50,15 @@ static unsigned int maxLengthJs = 65535;
 // required coda plugin methods
 
 //for Coda 2.0.1 and higher
-- (id)initWithPlugInController:(CodaPlugInsController *)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
+- (instancetype)initWithPlugInController:(CodaPlugInsController *)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
 //for Coda 2.0 and lower
-- (id)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle;
-- (NSString*)name;
+- (instancetype)initWithPlugInController:(CodaPlugInsController*)aController bundle:(NSBundle*)yourBundle;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *name;
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem;
 
-- (id)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
+- (instancetype)initWithController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 // actions: local validation
 - (void)doValidateHtml;
@@ -84,31 +95,31 @@ static unsigned int maxLengthJs = 65535;
 - (void)showPreferencesWindow;
 - (void)showPluginResources; 
 - (void)doLog:(NSString*)loggable;
-- (BOOL)isCoda2;
+@property (NS_NONATOMIC_IOSONLY, getter=isCoda2, readonly) BOOL coda2;
 - (void)sanityCheck;
 
 // editor actions
 - (void)displayHtmlString:(NSString*)data;
 - (void)goToLine:(int)lineNumber;
-- (BOOL)editorSelectionPresent;
-- (BOOL)editorTextPresent;
-- (NSString*)currentLineEnding;
-- (NSString*)currentEncoding;
-- (NSString*)getEditorText;
-- (NSString*)currentFilename;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL editorSelectionPresent;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL editorTextPresent;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *currentLineEnding;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *currentEncoding;
+@property (NS_NONATOMIC_IOSONLY, getter=getEditorText, readonly, copy) NSString *editorText;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *currentFilename;
 - (void)replaceEditorTextWith:(NSString*)newText;
 
 // info getters
-- (NSString*)pluginVersionNumber;
-- (NSString*)pluginIconPath;
-- (NSString*)phpVersion;
-- (NSString*)tidyExecutable;
-- (NSString*)jscInterpreter;
-- (NSString*)codaPluginPath;
-- (NSString*)growlVersion;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *pluginVersionNumber;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *pluginIconPath;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *phpVersion;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *tidyExecutable;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *jscInterpreter;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *codaPluginPath;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *growlVersion;
 
 // growl
-- (NSString*)growlNotify;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *growlNotify;
 
 // filter
 - (void)reformatWith:(NSString*)command arguments:(NSMutableArray*)args called:(NSString*)name;
