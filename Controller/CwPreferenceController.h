@@ -53,6 +53,7 @@ extern NSString* const PrefJsMinifyOnPublish;
 
 extern NSString* const PrefPhpTidyBraces;
 extern NSString* const PrefPhpTidyBlankLines;
+extern NSString* const PrefPhpTidyBlankLinesNums;
 extern NSString* const PrefPhpTidyComma;
 extern NSString* const PrefPhpTidyWhitespace;
 extern NSString* const PrefPhpTidyFixBrackets;
@@ -133,6 +134,7 @@ extern NSString* const UrlDownloadTest;
 	IBOutlet NSPopUpButton *cssLevelBtn;
 	
 	IBOutlet NSPopUpButton *phpTidyBracesBtn;
+	IBOutlet NSPopUpButton *phpTidyBlankLinesBtn;
 	
 	IBOutlet NSTextField *labelPhpLocal;
 	IBOutlet NSTextField *fieldPhpLocal;
@@ -151,15 +153,16 @@ extern NSString* const UrlDownloadTest;
 - (void)setMyPlugin:(CwPhpPlugin*)myPluginInstance;
 - (void)setBundlePath: (NSString*)thePath;
 - (void)windowDidLoad;
-- (NSMutableDictionary *)getDefaults;
+@property (NS_NONATOMIC_IOSONLY, getter=getDefaults, readonly, copy) NSMutableDictionary *defaults;
 - (void)setDefaults;
 - (IBAction)resetPressed: (id)sender;
 - (BOOL)windowShouldClose:(id)sender;
 
-- (NSArray *)cssTidyConfigs;
-- (NSArray *)cssLevels;
-- (NSArray *)phpTidyBraces;
-- (NSArray *)htmlTidyConfigs;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *cssTidyConfigs;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *cssLevels;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *phpTidyBraces;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *phpTidyBlankLines;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *htmlTidyConfigs;
 
 - (IBAction)htmlConfigModified: (id)sender;
 - (IBAction)phpValidateOnSaveModified: (id)sender;

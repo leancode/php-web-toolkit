@@ -4,7 +4,7 @@
  *
  * MODIFIED VERSION for Coda PHP-Plugin
  * See http://www.chipwreck.de/blog/software/coda-php/
- * 
+ *
  * See README for more information.
  *
  * PHP version >= 5.0
@@ -96,17 +96,17 @@ $replace_shell_comments = true;	// ok
 
 // Won't use (broken)
 $fix_docblock_format = false; //! ERRORS!!
-$fix_docblock_space = false;	
+$fix_docblock_space = false;
 
 // Won't change
-$indent = true;	
+$indent = true;
 $fix_token_case = true;
 $fix_builtin_functions_case = true;
 
 $add_file_docblock = false; // default author etc. needed
 $add_function_docblocks = false; // default author etc. needed
 $add_doctags = false; // doctags with @return @var etc.
-$replace_inline_tabs = true; // tabs -> spaces	
+$replace_inline_tabs = true; // tabs -> spaces
 
 ///////////// END OF DEFAULT CONFIGURATION ////////////////
 
@@ -124,7 +124,7 @@ if (php_sapi_name() != "cli") {
 }
 
 // Parse cmdline
-	
+
 $line_endings = 'NA';
 if (isset($argv[1]) && $argv[1] == '-l' && isset($argv[2]) && strlen($argv[2]) > 0) {
 	$line_endings = $argv[2];
@@ -144,16 +144,16 @@ if (isset($argv[3]) && $argv[3] == '-b' && isset($argv[4]) && strlen($argv[4]) >
 			break;
 	}
 }
-	
+
 if (isset($argv[5]) && $argv[5] == '-a' && isset($argv[6]) && strlen($argv[6]) > 0) {
-	if ($argv[6] == '1') {
-		$add_blank_lines = true;
+	if ($argv[6] >= 1) {
+		$add_blank_lines = $argv[6]; //pass Number of lines
 	}
 	else {
 		$add_blank_lines = false;
 	}
 }
-	
+
 if (isset($argv[7]) && $argv[7] == '-w' && isset($argv[8]) && strlen($argv[8]) > 0) {
 	if ($argv[8] == '1') {
 		$fix_separation_whitespace = true;
@@ -171,7 +171,7 @@ if (isset($argv[9]) && $argv[9] == '-c' && isset($argv[10]) && strlen($argv[10])
 		$fix_comma_space = false;
 	}
 }
-	
+
 if (isset($argv[11]) && $argv[11] == '-f' && isset($argv[12]) && strlen($argv[12]) > 0) {
 	if ($argv[12] == '1') {
 		$fix_statement_brackets = true;
@@ -211,8 +211,8 @@ if (isset($argv[17]) && $argv[17] == '-r' && isset($argv[18]) && strlen($argv[18
 		$replace_shell_comments = false;
 	}
 }
-	
-	
+
+
 $command = 'source';
 $verbose = false;
 
@@ -268,7 +268,7 @@ do {
 
 if ( $count == 1 ) { // Processing has not changed content of file
 }
-	
+
 // Output
 switch ($line_endings) {
 	case 'CRLF':
@@ -378,15 +378,12 @@ function phptidy($source) {
 
 	// Strip trailing whitespace
 	$source = preg_replace("/[ \t]+\n/", "\n", $source);
-
-	if ( substr($source, -1)!="\n" ) {
-		// Add one line break at the end of the file (DISABLED!)
-		// http://pear.php.net/manual/en/standards.file.php
-		//		$source .= "\n";
+	if(preg_match("/\n$/s", $source) === 1){
+		$source = preg_replace("/(\n)*$/s", "\n", $source);
 	} else {
-		// Strip empty lines at the end of the file
-		while ( substr($source, -2)=="\n\n" ) $source = substr($source, 0, -1);
+		$source .= "\n";
 	}
+	$source = preg_replace("/\n\n$/s", "\n", $source);
 
 	return $source;
 }
@@ -562,7 +559,7 @@ function get_argument_tokens(&$tokens, $key) {
 			--$curly_braces_count;
 		}
 
-		if ( $round_braces_count < 0 or $round_braces_count < 0 ) break;
+		if ( $round_braces_count < 0 or $curly_braces_count < 0 ) break;
 
 		$tokens_arg[] = $token;
 
@@ -1016,6 +1013,7 @@ function fix_separation_whitespace(&$tokens) {
 			case T_FOREACH:
 			case T_WHILE:
 			case T_SWITCH:
+			case T_CATCH:
 				// At least 1 space between a statement and a opening round bracket
 				if ( $tokens[$key+1] === "(" ) {
 					// Insert an additional space or newline before the bracket
@@ -1026,6 +1024,7 @@ function fix_separation_whitespace(&$tokens) {
 				break;
 			case T_ELSE:
 			case T_DO:
+			case T_TRY:
 				// Exactly 1 space between a command and a opening curly bracket
 				if ( $tokens[$key+1] === "{" ) {
 					// Insert an additional space or newline before the bracket
@@ -1253,7 +1252,11 @@ function add_blank_lines(&$tokens) {
 
 			// Remember the type of control structure
 			if ( in_array($token[0], array(T_IF, T_ELSEIF, T_WHILE, T_FOR, T_FOREACH, T_SWITCH, T_FUNCTION, T_CLASS)) ) {
-				$control_structure = $token[0];
+				if ( $token[0] === T_FUNCTION and isset($tokens[$key+1]) and $tokens[$key+1] === "(" ) {
+					$control_structure = "anonymous_function";
+				} else {
+					$control_structure = $token[0];
+				}
 				continue;
 			}
 
@@ -1266,14 +1269,15 @@ function add_blank_lines(&$tokens) {
 				$curly_brace_opener[$curly_braces_count] === T_CLASS
 			) {
 
+				$num = $GLOBALS['add_blank_lines']+1;
+				$blankLines = str_repeat("\n", $num);
 				// At least 2 blank lines after a function or class
 				if (
-					isset($tokens[$key+1][0]) and
-					isset($tokens[$key+1][1]) and
+					isset($tokens[$key+1]) and
 					$tokens[$key+1][0] === T_WHITESPACE and
-					substr($tokens[$key+1][1], 0, 2) != "\n\n\n"
+					preg_match("/^([ \t]*\n)+/", $tokens[$key+1][1]) != 0
 				) {
-					$tokens[$key+1][1] = preg_replace("/^([ \t]*\n){1,3}/", "\n\n\n", $tokens[$key+1][1]);
+					$tokens[$key+1][1] = preg_replace("/^([ \t]*\n)+/", $blankLines, $tokens[$key+1][1]);
 				}
 
 			}
@@ -1310,6 +1314,8 @@ function indent(&$tokens) {
 	$curly_braces_count = 0;
 	// Level of round brackets
 	$round_braces_count = 0;
+	// Level of square brackets
+	$square_braces_count = 0;
 
 	$round_brace_opener = false;
 	$round_braces_control = 0;
@@ -1319,6 +1325,10 @@ function indent(&$tokens) {
 
 	$heredoc_started = false;
 	$trinity_started = false;
+
+	$linesIndent = [];
+	$lineCounter = 0;
+	$cbCounter = 0;
 
 	foreach ( $tokens as $key => &$token ) {
 
@@ -1346,6 +1356,7 @@ function indent(&$tokens) {
 				) {
 					if     ($tokens[$key+1] === "}") --$curly_braces_count;
 					elseif ($tokens[$key+1] === ")") --$round_braces_count;
+					elseif ($tokens[$key+1] === "]") --$square_braces_count;
 				}
 			} else {
 				if (
@@ -1356,6 +1367,7 @@ function indent(&$tokens) {
 				) {
 					if     ($tokens[$key+2] === "}") --$curly_braces_count;
 					elseif ($tokens[$key+2] === ")") --$round_braces_count;
+					elseif ($tokens[$key+2] === "]") --$square_braces_count;
 				}
 			}
 		}
@@ -1363,7 +1375,15 @@ function indent(&$tokens) {
 		if     ($token === "(") ++$round_braces_control;
 		elseif ($token === ")") --$round_braces_control;
 
-		if ( $token === "(" ) {
+		if ( $token === "[" ) {
+
+			++$square_braces_count;
+			if(!isset($linesIndent[$lineCounter])){
+				$linesIndent[$lineCounter] = 0;
+			}
+			$linesIndent[$lineCounter]++;
+
+		} elseif ( $token === "(" ) {
 
 			if ($round_braces_control==1) {
 				// Remember which command was before the bracket
@@ -1377,13 +1397,22 @@ function indent(&$tokens) {
 					)
 				);
 				if (is_array($tokens[$k])) {
-					$round_brace_opener = $tokens[$k][0];
+					if ( $tokens[$k] === T_FUNCTION and ((isset($tokens[$k+1]) and $tokens[$k+1] === "(") or (
+						isset($tokens[$k+1]) and $tokens[$k+1][0] === T_WHITESPACE and isset($tokens[$k+2]) and $tokens[$k+2] === "(" )) ) {
+						$round_brace_opener = "anonymous_function";
+					} else {
+						$round_brace_opener = $tokens[$k][0];
+					}
 				} else {
 					$round_brace_opener = false;
 				}
 			}
 
 			++$round_braces_count;
+			if(!isset($linesIndent[$lineCounter])){
+				$linesIndent[$lineCounter] = 0;
+			}
+			$linesIndent[$lineCounter]++;
 
 		} elseif (
 			(
@@ -1395,7 +1424,13 @@ function indent(&$tokens) {
 				)
 			) or (
 				is_array($token) and (
-					$token[0] === T_ELSE or $token[0] === T_DO
+					(
+						$token[0] === T_ELSE and ! (
+							// Ignore the "else" in "else if" to avoid indenting twice
+							is_array($tokens[$key+1]) and $tokens[$key+1][0] === T_WHITESPACE and
+							is_array($tokens[$key+2]) and $tokens[$key+2][0] === T_IF
+						)
+					) or $token[0] === T_DO
 				)
 			)
 		) {
@@ -1410,12 +1445,37 @@ function indent(&$tokens) {
 			// After a command or a set of commands a control structure is closed.
 			if (!empty($control_structure[$curly_braces_count])) --$control_structure[$curly_braces_count];
 
+			if($token === '}'){
+				if($cbCounter > 0){
+					$lc = $lineCounter;
+					$isDec = false;
+					do {
+						if(($isDec = (isset($linesIndent[$lc]) && $linesIndent[$lc] > 0))){
+							$linesIndent[$lc]--;
+						}
+						$lc--;
+					} while (!$isDec && $lc > 0);
+					$cbCounter--;
+				}
+			}
+
 		} else {
+
+			$lc = $lineCounter;
+			$shift = 0;
+			do {
+				if(!isset($linesIndent[$lc])){
+					$linesIndent[$lc] = 0;
+				}
+				$shift += max(0, $linesIndent[$lc] - 1);
+				$lc--;
+			} while ($lc > 0);
+
 			indent_text(
 				$tokens,
 				$key,
 				$curly_braces_count,
-				$round_braces_count,
+				$round_braces_count + $square_braces_count - $shift,
 				$control_structure,
 				(is_array($token) and $token[0] === T_DOC_COMMENT),
 				$trinity_started
@@ -1436,6 +1496,30 @@ function indent(&$tokens) {
 			++$curly_braces_count;
 			// Inside of the new level of curly brackets it starts with no control structure.
 			$control_structure[$curly_braces_count] = 0;
+
+		}
+
+		if(strpos((is_string($token)?$token:$token[1]), "\n")!==false){
+			$lineCounter++;
+		}
+
+		if($token === "{"){
+			if(!isset($linesIndent[$lineCounter])){
+				$linesIndent[$lineCounter] = 0;
+			}
+			$linesIndent[$lineCounter]++;
+			$cbCounter++;
+		}
+
+		if ($token === ")" || $token === "]"){
+			$lc = $lineCounter;
+			$isDec = false;
+			do {
+				if(($isDec = (isset($linesIndent[$lc]) && $linesIndent[$lc] > 0))){
+					$linesIndent[$lc]--;
+				}
+				$lc--;
+			} while (!$isDec && $lc > 0);
 		}
 
 	}
@@ -1940,14 +2024,14 @@ function collect_doctags(&$tokens) {
 							isset($tokens[$k+1][0]) and $tokens[$k+1][0] === T_WHITESPACE and
 							isset($tokens[$k+2][0]) and $tokens[$k+2][0] === T_VARIABLE
 						) {
-							$k += 2;
+								$k += 2;
 							$typehint = "array";
 						} elseif (
 							$tokens[$k][0] === T_STRING and
 							isset($tokens[$k+1][0]) and $tokens[$k+1][0] === T_WHITESPACE and
 							isset($tokens[$k+2][0]) and $tokens[$k+2][0] === T_VARIABLE
 						) {
-							$k += 2;
+								$k += 2;
 							$typehint = "object";
 						}
 						if ($typehint !== false) {

@@ -25,7 +25,7 @@
 + (NSString*)parseTidyOutput:(NSString*)resultText;
 + (NSString*)getCssForHtmlTidy;
 + (NSArray *)configArray;
-+ (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
++ (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
 + (HtmlTidyConfig *)configForIndex:(int)theIdx;
 + (HtmlTidyConfig *)configForIntvalue:(int)theValue;
 

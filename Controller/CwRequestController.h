@@ -7,11 +7,10 @@
 
 #import <Foundation/Foundation.h>
 @class CwPhpPlugin;
+@protocol CwPhpPluginDelegate;
 
 @interface CwRequestController : NSObject
 {
-	CwPhpPlugin *myPlugin;
-	
 	NSURL *serverURL;
 	NSDictionary *fields;
 	
@@ -20,35 +19,32 @@
 	NSString *mimetype;
 	NSString *uploadfield;
 	
-	id delegate;
-	SEL doneSelector;
-	SEL errorSelector;
+	id<CwPhpPluginDelegate> delegate;
 	
 	NSMutableString *serverReply;
 	NSMutableString *errorReply;	
 	BOOL uploadDidSucceed;
 }
 
-- (id)initWithURL: (NSURL *)aServerURL
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithURL: (NSURL *)aServerURL
          contents: (NSData *)aData
 		   fields: (NSDictionary *)aFields
 	  uploadfield: (NSString *)anUploadfield
 		 filename: (NSString *)aFilename
-		 mimetype: (NSString *)aMimetype;
+		 mimetype: (NSString *)aMimetype NS_DESIGNATED_INITIALIZER;
 
-- (id)initWithURL: (NSURL *)aServerURL
+- (instancetype)initWithURL: (NSURL *)aServerURL
          contents: (NSData *)aData
 		   fields: (NSDictionary *)aFields
 	  uploadfield: (NSString *)anUploadfield
 		 filename: (NSString *)aFilename
 		 mimetype: (NSString *)aMimetype
-         delegate: (id)aDelegate
-     doneSelector: (SEL)aDoneSelector
-    errorSelector: (SEL)anErrorSelector;
+         delegate: (id<CwPhpPluginDelegate>)aDelegate NS_DESIGNATED_INITIALIZER;
 
-- (void)setMyPlugin:(CwPhpPlugin *)myPluginInstance;
-- (BOOL)doUpload;
-- (NSString *)serverReply;
-- (NSString *)errorReply;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL doUpload;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *serverReply;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *errorReply;
 
 @end

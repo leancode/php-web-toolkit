@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86EE20031C8999C300849F74 /* PhpTidyBLNConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EE20021C8999C300849F74 /* PhpTidyBLNConfig.m */; };
 		AC102CDF1326C4BA00F69278 /* InfoPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC102CDE1326C4BA00F69278 /* InfoPanel.xib */; };
 		AC29FF271330213A005E5150 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC29FF261330213A005E5150 /* Cocoa.framework */; };
 		AC371F721800CB76000101AF /* jshint-min.js in Resources */ = {isa = PBXBuildFile; fileRef = AC371F701800CADB000101AF /* jshint-min.js */; };
@@ -41,7 +42,6 @@
 		AC6209EE12B6D5D80080B995 /* SheetPHPError.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209ED12B6D5D80080B995 /* SheetPHPError.xib */; };
 		AC6209F012B6D5E50080B995 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC6209EF12B6D5E50080B995 /* Preferences.xib */; };
 		ACA67CD41343AC6200B705B5 /* PhpPlugin.codaplugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */; };
-		ACCB0304157034D8002F2F37 /* PhpPlugin.codaplugin in Copy Files */ = {isa = PBXBuildFile; fileRef = ACF57D351342B7D900105C19 /* PhpPlugin.codaplugin */; };
 		ACEF739F132727E00025427D /* ResultPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACEF739E132727E00025427D /* ResultPanel.xib */; };
 		ACF629E81800C54F002F6121 /* js-call.sh in Resources */ = {isa = PBXBuildFile; fileRef = ACF629E71800C54F002F6121 /* js-call.sh */; };
 		ACF629EA1800C59E002F6121 /* jsminify.php in Resources */ = {isa = PBXBuildFile; fileRef = ACF629E91800C59E002F6121 /* jsminify.php */; };
@@ -74,23 +74,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACCB0303157034A6002F2F37 /* Copy Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "~/Library/Application Support/Coda/Plug-ins/";
-			dstSubfolderSpec = 0;
-			files = (
-				ACCB0304157034D8002F2F37 /* PhpPlugin.codaplugin in Copy Files */,
-			);
-			name = "Copy Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* PhpPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpPlugin_Prefix.pch; sourceTree = "<group>"; };
+		862F64121C898710009BA195 /* PhpTidyBLNConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhpTidyBLNConfig.h; path = Validation/PhpTidyBLNConfig.h; sourceTree = "<group>"; };
+		86EE20021C8999C300849F74 /* PhpTidyBLNConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhpTidyBLNConfig.m; path = Validation/PhpTidyBLNConfig.m; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC1261A310A3BBF000A9D9E8 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
 		AC29FF261330213A005E5150 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -260,6 +251,8 @@
 				ACF629F21800C634002F6121 /* HtmlValidationConfig.m */,
 				ACF629FA1800C634002F6121 /* PhpTidyConfig.h */,
 				ACF629F61800C634002F6121 /* PhpTidyConfig.m */,
+				862F64121C898710009BA195 /* PhpTidyBLNConfig.h */,
+				86EE20021C8999C300849F74 /* PhpTidyBLNConfig.m */,
 				ACF629FE1800C634002F6121 /* ValidationResult.h */,
 				ACF629FD1800C634002F6121 /* ValidationResult.m */,
 			);
@@ -378,7 +371,6 @@
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				AC8353AE0FFFC8110063890D /* CopyFiles */,
 				AC24F90D0FFFD36F0077A062 /* Run Script (Kill / Start Coda 2) */,
-				ACCB0303157034A6002F2F37 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -396,7 +388,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0720;
 			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "PhpPlugin" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -471,7 +463,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "killall \"Coda 2\"\nopen -a \"Coda 2\"\n";
+			shellScript = "((killall \"Coda 2\");(open -a Coda\\ 2)) 2>/dev/null;\nexit 0;";
 		};
 		AC57EA0C134D0AD1005D1C5E /* Run Script (Minify JS) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -543,6 +535,7 @@
 				ACF62A171800C681002F6121 /* CwRequestController.m in Sources */,
 				ACF62A181800C681002F6121 /* CwUpdateController.m in Sources */,
 				ACF62A1B1800C73E002F6121 /* AbstractCommand.m in Sources */,
+				86EE20031C8999C300849F74 /* PhpTidyBLNConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,7 +596,7 @@
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -613,8 +606,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.chipwreck.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = PhpPlugin;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = codaplugin;
 			};
 			name = Release;
@@ -622,11 +616,11 @@
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_STATIC_ANALYZER_MODE = shallow;
+				CODE_SIGN_IDENTITY = "Mac Developer: Sebastian Keller (P2JBEC7SM2)";
 				CURRENT_PROJECT_VERSION = 3.9;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
@@ -648,9 +642,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				IBC_WARNINGS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = macosx10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = YES;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -659,12 +653,13 @@
 		AC7908611329924400CADF8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_STATIC_ANALYZER_MODE = shallow;
+				CODE_SIGN_IDENTITY = "Mac Developer: Sebastian Keller (P2JBEC7SM2)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 3.9;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
@@ -686,9 +681,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				IBC_WARNINGS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = macosx10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -697,6 +693,7 @@
 		AC7908621329924400CADF8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -706,8 +703,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = PhpPlugin_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.chipwreck.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = PhpPlugin;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = codaplugin;
 			};
 			name = Debug;

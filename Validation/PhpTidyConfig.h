@@ -22,7 +22,7 @@
 @property (copy) NSString *cmdLineParam;
 
 + (NSArray *)configArray;
-+ (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
++ (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine;
 + (PhpTidyConfig *)configForIndex:(int)theIdx;
 + (PhpTidyConfig *)configForIntvalue:(int)theValue;
 

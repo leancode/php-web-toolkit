@@ -10,10 +10,14 @@
 
 static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 
+@interface CwRequestController ()
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+@end
+
 @interface CwRequestController(private)
 
 - (void)upload;
-- (BOOL)uploadReturn;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL uploadReturn;
 - (NSURLRequest *)postRequestWithURL: (NSURL *)url
                                 data: (NSData *)data;
 - (void)uploadSucceeded: (BOOL)success;
@@ -22,34 +26,24 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 
 @implementation CwRequestController
 
-- (void)setMyPlugin:(CwPhpPlugin *)myPluginInstance
-{
-	myPlugin = myPluginInstance;
-}
+- (instancetype)init { @throw nil; }
 
-- (id)initWithURL: (NSURL *)aServerURL
+- (instancetype)initWithURL: (NSURL *)aServerURL
          contents: (NSData *)aData
 		   fields: (NSDictionary *)aFields
 	  uploadfield: (NSString *)anUploadfield
 		 filename: (NSString *)aFilename
 		 mimetype: (NSString *)aMimetype
-         delegate: (id)aDelegate
-     doneSelector: (SEL)aDoneSelector
-    errorSelector: (SEL)anErrorSelector
+         delegate: (id<CwPhpPluginDelegate>)aDelegate
 {
 	if ((self = [super init])) {
-		serverURL = [aServerURL retain];
-		contents = [aData retain];
-		fields = [aFields retain];
-		uploadfield = [anUploadfield retain];
-		filename = [aFilename retain];
-		mimetype = [aMimetype retain];
-		delegate = [aDelegate retain];
-		
-		[self setMyPlugin:delegate];
-		
-		doneSelector = aDoneSelector;
-		errorSelector = anErrorSelector;
+		serverURL = aServerURL;
+		contents = aData;
+		fields = aFields;
+		uploadfield = anUploadfield;
+		filename = aFilename;
+		mimetype = aMimetype;
+		delegate = aDelegate;
 		
 		serverReply = [[NSMutableString alloc] init];
 		errorReply = [[NSMutableString alloc] init];
@@ -59,7 +53,7 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 	return self;
 }
 
-- (id)initWithURL: (NSURL *)aServerURL
+- (instancetype)initWithURL: (NSURL *)aServerURL
          contents: (NSData *)aData
 		   fields: (NSDictionary *)aFields
 	  uploadfield: (NSString *)anUploadfield
@@ -67,15 +61,13 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 		 mimetype: (NSString *)aMimetype
 {
 	if ((self = [super init])) {
-		serverURL = [aServerURL retain];
-		contents = [aData retain];
-		fields = [aFields retain];
-		uploadfield = [anUploadfield retain];
-		filename = [aFilename retain];
-		mimetype = [aMimetype retain];
-		delegate = self;
-		
-		[self setMyPlugin:delegate];
+		serverURL = aServerURL;
+		contents = aData;
+		fields = aFields;
+		uploadfield = anUploadfield;
+		filename = aFilename;
+		mimetype = aMimetype;
+		delegate = nil;
 		
 		serverReply = [[NSMutableString alloc] init];
 		errorReply = [[NSMutableString alloc] init];
@@ -91,32 +83,21 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 - (void)dealloc
 {
 	@try {
-		[serverURL release];
 		serverURL = nil;
-		[contents release];
 		contents = nil;
-		[fields release];
 		fields = nil;
-		[uploadfield release];
 		uploadfield = nil;
-		[filename release];
 		filename = nil;
-		[mimetype release];
-		mimetype = nil;	
-		[delegate release];
-		delegate = nil;
+		mimetype = nil;
 
 		// [serverReply release];	
 		// [errorReply release];
-
-		doneSelector = NULL;
-		errorSelector = NULL;
 	}
 	@catch (NSException *e) {
-		[myPlugin doLog:[@"Exception in RequestController:dealloc:" stringByAppendingFormat:@"%@", e]];
+		[delegate doLog:[@"Exception in RequestController:dealloc:" stringByAppendingFormat:@"%@", e]];
 	}
 	
-	[super dealloc];
+	delegate = nil;
 }
 
 - (NSString *)errorReply
@@ -135,7 +116,7 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 
 - (BOOL)uploadReturn
 {	
-	if (!contents || [contents length] == 0) {
+	if (!contents || contents.length == 0) {
 		[errorReply setString: @"No input received"];
 		return NO;
 	}
@@ -150,18 +131,18 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 		[errorReply setString: @"Connection could not be initialized"];
 		return NO;
 	}
-	//[myPlugin doLog:[@"Init Connection to " stringByAppendingString:[serverURL absoluteString]]];
+	//[delegate doLog:[@"Init Connection to " stringByAppendingString:[serverURL absoluteString]]];
 	
 	NSError *error;
 	NSURLResponse *response;
 	NSData *result = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
 	
 	if (!result) {
-		errorReply = [NSMutableString stringWithString:[error localizedDescription]];
+		errorReply = [NSMutableString stringWithString:error.localizedDescription];
 		return NO;
 	}
 	serverReply = [[NSMutableString alloc] initWithData:result encoding:NSUTF8StringEncoding];
-	// [myPlugin doLog:[@"Server replied: " stringByAppendingString:serverReply]];
+	// [delegate doLog:[@"Server replied: " stringByAppendingString:serverReply]];
 	return YES;
 }
 
@@ -172,7 +153,11 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 
 - (void)uploadSucceeded: (BOOL)success
 {
-	[delegate performSelector:success ? doneSelector : errorSelector withObject:self];
+	if(success){
+		[delegate done:self];
+	} else {
+		[delegate error:self];
+	}
 }
 
 - (NSURLRequest *)postRequestWithURL: (NSURL *)url
@@ -181,16 +166,16 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 	@try {
 		NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
 		NSMutableData *postData = [[NSMutableData alloc] initWithCapacity:512];
-		NSArray* keys = [fields allKeys];
+		NSArray* keys = fields.allKeys;
 		
-		[urlRequest setHTTPMethod:@"POST"];	
+		urlRequest.HTTPMethod = @"POST";	
 		[urlRequest setValue: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", BOUNDRY] forHTTPHeaderField:@"Content-Type"];
 
-		for (unsigned i = 0; i < [keys count]; i++) 
+		for (unsigned i = 0; i < keys.count; i++) 
 		{
 			[postData appendData:[[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
-			[postData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", [keys objectAtIndex:i]] dataUsingEncoding:NSUTF8StringEncoding]];
-			[postData appendData:[[NSString stringWithFormat:@"%@",[fields valueForKey: [keys objectAtIndex: i]]] dataUsingEncoding:NSUTF8StringEncoding]];
+			[postData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", keys[i]] dataUsingEncoding:NSUTF8StringEncoding]];
+			[postData appendData:[[NSString stringWithFormat:@"%@",[fields valueForKey: keys[i]]] dataUsingEncoding:NSUTF8StringEncoding]];
 			[postData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 		}
 		[postData appendData: [[NSString stringWithFormat:@"--%@\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -201,14 +186,14 @@ static NSString* const BOUNDRY = @"0xKhTmLbOuNdArY";
 		
 
 		[postData appendData: [[NSString stringWithFormat:@"--%@--\r\n", BOUNDRY] dataUsingEncoding:NSUTF8StringEncoding]];
-		[urlRequest setHTTPBody:postData];
+		urlRequest.HTTPBody = postData;
 		
-		[myPlugin doLog:[[NSString alloc] initWithData:[urlRequest HTTPBody] encoding:NSUTF8StringEncoding]];
+		[delegate doLog:[[NSString alloc] initWithData:urlRequest.HTTPBody encoding:NSUTF8StringEncoding]];
 		
 		return urlRequest;
 	}
 	@catch (NSException *e) {
-		[myPlugin doLog:[@"Exception in RequestController:postRequest:" stringByAppendingFormat:@"%@", e]];
+		[delegate doLog:[@"Exception in RequestController:postRequest:" stringByAppendingFormat:@"%@", e]];
 		
 	}
 	return nil;

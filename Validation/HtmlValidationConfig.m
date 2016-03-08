@@ -20,11 +20,9 @@
     static NSArray *configs;
     if (!configs)
     {
-		configs = [[NSArray alloc] initWithObjects:
-				   [HtmlValidationConfig configWithTitle:@"W3C Validator" intvalue:0 url:@"http://validator.w3.org/check" fieldname:@"uploaded_file"],
+		configs = @[[HtmlValidationConfig configWithTitle:@"W3C Validator" intvalue:0 url:@"http://validator.w3.org/check" fieldname:@"uploaded_file"],
 				   [HtmlValidationConfig configWithTitle:@"Unicorn Validator" intvalue:1 url:@"http://validator.w3.org/unicorn/check" fieldname:@"ucn_file"],
-				   [HtmlValidationConfig configWithTitle:@"Validator.nu" intvalue:2 url:@"http://html5.validator.nu" fieldname:@"file"],
-		nil];
+				   [HtmlValidationConfig configWithTitle:@"Validator.nu" intvalue:2 url:@"http://html5.validator.nu" fieldname:@"file"]];
     }
     return configs;
 }
@@ -35,7 +33,7 @@
 	HtmlValidationConfig *aconfig;
 	while ((aconfig = [configEnumerator nextObject]))
 	{
-		if (theValue == [aconfig intvalue])
+		if (theValue == aconfig.intvalue)
 		{
 			return aconfig;			
 		}
@@ -49,7 +47,7 @@
 	HtmlValidationConfig *aconfig;
 	while ((aconfig = [configEnumerator nextObject]))
 	{
-		if ([theUrl isEqualToString:[aconfig validationUrl]])
+		if ([theUrl isEqualToString:aconfig.validationUrl])
 		{
 			return aconfig;			
 		}
@@ -59,7 +57,7 @@
 
 + (HtmlValidationConfig *)configForIndex:(int)theIdx
 {
-	return [[HtmlValidationConfig configArray] objectAtIndex:theIdx];
+	return [HtmlValidationConfig configArray][theIdx];
 }
 
 + (NSMutableString*)parseValidatorNuOutput:(NSMutableDictionary*)jsonResult
@@ -68,32 +66,32 @@
 	if (jsonResult != nil) {
 		
 		if ([jsonResult isKindOfClass:[NSDictionary class]]) {
-			if ([jsonResult objectForKey:@"messages"] != nil) {
+			if (jsonResult[@"messages"] != nil) {
 				int numErrors = 0;
-				for (NSDictionary *dict in [jsonResult objectForKey:@"messages"]) {
-					if ([[dict objectForKey:@"type"] isEqualToString:@"error"]) {
+				for (NSDictionary *dict in jsonResult[@"messages"]) {
+					if ([dict[@"type"] isEqualToString:@"error"]) {
 						numErrors++;
 					}
 					
-					[resultFromJson appendFormat:@"<p class=\"%@\">", [dict objectForKey:@"type"]];
-					if ([dict objectForKey:@"lastLine"] != nil) {
-						[resultFromJson appendFormat:@"<span>Line %@",[dict objectForKey:@"lastLine"]];
-						if ([dict objectForKey:@"firstColumn"] != nil) {
-							[resultFromJson appendFormat:@", column %@",[dict objectForKey:@"firstColumn"]];
+					[resultFromJson appendFormat:@"<p class=\"%@\">", dict[@"type"]];
+					if (dict[@"lastLine"] != nil) {
+						[resultFromJson appendFormat:@"<span>Line %@",dict[@"lastLine"]];
+						if (dict[@"firstColumn"] != nil) {
+							[resultFromJson appendFormat:@", column %@",dict[@"firstColumn"]];
 						}
 						[resultFromJson appendString:@"</span>"];
 					} 
-					[resultFromJson appendFormat:@" <strong>%@:</strong> %@</p>", [dict objectForKey:@"type"], [HtmlTidyConfig escapeEntities:[dict objectForKey:@"message"]]];
+					[resultFromJson appendFormat:@" <strong>%@:</strong> %@</p>", dict[@"type"], [HtmlTidyConfig escapeEntities:dict[@"message"]]];
 					
-					if ([dict objectForKey:@"extract"] != nil) {
-						if ([dict objectForKey:@"hiliteStart"] != nil && [dict objectForKey:@"hiliteLength"] != nil && [[dict objectForKey:@"hiliteLength"] intValue] > 0) {
-							NSString *extract1 = [[dict objectForKey:@"extract"] substringToIndex:[[dict objectForKey:@"hiliteStart"] intValue]];
-							NSString *extract2 = [[dict objectForKey:@"extract"] substringWithRange:NSMakeRange([[dict objectForKey:@"hiliteStart"] intValue],[[dict objectForKey:@"hiliteLength"] intValue])];
-							NSString *extract3 = [[dict objectForKey:@"extract"] substringFromIndex:[[dict objectForKey:@"hiliteStart"] intValue] + [[dict objectForKey:@"hiliteLength"] intValue]];
+					if (dict[@"extract"] != nil) {
+						if (dict[@"hiliteStart"] != nil && dict[@"hiliteLength"] != nil && [dict[@"hiliteLength"] intValue] > 0) {
+							NSString *extract1 = [dict[@"extract"] substringToIndex:[dict[@"hiliteStart"] intValue]];
+							NSString *extract2 = [dict[@"extract"] substringWithRange:NSMakeRange([dict[@"hiliteStart"] intValue],[dict[@"hiliteLength"] intValue])];
+							NSString *extract3 = [dict[@"extract"] substringFromIndex:[dict[@"hiliteStart"] intValue] + [dict[@"hiliteLength"] intValue]];
 							[resultFromJson appendFormat:@"<pre>%@<span>%@</span>%@</pre>",[HtmlTidyConfig escapeEntities:extract1], [HtmlTidyConfig escapeEntities:extract2], [HtmlTidyConfig escapeEntities:extract3]];
 						}
 						else {
-							[resultFromJson appendFormat:@"<pre>%@</pre>",[HtmlTidyConfig escapeEntities:[dict objectForKey:@"extract"]]];
+							[resultFromJson appendFormat:@"<pre>%@</pre>",[HtmlTidyConfig escapeEntities:dict[@"extract"]]];
 						}
 					}								
 				}
@@ -110,7 +108,7 @@
 }
 
 /* Convenience constructor */
-+ (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue url:(NSString *)anUrl fieldname:(NSString*)aFieldname
++ (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue url:(NSString *)anUrl fieldname:(NSString*)aFieldname
 {
     HtmlValidationConfig *newConfig = [[self alloc] init];
     newConfig.title = aTitle;
@@ -118,7 +116,7 @@
 	newConfig.validationUrl = anUrl;
 	newConfig.validationFieldname = aFieldname;
     
-    return [newConfig autorelease];
+    return newConfig;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -126,11 +124,11 @@
 	[encoder encodeInteger: intvalue forKey:@"encoding"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [[HtmlValidationConfig configForIntvalue:theencoding] retain];
+	return [HtmlValidationConfig configForIntvalue:theencoding];
 }
 
 @end

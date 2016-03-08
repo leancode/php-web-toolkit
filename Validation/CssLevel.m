@@ -19,11 +19,9 @@
     static NSArray *configs;
     if (!configs)
     {
-		configs = [[NSArray alloc] initWithObjects:
-			[CssLevel configWithTitle:@"Level 2" intvalue:0 cmdLine:@"css2"],
+		configs = @[[CssLevel configWithTitle:@"Level 2" intvalue:0 cmdLine:@"css2"],
             [CssLevel configWithTitle:@"Level 2.1" intvalue:1 cmdLine:@"css21"],
-			[CssLevel configWithTitle:@"Level 3" intvalue:2 cmdLine:@"css3"],
-		nil];
+			[CssLevel configWithTitle:@"Level 3" intvalue:2 cmdLine:@"css3"]];
     }
     return configs;
 }
@@ -35,7 +33,7 @@
 	CssLevel *aconfig;
 	while ((aconfig = [configEnumerator nextObject]))
 	{
-		if (theValue == [aconfig intvalue])
+		if (theValue == aconfig.intvalue)
 		{
 			return aconfig;			
 		}
@@ -45,7 +43,7 @@
 
 + (CssLevel *)configForIndex:(int)theIdx
 {
-	return [[CssLevel configArray] objectAtIndex:theIdx];
+	return [CssLevel configArray][theIdx];
 }
 
 /* Convenience constructor */
@@ -56,7 +54,7 @@
     newConfig.intvalue = aValue;
 	newConfig.cmdLineParam = aCmdLine;
     
-    return [newConfig autorelease];
+    return newConfig;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -64,11 +62,11 @@
 	[encoder encodeInteger: intvalue forKey:@"encoding"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [[CssLevel configForIntvalue:theencoding] retain];
+	return [CssLevel configForIntvalue:theencoding];
 }
 
 @end

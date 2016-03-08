@@ -41,7 +41,7 @@
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefUpdateCheck]) {
 		long lastupdate = [[NSUserDefaults standardUserDefaults] integerForKey:PrefLastUpdateCheck];
-		long now = (long)[[NSDate date] timeIntervalSince1970];
+		long now = (long)[NSDate date].timeIntervalSince1970;
 		long timediff = (now - lastupdate);
 		if (lastupdate == 0 || timediff > PrefDelayUpdateCheck ) { // never or after three days
 			[self isUpdateAvailableAsync];
@@ -68,7 +68,7 @@
 	NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 	
 	if (!result) {
-		[myPlugin doLog:[error localizedDescription]];
+		[myPlugin doLog:error.localizedDescription];
 		resultvalue = 3;
 	}
 	else {
@@ -92,7 +92,6 @@
 		else {
 			resultvalue = 3;
 		}
-		[displayString release];
 	}
 	return resultvalue;
 }
@@ -106,7 +105,7 @@
 	theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
 	if (theConnection) {
-		receivedData = [[NSMutableData data] retain];
+		receivedData = [NSMutableData data];
 	} else {
 		[myPlugin doLog:@"Could not check for updates, maybe not connected to the internet?"];
 	}
@@ -114,7 +113,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    [receivedData setLength:0];
+    receivedData.length = 0;
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
@@ -122,11 +121,9 @@
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	[myPlugin doLog:[error localizedDescription]];
+	[myPlugin doLog:error.localizedDescription];
 	
-	[theConnection release];
 	theConnection = nil;
-    [receivedData release];
 	receivedData = nil;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -150,12 +147,9 @@
 		else {
 			[myPlugin doLog:@"Could not check for updates - please make sure you're connected to the internet or try again later."];
 		}
-		[displayString release];
 	}
  
-	[theConnection release];
 	theConnection = nil;
-	[receivedData release];
 	receivedData = nil;
 }
 

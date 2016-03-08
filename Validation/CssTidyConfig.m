@@ -18,13 +18,11 @@
     static NSArray *configs;
     if (!configs)
     {
-		configs = [[NSArray alloc] initWithObjects:
-			[CssTidyConfig configWithTitle:@"Low Compression" intvalue:0 cmdLine:@"low_compression"],
+		configs = @[[CssTidyConfig configWithTitle:@"Low Compression" intvalue:0 cmdLine:@"low_compression"],
             [CssTidyConfig configWithTitle:@"Default" intvalue:1 cmdLine:@"default"],
 			[CssTidyConfig configWithTitle:@"Default, sorted" intvalue:4 cmdLine:@"default_sorted"],
             [CssTidyConfig configWithTitle:@"High Compression" intvalue:2 cmdLine:@"high_compression"],
-            [CssTidyConfig configWithTitle:@"Highest Compression" intvalue:3 cmdLine:@"highest_compression"],
-		nil];
+            [CssTidyConfig configWithTitle:@"Highest Compression" intvalue:3 cmdLine:@"highest_compression"]];
     }
     return configs;
 }
@@ -36,7 +34,7 @@
 	CssTidyConfig * aconfig;
 	while ((aconfig = [configEnumerator nextObject]))
 	{
-		if (theValue == [aconfig intvalue])
+		if (theValue == aconfig.intvalue)
 		{
 			return aconfig;			
 		}
@@ -46,18 +44,18 @@
 
 + (CssTidyConfig *)configForIndex:(int)theIdx
 {
-	return [[CssTidyConfig configArray] objectAtIndex:theIdx];
+	return [CssTidyConfig configArray][theIdx];
 }
 
 /* Convenience constructor */
-+ (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
++ (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
 {
     CssTidyConfig *newConfig = [[self alloc] init];
     newConfig.title = aTitle;
     newConfig.intvalue = aValue;
 	newConfig.cmdLineParam = aCmdLine;
     
-    return [newConfig autorelease];
+    return newConfig;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -65,11 +63,11 @@
 	[encoder encodeInteger: intvalue forKey:@"encoding"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [[CssTidyConfig configForIntvalue:theencoding] retain];
+	return [CssTidyConfig configForIntvalue:theencoding];
 }
 
 @end

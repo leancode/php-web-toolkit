@@ -25,7 +25,7 @@
 @property (copy) NSString *errorMessage;
 @property (copy) NSString *additional;
 
--(BOOL)hasResult;
--(BOOL)hasFailResult;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasResult;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasFailResult;
 
 @end

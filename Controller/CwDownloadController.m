@@ -13,13 +13,31 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 
 @implementation CwDownloadController
 
-@synthesize downloadPath, downloadUrl, downloadFilename, theDownload, downloadResponse;
+@synthesize downloadPath, downloadUrl, downloadFilename, theDownload, downloadResponse, tlo;
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self != nil) {
-		[NSBundle loadNibNamed:@"DownloadPanel" owner:self];
+		@try {
+		NSString *nibName = @"DownloadPanel";
+		NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+		if([myBundle respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
+			NSArray * t = nil;
+			if(![myBundle loadNibNamed:nibName owner:self topLevelObjects:&t]){
+				return nil;
+			}
+			tlo = t;
+		} else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+			[NSBundle loadNibNamed:nibName owner:self];
+#pragma clang diagnostic pop
+		}
+		}
+		@catch (NSException *e) {
+			return nil;
+		}
 	}
     return self;
 }
@@ -35,14 +53,14 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 		[self reportError:@"No download URL given" additional:@""];
 		return;
 	}
-	[self setDownloadUrl:url];
+	self.downloadUrl = url;
 	
 	[downloadWebButton setEnabled:NO];
 	[downloadWebButton setHidden:YES];
 	[updateButton setEnabled:YES];
-	[updateButton setKeyEquivalent:@"\r"];
-	[progressIndicator setDoubleValue:0.0];
-	[responseLabel setStringValue:@"Click \"Install Update\" to start."];
+	updateButton.keyEquivalent = @"\r";
+	progressIndicator.doubleValue = 0.0;
+	responseLabel.stringValue = @"Click \"Install Update\" to start.";
 	
 	[downloadPanel makeKeyAndOrderFront:self];
 }
@@ -55,7 +73,7 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 		}
 	}
 	@catch (NSException *e) {
-		[self reportError:[NSString stringWithFormat:@"Exception: %@", [e reason]] additional:[e name]];
+		[self reportError:[NSString stringWithFormat:@"Exception: %@", e.reason] additional:e.name];
 	}
 	[downloadPanel close];
 }
@@ -63,12 +81,12 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 - (IBAction)startDownload:(id)sender
 {
 	// Create destination dir	
-	NSString *nowTimestamp = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
-	[self setDownloadPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[@"coda-plugin-update-" stringByAppendingString:nowTimestamp]]];
+	NSString *nowTimestamp = [NSString stringWithFormat:@"%.0f", [NSDate date].timeIntervalSince1970];
+	self.downloadPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"coda-plugin-update-" stringByAppendingString:nowTimestamp]];
 	
 	NSError *myerr;
 	if (![[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:NO attributes:nil error:&myerr]) {
-		[self reportError:@"Could not create temporary path" additional:[NSString stringWithFormat:@"%@\n%@", downloadPath, [myerr localizedDescription]]];
+		[self reportError:@"Could not create temporary path" additional:[NSString stringWithFormat:@"%@\n%@", downloadPath, myerr.localizedDescription]];
 		return;
 	}
 	
@@ -78,7 +96,7 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 											timeoutInterval:PrefTimeoutNS];
 	theDownload = [[NSURLDownload alloc] initWithRequest:theRequest delegate:self];
 	if (theDownload) {
-		[responseLabel setStringValue:@"Download initialized."];
+		responseLabel.stringValue = @"Download initialized.";
 		[updateButton setEnabled:NO];
     }
 	else {
@@ -88,14 +106,14 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 
 - (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
 {
-	[self setDownloadFilename:filename];
+	self.downloadFilename = filename;
     [theDownload setDestination:[downloadPath stringByAppendingPathComponent:downloadFilename] allowOverwrite:YES];
 	[myPlugin doLog:[NSString stringWithFormat:@"decideDestinationWithSuggestedFilename %@, final dest is: %@", filename, [downloadPath stringByAppendingPathComponent:downloadFilename]]];
 }
 
 -(void)download:(NSURLDownload *)download didCreateDestination:(NSString *)path
 {
-	[responseLabel setStringValue:@"Download started."];
+	responseLabel.stringValue = @"Download started.";
 	[progressIndicator startAnimation:self];
 	[myPlugin doLog:[NSString stringWithFormat:@"didCreateDestination %@, final dest is: %@", path, [downloadPath stringByAppendingPathComponent:downloadFilename]]];
 }
@@ -103,12 +121,12 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 - (void)download:(NSURLDownload *)download didReceiveResponse:(NSURLResponse *)response
 {
     bytesReceived = 0;
-    [self setDownloadResponse:response];
+    self.downloadResponse = response;
 }
 
 - (void)download:(NSURLDownload *)download didReceiveDataOfLength:(NSUInteger)length;
 {
-	int64_t expectedLength = [downloadResponse expectedContentLength];
+	int64_t expectedLength = downloadResponse.expectedContentLength;
     bytesReceived += length;
 	
     if (expectedLength != NSURLResponseUnknownLength)
@@ -116,48 +134,46 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 		double percentComplete = (90.0 * bytesReceived / expectedLength);
 		unsigned percentInt = (int)(90.0 * bytesReceived / expectedLength);
 		[progressIndicator setIndeterminate:NO];
-		[progressIndicator setDoubleValue:percentComplete];		
-		[responseLabel setStringValue:[NSString stringWithFormat:@"Downloading: %u%% done", percentInt]];
+		progressIndicator.doubleValue = percentComplete;		
+		responseLabel.stringValue = [NSString stringWithFormat:@"Downloading: %u%% done", percentInt];
     } 
 	else {
 		[progressIndicator setIndeterminate:YES];
-		[responseLabel setStringValue:[NSString stringWithFormat:@"Downloading: %lld bytes received", bytesReceived]];
+		responseLabel.stringValue = [NSString stringWithFormat:@"Downloading: %lld bytes received", bytesReceived];
     }
 }
 
 - (void)download:(NSURLDownload *)download didFailWithError:(NSError *)error
 {
-    [download release];
 	[progressIndicator stopAnimation:self];
-	[self reportError:@"Download failed." additional:[error localizedDescription]];
+	[self reportError:@"Download failed." additional:error.localizedDescription];
 }
 
 - (void)downloadDidFinish:(NSURLDownload *)download
 {
-    [download release];
 	[progressIndicator stopAnimation:self];
-	[responseLabel setStringValue:@"Finished."];
+	responseLabel.stringValue = @"Finished.";
 	[self extractAndInstall:self];	
 }
 
 - (IBAction)extractAndInstall:(id)sender
 {
 	@try {
-		[responseLabel setStringValue:@"Unpacking..."];
+		responseLabel.stringValue = @"Unpacking...";
 		[progressIndicator setIndeterminate:NO];
-		[progressIndicator setDoubleValue:91.0];
+		progressIndicator.doubleValue = 91.0;
 		
 		NSTask *unzipTask = [[NSTask alloc] init];
-		[unzipTask setLaunchPath:@"/usr/bin/unzip"];
-		[unzipTask setCurrentDirectoryPath:downloadPath];
-		[unzipTask setArguments:[NSArray arrayWithObjects:@"-o", @"-q",[downloadPath stringByAppendingPathComponent:downloadFilename], nil]];
+		unzipTask.launchPath = @"/usr/bin/unzip";
+		unzipTask.currentDirectoryPath = downloadPath;
+		unzipTask.arguments = @[@"-o", @"-q",[downloadPath stringByAppendingPathComponent:downloadFilename]];
 		[unzipTask launch];
 		[unzipTask waitUntilExit];
 		
-		[progressIndicator setDoubleValue:100.0];
-		[responseLabel setStringValue:@"Unpacking done."];
+		progressIndicator.doubleValue = 100.0;
+		responseLabel.stringValue = @"Unpacking done.";
 		
-		NSString *unpackedFolder = [downloadPath stringByAppendingPathComponent:[downloadFilename stringByDeletingPathExtension]];
+		NSString *unpackedFolder = [downloadPath stringByAppendingPathComponent:downloadFilename.stringByDeletingPathExtension];
 		NSString *unpackedBundle = [unpackedFolder stringByAppendingPathComponent:TmpUnpackedFile];
 		NSString *appName;
 		if ([myPlugin isCoda2]) {
@@ -168,7 +184,7 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 		}
 				
 		if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:unpackedBundle]) {
-			if ([[NSWorkspace sharedWorkspace] openFile:[[NSURL fileURLWithPath:unpackedBundle] path] withApplication:appName]) {
+			if ([[NSWorkspace sharedWorkspace] openFile:[NSURL fileURLWithPath:unpackedBundle].path withApplication:appName]) {
 				[downloadPanel close]; // success!
 			}
 			else {
@@ -179,10 +195,9 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 			[self reportError:@"Could not find unpacked file!" additional:unpackedBundle];
 		}
 		
-		[unzipTask release];
 	}
 	@catch (NSException *e) {
-		[self reportError:[NSString stringWithFormat:@"Exception: %@", [e reason]] additional:[e name]];
+		[self reportError:[NSString stringWithFormat:@"Exception: %@", e.reason] additional:e.name];
 	}
 }
 
@@ -196,19 +211,18 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 {
 	[downloadPanel makeKeyAndOrderFront:self];
 	[myPlugin doLog:[err stringByAppendingFormat:@"\nadditional: %@", additional]];
-	[responseLabel setStringValue:[NSString stringWithFormat:@"%@", err]];
-	[responseLabel setTextColor:[NSColor redColor]];
+	responseLabel.stringValue = [NSString stringWithFormat:@"%@", err];
+	responseLabel.textColor = [NSColor redColor];
 	
-	[progressIndicator setDoubleValue:0.0];
+	progressIndicator.doubleValue = 0.0;
 	[updateButton setEnabled:NO];
-	[downloadWebButton setKeyEquivalent:@"\r"];
+	downloadWebButton.keyEquivalent = @"\r";
 	[downloadWebButton setEnabled:YES];
 	[downloadWebButton setHidden:NO];
 }
 
-- (void)dealloc
-{
-    [super dealloc];
+- (void)dealloc{
+	tlo = nil;
 }
 
 @end

@@ -383,7 +383,7 @@
 // Available in Coda API v6 (2.0.1) and later, this is the preferred init method
 // NOTE: CodaPlugInSupportedAPIVersion and/or CodaPlugInMinimumAPIVersion info.plist key must be set to 6 or higher
 
-- (id)initWithPlugInController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
+- (instancetype)initWithPlugInController:(CodaPlugInsController*)aController plugInBundle:(NSObject <CodaPlugInBundle> *)plugInBundle;
 
 
 // Default init'r for your plug-in's principal class. Passes a reference to your

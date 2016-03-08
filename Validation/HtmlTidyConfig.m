@@ -23,16 +23,16 @@
 }
 + (NSString *)escapeEntities:(NSString *)inputString
 {
-	if (inputString == nil || [inputString length] == 0) {
+	if (inputString == nil || inputString.length == 0) {
 		return @"";
 	}
 	NSMutableString *myString = [NSMutableString stringWithString:inputString];
 	
-    [myString replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@"'"  withString:@"&#x27;" options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@">"  withString:@"&gt;"   options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
-    [myString replaceOccurrencesOfString:@"<"  withString:@"&lt;"   options:NSLiteralSearch range:NSMakeRange(0, [myString length])];
+    [myString replaceOccurrencesOfString:@"&"  withString:@"&amp;"  options:NSLiteralSearch range:NSMakeRange(0, myString.length)];
+    [myString replaceOccurrencesOfString:@"\"" withString:@"&quot;" options:NSLiteralSearch range:NSMakeRange(0, myString.length)];
+    [myString replaceOccurrencesOfString:@"'"  withString:@"&#x27;" options:NSLiteralSearch range:NSMakeRange(0, myString.length)];
+    [myString replaceOccurrencesOfString:@">"  withString:@"&gt;"   options:NSLiteralSearch range:NSMakeRange(0, myString.length)];
+    [myString replaceOccurrencesOfString:@"<"  withString:@"&lt;"   options:NSLiteralSearch range:NSMakeRange(0, myString.length)];
 	
     return myString;
 }
@@ -49,14 +49,12 @@
     static NSArray *configs;
     if (!configs)
     {
-		configs = [[NSArray alloc] initWithObjects:
-			[HtmlTidyConfig configWithTitle:@"Very Indented" intvalue:0 cmdLine:@"indented"],
+		configs = @[[HtmlTidyConfig configWithTitle:@"Very Indented" intvalue:0 cmdLine:@"indented"],
             [HtmlTidyConfig configWithTitle:@"Default" intvalue:1 cmdLine:@"default"],
             [HtmlTidyConfig configWithTitle:@"Wrapped" intvalue:2 cmdLine:@"wrapped"],
             [HtmlTidyConfig configWithTitle:@"High Compression" intvalue:3 cmdLine:@"compressed"],
 			[HtmlTidyConfig configWithTitle:@"Body only (experimental)" intvalue:4 cmdLine:@"bodyonly"],
-			[HtmlTidyConfig configWithTitle:@"Custom..." intvalue:5 cmdLine:@"custom"],
-		nil];
+			[HtmlTidyConfig configWithTitle:@"Custom..." intvalue:5 cmdLine:@"custom"]];
     }
     return configs;
 }
@@ -67,7 +65,7 @@
 	HtmlTidyConfig * aconfig;
 	while ((aconfig = [configEnumerator nextObject]))
 	{
-		if (theValue == [aconfig intvalue])
+		if (theValue == aconfig.intvalue)
 		{
 			return aconfig;			
 		}
@@ -77,18 +75,18 @@
 
 + (HtmlTidyConfig *)configForIndex:(int)theIdx
 {
-	return [[HtmlTidyConfig configArray] objectAtIndex:theIdx];
+	return [HtmlTidyConfig configArray][theIdx];
 }
 
 /* Convenience constructor */
-+ (id)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
++ (instancetype)configWithTitle:(NSString *)aTitle intvalue:(int)aValue cmdLine:(NSString *)aCmdLine
 {
     HtmlTidyConfig *newConfig = [[self alloc] init];
     newConfig.title = aTitle;
     newConfig.intvalue = aValue;
 	newConfig.cmdLineParam = aCmdLine;
     
-    return [newConfig autorelease];
+    return newConfig;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -96,11 +94,11 @@
 	[encoder encodeInteger: intvalue forKey:@"encoding"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	int theencoding = 0;
 	theencoding = [decoder decodeIntegerForKey:@"encoding"];
-	return [[HtmlTidyConfig configForIntvalue:theencoding] retain];
+	return [HtmlTidyConfig configForIntvalue:theencoding];
 }
 
 @end
