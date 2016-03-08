@@ -19,16 +19,24 @@ NSString* const TmpUnpackedFile = @"PhpPlugin.codaplugin";
 {
 	self = [super init];
 	if (self != nil) {
+		@try {
 		NSString *nibName = @"DownloadPanel";
-		if([[NSBundle mainBundle] respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
+		NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+		if([myBundle respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
 			NSArray * t = nil;
-			[[NSBundle mainBundle] loadNibNamed:nibName owner:self topLevelObjects:&t];
+			if(![myBundle loadNibNamed:nibName owner:self topLevelObjects:&t]){
+				return nil;
+			}
 			tlo = t;
 		} else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 			[NSBundle loadNibNamed:nibName owner:self];
 #pragma clang diagnostic pop
+		}
+		}
+		@catch (NSException *e) {
+			return nil;
 		}
 	}
     return self;

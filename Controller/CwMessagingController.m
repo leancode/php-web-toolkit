@@ -19,11 +19,18 @@
 		@try {
 			NSString *nibName1 = @"InfoPanel";
 			NSString *nibName2 = @"SheetPHPError";
-			if([[NSBundle mainBundle] respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
+			NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+			if([myBundle respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
 				NSArray * t = nil;
 				NSArray * t2 = nil;
-				[[NSBundle mainBundle] loadNibNamed:nibName1 owner:self topLevelObjects:&t];
-				[[NSBundle mainBundle] loadNibNamed:nibName2 owner:self topLevelObjects:&t2];
+				if(![myBundle loadNibNamed:nibName1 owner:self topLevelObjects:&t]){
+					[self alertCriticalError:[NSString stringWithFormat:@"Could not load nib named: %@", nibName1] additional:nil];
+					return nil;
+				}
+				if(![myBundle loadNibNamed:nibName2 owner:self topLevelObjects:&t2]){
+					[self alertCriticalError:[NSString stringWithFormat:@"Could not load nib named: %@", nibName2] additional:nil];
+					return nil;
+				}
 				_tloIP = t;
 				_tloSPE = t2;
 			} else {
@@ -36,6 +43,7 @@
 		}
 		@catch (NSException *e) {
 			[self alertCriticalException:e];
+			return nil;
 		}
 	}
 
@@ -208,9 +216,13 @@
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:PrefResultWindow]) {
 		@try {
 			NSString *nibName = @"ResultPanel";
-			if([[NSBundle mainBundle] respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
+			NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+			if([myBundle respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]){
 				NSArray * t = nil;
-				[[NSBundle mainBundle] loadNibNamed:nibName owner:self topLevelObjects:&t];
+				if(![myBundle loadNibNamed:nibName owner:self topLevelObjects:&t]){
+					[self alertCriticalError:[NSString stringWithFormat:@"Could not load nib named: %@", nibName] additional:nil];
+					return;
+				}
 				_tloRP = t;
 			} else {
 #pragma clang diagnostic push
